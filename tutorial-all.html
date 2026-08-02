@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Sheet Generator</title>
+    <!-- High Quality PDF Engine (html2pdf.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Input Form Styling */
+        .form-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .form-title {
+            text-align: center;
+            color: #005691;
+            margin-bottom: 20px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-group input {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .input-table-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            margin-top: 15px;
+        }
+        .marks-input-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .marks-input-table th, .marks-input-table td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: center;
+        }
+        .marks-input-table th {
+            position: sticky;
+            top: 0;
+            background-color: #005691;
+            color: white;
+        }
+        .marks-input-table input {
+            width: 100%;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background-color: #005691;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-submit:hover {
+            background-color: #003d66;
+        }
+
+        /* Action Buttons Area */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px auto;
+            max-width: 200mm;
+        }
+        .btn-action {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-pdf { background-color: #d9534f; }
+        .btn-pdf:hover { background-color: #c9302c; }
+        .btn-edit { background-color: #6c757d; }
+        .btn-edit:hover { background-color: #5a6268; }
+
+        /* Output Marks Sheet Styling (Optimized for A4 Scaling & Avoiding Broken Rows) */
+        .sheet-container {
+            display: none;
+            width: 100%;
+            max-width: 200mm;
+            margin: 0 auto;
+            background: #fff;
+            padding: 10mm;
+            box-sizing: border-box;
+        }
+
+        .inst-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+        }
+        .header-banner {
+            background-color: #005691;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 5px;
+            border-radius: 15px;
+            margin: 8px 0 12px 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 8px;
+            border-bottom: 1px dotted #005691;
+            padding-bottom: 4px;
+        }
+        .info-row span {
+            color: #005691;
+            text-decoration: underline;
+        }
+
+        /* Tables Grid (Four Parallel Columns) */
+        .tables-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .table-quarter {
+            flex: 1;
+        }
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        .marks-table th, .marks-table td {
+            border: 1px solid #005691;
+            text-align: center;
+            height: 22px;
+            padding: 2px;
+        }
+        .marks-table th {
+            background-color: #e6f2ff !important;
+            color: #005691;
+            font-weight: bold;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        
+        /* Page Break Prevention for Rows */
+        .marks-table tr {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        /* Footer Layout */
+        .sheet-footer {
+            margin-top: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .summary-box {
+            border: 1px solid #005691;
+            padding: 6px 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+        .signature-line {
+            border-top: 1px dashed #005691;
+            width: 220px;
+            text-align: center;
+            padding-top: 4px;
+            color: #005691;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+            body { background: white; padding: 0; }
+            .form-container, .action-buttons { display: none !important; }
+            .sheet-container { 
+                display: block !important; 
+                border: none; 
+                box-shadow: none; 
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. INPUT PAGE -->
+    <div class="form-container" id="inputForm">
+        <h2 class="form-title">Marks Sheet Information Input</h2>
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Institution Name:</label>
+                <input type="text" id="in_inst" value="Ibn Taimiya School & College">
+            </div>
+            <div class="form-group">
+                <label>Examination Name:</label>
+                <input type="text" id="in_exam" value="Tutorial Exam-2026">
+            </div>
+            <div class="form-group">
+                <label>Class:</label>
+                <input type="text" id="in_class" value="8">
+            </div>
+            <div class="form-group">
+                <label>Section:</label>
+                <input type="text" id="in_sec" value="A">
+            </div>
+            <div class="form-group">
+                <label>Shift:</label>
+                <input type="text" id="in_shift" value="Joba">
+            </div>
+            <div class="form-group">
+                <label>Subject:</label>
+                <input type="text" id="in_subject" value="ICT">
+            </div>
+            <div class="form-group">
+                <label>Total Students:</label>
+                <input type="number" id="in_total_students" value="70" min="1" oninput="renderInputRows()">
+            </div>
+            <div class="form-group">
+                <label>Total Marks:</label>
+                <input type="text" id="in_total_marks" value="50">
+            </div>
+            <div class="form-group">
+                <label>Subject Teacher's Name & Mobile:</label>
+                <input type="text" id="in_teacher" value="Md. Saiful Islam (018XXXXXXXX)">
+            </div>
+        </div>
+
+        <h3>Enter Student Marks (Tutorial)</h3>
+        <div class="input-table-wrapper">
+            <table class="marks-input-table">
+                <thead>
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Tutorial</th>
+                    </tr>
+                </thead>
+                <tbody id="inputMarksBody">
+                    <!-- Dynamic Rows generated based on Total Students -->
+                </tbody>
+            </table>
+        </div>
+
+        <button class="btn-submit" onclick="generateMarksSheet()">Generate Marks Sheet</button>
+    </div>
+
+    <!-- ACTION BUTTONS AREA -->
+    <div class="action-buttons" id="actionButtons" style="display: none;">
+        <button class="btn-action btn-pdf" onclick="downloadHighQualityPDF()">⬇ High-Quality PDF</button>
+        <button class="btn-action btn-edit" onclick="backToForm()">✏ Edit Marks</button>
+    </div>
+
+    <!-- 2. OUTPUT MARKS SHEET (Shows after submit) -->
+    <div class="sheet-container" id="outputSheet">
+        
+        <!-- Header -->
+        <div class="inst-title" id="out_inst">Ibn Taimiya School & College</div>
+        <div class="header-banner" id="out_exam">Marks Sheet <br> Tutorial Exam-2026</div>
+        
+        <div class="info-row">
+            <div>Total Students: <span id="out_total_students"></span></div>
+            <div>Total Marks: <span id="out_total_marks"></span></div>
+        </div>
+        
+        <div class="info-row">
+            <div>Class: <span id="out_class"></span></div>
+            <div>Sec: <span id="out_sec"></span></div>
+            <div>Shift: <span id="out_shift"></span></div>
+            <div>Subject: <span id="out_subject"></span></div>
+        </div>
+
+        <!-- Marks Tables (Split into 4 parallel columns dynamically) -->
+        <div class="tables-wrapper">
+            <!-- Table 1 -->
+            <div class="table-quarter">
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>Roll</th>
+                            <th>Tuto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody1"></tbody>
+                </table>
+            </div>
+
+            <!-- Table 2 -->
+            <div class="table-quarter">
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>Roll</th>
+                            <th>Tuto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody2"></tbody>
+                </table>
+            </div>
+
+            <!-- Table 3 -->
+            <div class="table-quarter">
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>Roll</th>
+                            <th>Tuto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody3"></tbody>
+                </table>
+            </div>
+
+            <!-- Table 4 -->
+            <div class="table-quarter">
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>Roll</th>
+                            <th>Tuto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody4"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="sheet-footer">
+            <div class="summary-grid">
+                <div class="summary-box">
+                    <span>Total Examinee:</span>
+                    <span id="out_total_ex"></span>
+                </div>
+                <div class="summary-box">
+                    <span>Pass Examinee:</span>
+                    <span></span>
+                </div>
+                <div class="summary-box">
+                    <span>Fail Examinee:</span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="signature-section">
+                <div class="signature-line" id="out_teacher">
+                    Subject Teacher's Name & Mobile
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ডাইনামিক ইনপুট রো তৈরি (ছাত্রসংখ্যার সমান)
+        function renderInputRows() {
+            const count = parseInt(document.getElementById('in_total_students').value) || 0;
+            const inputMarksBody = document.getElementById('inputMarksBody');
+
+            let existingData = {};
+            const inputs = inputMarksBody.querySelectorAll('input');
+            inputs.forEach(input => {
+                existingData[input.id] = input.value;
+            });
+
+            inputMarksBody.innerHTML = '';
+            for (let i = 1; i <= count; i++) {
+                let tutoVal = existingData[`tuto_${i}`] || '';
+
+                inputMarksBody.innerHTML += `
+                    <tr>
+                        <td><b>${i}</b></td>
+                        <td><input type="text" id="tuto_${i}" value="${tutoVal}"></td>
+                    </tr>
+                `;
+            }
+        }
+
+        renderInputRows();
+
+        function generateMarksSheet() {
+            const total = parseInt(document.getElementById('in_total_students').value) || 0;
+
+            document.getElementById('out_inst').innerText = document.getElementById('in_inst').value;
+            document.getElementById('out_exam').innerHTML = `Marks Sheet <br> ${document.getElementById('in_exam').value}`;
+            document.getElementById('out_total_students').innerText = total;
+            document.getElementById('out_total_marks').innerText = document.getElementById('in_total_marks').value;
+            document.getElementById('out_class').innerText = document.getElementById('in_class').value;
+            document.getElementById('out_sec').innerText = document.getElementById('in_sec').value;
+            document.getElementById('out_shift').innerText = document.getElementById('in_shift').value;
+            document.getElementById('out_subject').innerText = document.getElementById('in_subject').value;
+            document.getElementById('out_total_ex').innerText = total;
+            document.getElementById('out_teacher').innerText = document.getElementById('in_teacher').value;
+
+            // Clear all 4 table bodies
+            const bodies = [
+                document.getElementById('tableBody1'),
+                document.getElementById('tableBody2'),
+                document.getElementById('tableBody3'),
+                document.getElementById('tableBody4')
+            ];
+            bodies.forEach(b => b.innerHTML = '');
+
+            // Calculate chunk size for 4 columns evenly
+            const chunkSize = Math.ceil(total / 4);
+
+            for (let i = 1; i <= total; i++) {
+                let tutoStr = document.getElementById(`tuto_${i}`) ? document.getElementById(`tuto_${i}`).value.trim() : '';
+
+                let rowHTML = `
+                    <tr>
+                        <td><b>${i}</b></td>
+                        <td>${tutoStr}</td>
+                    </tr>
+                `;
+
+                // Distribute rows across the 4 columns
+                let colIndex = Math.floor((i - 1) / chunkSize);
+                if (colIndex > 3) colIndex = 3;
+                bodies[colIndex].innerHTML += rowHTML;
+            }
+
+            document.getElementById('inputForm').style.display = 'none';
+            document.getElementById('outputSheet').style.display = 'block';
+            document.getElementById('actionButtons').style.display = 'flex';
+        }
+
+        function backToForm() {
+            document.getElementById('inputForm').style.display = 'block';
+            document.getElementById('outputSheet').style.display = 'none';
+            document.getElementById('actionButtons').style.display = 'none';
+        }
+
+        // High Quality PDF Download Handler
+        function downloadHighQualityPDF() {
+            const element = document.getElementById('outputSheet');
+            const subject = document.getElementById('in_subject').value || 'MarksSheet';
+            const className = document.getElementById('in_class').value || '';
+
+            const opt = {
+                margin:       [8, 6, 8, 6],
+                filename:     `Tutorial_Marks_Sheet_Class_${className}_${subject}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 3, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
