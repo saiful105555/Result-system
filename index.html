@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ইবনে তাইমিয়া স্কুল এন্ড কলেজ - অটোমেটিক রেজাল্ট সিস্টেম</title>
-    
+
     <!-- Google Fonts & Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -35,25 +35,71 @@
             padding: 20px 15px;
         }
 
-        /* Header Section */
-        .header {
-            text-align: center;
-            color: #ffffff;
-            margin-top: 10px;
+        /* Top Header Wrapper for Logo & Title Side-by-Side */
+        .top-header-wrapper {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 25px;
             margin-bottom: 25px;
+            padding: 0 10px;
+        }
+
+        /* Left Logo Styles (Animated & Circular) */
+        .top-left-logo-container {
+            flex-shrink: 0;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(45deg, #ffb703, #e63946, #00b4d8, #ffffff);
+            background-size: 300% 300%;
+            animation: gradientBorder 4s ease infinite, pulseGlow 2s infinite alternate;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .top-left-logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffffff;
+            background-color: #ffffff;
+        }
+
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(255, 183, 3, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(255, 183, 3, 0.9); }
+        }
+
+        /* Header Text Section */
+        .header {
+            text-align: left;
+            color: #ffffff;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            flex-grow: 1;
         }
 
         .header h1 {
-            font-size: 2.2rem;
+            font-size: 2.1rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: #ffffff;
             letter-spacing: 0.5px;
+            line-height: 1.2;
         }
 
         .header p.address {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             opacity: 0.95;
             margin-bottom: 8px;
             color: #e0f2fe;
@@ -63,13 +109,12 @@
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(8px);
-            padding: 6px 20px;
+            padding: 5px 16px;
             border-radius: 30px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            margin-top: 5px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -210,17 +255,6 @@
             background-color: #e2e8f0;
         }
 
-        @keyframes gradientBorder {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px rgba(0, 119, 182, 0.4); }
-            100% { box-shadow: 0 0 25px rgba(0, 180, 216, 0.8); }
-        }
-
         .dev-name {
             font-size: 1.6rem;
             font-weight: 700;
@@ -296,11 +330,19 @@
             box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 600px) {
-            .header h1 { font-size: 1.7rem; }
-            .header p.address { font-size: 0.95rem; }
-            .header .subtitle { font-size: 1rem; }
+        /* Responsive Adjustments for Mobile */
+        @media (max-width: 768px) {
+            .top-header-wrapper {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .header {
+                text-align: center;
+            }
+            .header h1 { font-size: 1.5rem; }
+            .header p.address { font-size: 0.9rem; }
+            .header .subtitle { font-size: 0.95rem; }
             .dev-name { font-size: 1.4rem; }
             .main-container { grid-template-columns: 1fr; }
             .developer-card { padding: 20px 15px; }
@@ -309,16 +351,24 @@
 </head>
 <body>
 
-    <!-- Header Section -->
-    <header class="header">
-        <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
-        <p class="address"><i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</p>
-        <div class="subtitle"><i class="fa-solid fa-calculator"></i> অটোমেটিক রেজাল্ট প্রস্তুতকরণ</div>
-    </header>
+    <!-- Top Header Wrapper (Logo & Info Side-by-Side) -->
+    <div class="top-header-wrapper">
+        <!-- Left Animated Logo -->
+        <div class="top-left-logo-container">
+            <img src="https://lh3.googleusercontent.com/d/15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR" alt="School Logo" class="top-left-logo">
+        </div>
+
+        <!-- Header Section -->
+        <header class="header">
+            <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
+            <p class="address"><i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</p>
+            <div class="subtitle"><i class="fa-solid fa-calculator"></i> অটোমেটিক রেজাল্ট প্রস্তুতকরণ</div>
+        </header>
+    </div>
 
     <!-- Main Navigation Section -->
     <main class="main-container">
-        
+
         <!-- Button 1 -->
         <a href="progress-report.html" class="nav-btn btn-1">
             <div class="btn-icon">
@@ -368,7 +418,7 @@
     <!-- Developer Information Footer Section -->
     <footer class="developer-card">
         <div class="supervisor-title">সার্বিক তত্বাবধানে</div>
-        
+
         <!-- Profile Image with Glow Animation -->
         <div class="profile-frame">
             <img src="https://lh3.googleusercontent.com/d/1VT8Sn4JUUQdq3NIk9pNb4a4Id-SdcPSP" alt="Saiful Islam" class="profile-img">
