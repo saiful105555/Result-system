@@ -233,6 +233,23 @@
             border-radius: 2px;
         }
 
+        /* Developer Wrapper for Side-by-Side Layout */
+        .developers-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .dev-profile-box {
+            flex: 1;
+            min-width: 280px;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         /* Animated Profile Image Frame */
         .profile-frame {
             position: relative;
@@ -256,26 +273,30 @@
         }
 
         .dev-name {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #0f172a;
             margin-bottom: 4px;
         }
 
         .dev-degree {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #0284c7;
             font-weight: 600;
             margin-bottom: 12px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .dev-details {
             display: flex;
             flex-direction: column;
             gap: 6px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #334155;
-            max-width: 650px;
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -346,6 +367,11 @@
             .dev-name { font-size: 1.4rem; }
             .main-container { grid-template-columns: 1fr; }
             .developer-card { padding: 20px 15px; }
+            .developers-wrapper {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
         }
     </style>
 </head>
@@ -417,29 +443,55 @@
 
     <!-- Developer Information Footer Section -->
     <footer class="developer-card">
-        <div class="supervisor-title">সার্বিক তত্বাবধানে</div>
+        <div class="supervisor-title">সার্বিক তত্ত্বাবধানে</div>
 
-        <!-- Profile Image with Glow Animation -->
-        <div class="profile-frame">
-            <img src="https://lh3.googleusercontent.com/d/1VT8Sn4JUUQdq3NIk9pNb4a4Id-SdcPSP" alt="Saiful Islam" class="profile-img">
+        <div class="developers-wrapper">
+            <!-- First Developer / Supervisor (Saiful Islam) -->
+            <div class="dev-profile-box">
+                <div class="profile-frame">
+                    <img src="https://lh3.googleusercontent.com/d/1VT8Sn4JUUQdq3NIk9pNb4a4Id-SdcPSP" alt="Saiful Islam" class="profile-img">
+                </div>
+
+                <h2 class="dev-name">সাইফুল ইসলাম</h2>
+                <div class="dev-degree">এমএসসি, বিএসসি (ইঞ্জি:) কম্পিউটার সাইন্স, কুবি</div>
+
+                <div class="dev-details">
+                    <p><i class="fa-solid fa-chalkboard-user"></i> সহকারী শিক্ষক: ইবনে তাইমিয়া স্কুল এন্ড কলেজ</p>
+                    <p><i class="fa-solid fa-award"></i> জেলা মাস্টার ট্রেইনার - কুমিল্লা বিভাগীয় অঞ্চল</p>
+                </div>
+
+                <div class="badge-container">
+                    <span class="badge"><i class="fa-solid fa-code"></i> ফুল স্ট্যাক ডেভেলপার</span>
+                    <span class="badge"><i class="fa-solid fa-trophy"></i> প্রোগ্রামিং রানার্সআপ (আন্তঃবিশ্ববিদ্যালয়, কুবি)</span>
+                </div>
+
+                <a href="https://wa.me/8801622186812" target="_blank" class="whatsapp-btn">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp: 01622186812
+                </a>
+            </div>
+
+            <!-- Second Developer / Supervisor (Imdadul Haque Imran) -->
+            <div class="dev-profile-box">
+                <div class="profile-frame">
+                    <img src="https://lh3.googleusercontent.com/d/1YZMgZOfJ0MJEFzjdlkeG7Y7wwe-9scoL" alt="Engr. Imdadul Haque Imran" class="profile-img">
+                </div>
+
+                <h2 class="dev-name">ইঞ্জিঃ ইমদাদুল হক ইমরান</h2>
+                <div class="dev-degree">B.Sc in CSE (DIU), M.Sc in CSE (CoU)</div>
+
+                <div class="dev-details">
+                    <p><i class="fa-solid fa-chalkboard-user"></i> সহঃ শিক্ষক, ইবনে তাইমিয়া স্কুল এন্ড কলেজ</p>
+                </div>
+
+                <div class="badge-container">
+                    <span class="badge"><i class="fa-solid fa-laptop-code"></i> সফটওয়্যার ডেভেলপার</span>
+                </div>
+
+                <a href="https://wa.me/8801770169016" target="_blank" class="whatsapp-btn">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp: 01770169016
+                </a>
+            </div>
         </div>
-
-        <h2 class="dev-name">সাইফুল ইসলাম</h2>
-        <div class="dev-degree">এমএসসি, বিএসসি (ইঞ্জি:) কম্পিউটার সাইন্স, কুবি</div>
-
-        <div class="dev-details">
-            <p><i class="fa-solid fa-chalkboard-user"></i> সহকারী শিক্ষক: ইবনে তাইমিয়া স্কুল এন্ড কলেজ</p>
-            <p><i class="fa-solid fa-award"></i> জেলা মাস্টার ট্রেইনার - কুমিল্লা বিভাগীয় অঞ্চল</p>
-        </div>
-
-        <div class="badge-container">
-            <span class="badge"><i class="fa-solid fa-code"></i> ফুল স্ট্যাক ডেভেলপার</span>
-            <span class="badge"><i class="fa-solid fa-trophy"></i> প্রোগ্রামিং রানার্সআপ (আন্তঃবিশ্ববিদ্যালয়, কুবি)</span>
-        </div>
-
-        <a href="https://wa.me/8801622186812" target="_blank" class="whatsapp-btn">
-            <i class="fa-brands fa-whatsapp"></i> WhatsApp: 01622186812
-        </a>
     </footer>
 
 </body>
