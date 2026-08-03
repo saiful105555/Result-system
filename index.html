@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,9 +12,22 @@
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #0d3b66 0%, #0077b6 50%, #00b4d8 100%);
-            --card-gradient: linear-gradient(145deg, #ffffff, #f0f4f8);
-            --accent-color: #ffb703;
+            --card-bg: rgba(255, 255, 255, 0.95);
             --text-color: #2b2d42;
+            --sub-text: #64748b;
+            --heading-color: #0f172a;
+            --nav-bg: #ffffff;
+            --nav-hover: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --primary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            --card-bg: rgba(30, 41, 59, 0.95);
+            --text-color: #f1f5f9;
+            --sub-text: #94a3b8;
+            --heading-color: #ffffff;
+            --nav-bg: #1e293b;
+            --nav-hover: #334155;
         }
 
         * {
@@ -22,6 +35,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Hind Siliguri', sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         body {
@@ -33,9 +47,66 @@
             justify-content: space-between;
             color: var(--text-color);
             padding: 20px 15px;
+            position: relative;
         }
 
-        /* Top Header Wrapper for Logo & Title Side-by-Side */
+        /* Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0d3b66;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #ffb703;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Top Header Wrapper */
         .top-header-wrapper {
             width: 100%;
             max-width: 850px;
@@ -43,12 +114,11 @@
             align-items: center;
             justify-content: center;
             gap: 25px;
-            margin-top: 25px;
-            margin-bottom: 25px;
+            margin-top: 35px;
+            margin-bottom: 15px;
             padding: 0 10px;
         }
 
-        /* Left Logo Styles (Animated & Circular) */
         .top-left-logo-container {
             flex-shrink: 0;
             width: 100px;
@@ -81,7 +151,6 @@
             100% { box-shadow: 0 0 20px rgba(255, 183, 3, 0.9); }
         }
 
-        /* Header Text Section */
         .header {
             text-align: left;
             color: #ffffff;
@@ -118,6 +187,83 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
+        /* Stylish Live Clock Bar */
+        .clock-bar {
+            width: 100%;
+            max-width: 850px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 183, 3, 0.4);
+            padding: 10px 22px;
+            border-radius: 16px;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .clock-bar div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clock-bar .date-box {
+            color: #38bdf8;
+        }
+
+        .clock-bar .time-box {
+            color: #ffb703;
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            background: rgba(255, 183, 3, 0.1);
+            padding: 4px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 183, 3, 0.3);
+        }
+
+        /* Notice Board Section */
+        .notice-board {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .notice-badge {
+            background: #e63946;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notice-text {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            font-weight: 600;
+            width: 100%;
+            overflow: hidden;
+        }
+
         /* Navigation Grid Buttons */
         .main-container {
             width: 100%;
@@ -125,11 +271,11 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
         }
 
         .nav-btn {
-            background: #ffffff;
+            background: var(--nav-bg);
             text-decoration: none;
             padding: 22px 20px;
             border-radius: 16px;
@@ -150,7 +296,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: 0.5s;
         }
 
@@ -161,7 +307,7 @@
         .nav-btn:hover {
             transform: translateY(-7px) scale(1.02);
             box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-            background: #f8fafc;
+            background: var(--nav-hover);
         }
 
         .btn-1 { border-left-color: #ef4444; }
@@ -188,19 +334,106 @@
 
         .btn-text h3 {
             font-size: 1.15rem;
-            color: #1e293b;
+            color: var(--heading-color);
             margin-bottom: 4px;
             line-height: 1.3;
         }
 
         .btn-text p {
             font-size: 0.85rem;
-            color: #64748b;
+            color: var(--sub-text);
+        }
+
+        /* Admin Panel Toggle Button & Box */
+        .admin-panel-container {
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .admin-toggle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.02);
+        }
+
+        .notice-control-box {
+            display: none; /* Hidden by default */
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            text-align: left;
+        }
+
+        .notice-control-box h4 {
+            font-size: 0.95rem;
+            color: #0077b6;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .notice-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .notice-input-group input {
+            flex-grow: 1;
+            padding: 9px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            outline: none;
+            font-size: 0.9rem;
+            background: var(--nav-bg);
+            color: var(--text-color);
+        }
+
+        .notice-input-group button {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .notice-input-group button:hover {
+            background: #005f92;
         }
 
         /* Developer Info Section */
         .developer-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             backdrop-filter: blur(10px);
             width: 100%;
             max-width: 850px;
@@ -209,7 +442,7 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             text-align: center;
             position: relative;
-            border: 1px solid rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .supervisor-title {
@@ -233,7 +466,6 @@
             border-radius: 2px;
         }
 
-        /* Developer Wrapper for Side-by-Side Layout */
         .developers-wrapper {
             display: flex;
             justify-content: center;
@@ -250,7 +482,6 @@
             align-items: center;
         }
 
-        /* Animated Profile Image Frame */
         .profile-frame {
             position: relative;
             width: 130px;
@@ -275,7 +506,7 @@
         .dev-name {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--heading-color);
             margin-bottom: 4px;
         }
 
@@ -295,7 +526,7 @@
             flex-direction: column;
             gap: 6px;
             font-size: 0.9rem;
-            color: #334155;
+            color: var(--text-color);
             width: 100%;
             margin: 0 auto;
         }
@@ -320,13 +551,13 @@
         }
 
         .badge {
-            background: #e0f2fe;
-            color: #0369a1;
+            background: rgba(0, 119, 182, 0.15);
+            color: #0284c7;
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
-            border: 1px solid #bae6fd;
+            border: 1px solid rgba(0, 119, 182, 0.3);
         }
 
         .whatsapp-btn {
@@ -351,7 +582,7 @@
             box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
         }
 
-        /* Responsive Adjustments for Mobile */
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
             .top-header-wrapper {
                 flex-direction: column;
@@ -364,6 +595,7 @@
             .header h1 { font-size: 1.5rem; }
             .header p.address { font-size: 0.9rem; }
             .header .subtitle { font-size: 0.95rem; }
+            .clock-bar { flex-direction: column; gap: 8px; text-align: center; }
             .dev-name { font-size: 1.4rem; }
             .main-container { grid-template-columns: 1fr; }
             .developer-card { padding: 20px 15px; }
@@ -377,14 +609,23 @@
 </head>
 <body>
 
-    <!-- Top Header Wrapper (Logo & Info Side-by-Side) -->
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="spinner"></div>
+        <h3>লোড হচ্ছে...</h3>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="ডার্ক/লাইট মোড পরিবর্তন করুন">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+    </button>
+
+    <!-- Top Header Wrapper -->
     <div class="top-header-wrapper">
-        <!-- Left Animated Logo -->
         <div class="top-left-logo-container">
             <img src="https://lh3.googleusercontent.com/d/15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR" alt="School Logo" class="top-left-logo">
         </div>
 
-        <!-- Header Section -->
         <header class="header">
             <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
             <p class="address"><i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</p>
@@ -392,61 +633,80 @@
         </header>
     </div>
 
+    <!-- Stylish Live Clock & Date Bar -->
+    <div class="clock-bar">
+        <div class="date-box"><i class="fa-solid fa-calendar-days"></i> <span id="currentDate">তারিখ লোড হচ্ছে...</span></div>
+        <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="currentTime">00:00:00</span></div>
+    </div>
+
+    <!-- Notice Board Section -->
+    <div class="notice-board">
+        <div class="notice-badge">
+            <i class="fa-solid fa-bullhorn"></i> জরুরি বিজ্ঞপ্তি:
+        </div>
+        <div class="notice-text">
+            <marquee scrollamount="5" id="noticeDisplay">
+                সকল বিষয়ের নাম্বারফর্দ এবং অটোমেটিক মার্কশীট তৈরির কাজ নির্দিষ্ট সময়ের মধ্যে সম্পন্ন করার জন্য সম্মানিত শিক্ষকদের অনুরোধ করা যাচ্ছে।
+            </marquee>
+        </div>
+    </div>
+
     <!-- Main Navigation Section -->
     <main class="main-container">
-
-        <!-- Button 1 -->
         <a href="progress-report.html" class="nav-btn btn-1">
-            <div class="btn-icon">
-                <i class="fa-solid fa-id-card"></i>
-            </div>
+            <div class="btn-icon"><i class="fa-solid fa-id-card"></i></div>
             <div class="btn-text">
                 <h3>অটোমেটিক মার্কশীট তৈরী</h3>
                 <p>শ্রেণি শিক্ষকদের জন্য</p>
             </div>
         </a>
 
-        <!-- Button 2 -->
         <a href="marksheet-6-8.html" class="nav-btn btn-2">
-            <div class="btn-icon">
-                <i class="fa-solid fa-file-signature"></i>
-            </div>
+            <div class="btn-icon"><i class="fa-solid fa-file-signature"></i></div>
             <div class="btn-text">
                 <h3>বিষয়ভিত্তিক নাম্বারফর্দ তৈরী</h3>
                 <p>বিষয়ভিত্তিক শিক্ষক (শ্রেণী ৬ষ্ঠ - ৮ম)</p>
             </div>
         </a>
 
-        <!-- Button 3 -->
         <a href="marksheet-9-10.html" class="nav-btn btn-3">
-            <div class="btn-icon">
-                <i class="fa-solid fa-file-pen"></i>
-            </div>
+            <div class="btn-icon"><i class="fa-solid fa-file-pen"></i></div>
             <div class="btn-text">
                 <h3>বিষয়ভিত্তিক নাম্বারফর্দ তৈরী</h3>
                 <p>বিষয়ভিত্তিক শিক্ষক (শ্রেণী ৯ম - ১০ম)</p>
             </div>
         </a>
 
-        <!-- Button 4 -->
         <a href="tutorial-all.html" class="nav-btn btn-4">
-            <div class="btn-icon">
-                <i class="fa-solid fa-list-check"></i>
-            </div>
+            <div class="btn-icon"><i class="fa-solid fa-list-check"></i></div>
             <div class="btn-text">
                 <h3>শুধু টিউটোরিয়াল নাম্বারফর্দ</h3>
                 <p>বিষয়ভিত্তিক শিক্ষকদের জন্য</p>
             </div>
         </a>
-
     </main>
+
+    <!-- Admin Panel Button & Collapsible Control Box -->
+    <div class="admin-panel-container">
+        <button class="admin-toggle-btn" onclick="openAdminPanel()">
+            <i class="fa-solid fa-lock"></i> Admin Panel
+        </button>
+
+        <div class="notice-control-box" id="adminControlBox">
+            <h4><i class="fa-solid fa-pen-to-square"></i> নোটিশ আপডেট প্যানেল</h4>
+            <div class="notice-input-group">
+                <input type="text" id="noticeInput" placeholder="নতুন নোটিশ এখানে লিখুন...">
+                <button onclick="updateNotice()"><i class="fa-solid fa-floppy-disk"></i> সেভ করুন</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Developer Information Footer Section -->
     <footer class="developer-card">
         <div class="supervisor-title">সার্বিক তত্ত্বাবধানে</div>
 
         <div class="developers-wrapper">
-            <!-- First Developer / Supervisor (Saiful Islam) -->
+            <!-- First Developer -->
             <div class="dev-profile-box">
                 <div class="profile-frame">
                     <img src="https://lh3.googleusercontent.com/d/1VT8Sn4JUUQdq3NIk9pNb4a4Id-SdcPSP" alt="Saiful Islam" class="profile-img">
@@ -462,7 +722,7 @@
 
                 <div class="badge-container">
                     <span class="badge"><i class="fa-solid fa-code"></i> ফুল স্ট্যাক ডেভেলপার</span>
-                    <span class="badge"><i class="fa-solid fa-trophy"></i> প্রোগ্রামিং রানার্সআপ (আন্তঃবিশ্ববিদ্যালয়, কুবি)</span>
+                    <span class="badge"><i class="fa-solid fa-trophy"></i> প্রোগ্রামিং রানার্সআপ</span>
                 </div>
 
                 <a href="https://wa.me/8801622186812" target="_blank" class="whatsapp-btn">
@@ -470,7 +730,7 @@
                 </a>
             </div>
 
-            <!-- Second Developer / Supervisor (Imdadul Haque Imran) -->
+            <!-- Second Developer -->
             <div class="dev-profile-box">
                 <div class="profile-frame">
                     <img src="https://lh3.googleusercontent.com/d/1YZMgZOfJ0MJEFzjdlkeG7Y7wwe-9scoL" alt="Engr. Imdadul Haque Imran" class="profile-img">
@@ -493,6 +753,98 @@
             </div>
         </div>
     </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Preloader Logic
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.visibility = 'hidden';
+            }, 500);
+
+            // Load saved notice if exists
+            const savedNotice = localStorage.getItem('schoolNotice');
+            if (savedNotice) {
+                document.getElementById('noticeDisplay').innerText = savedNotice;
+                document.getElementById('noticeInput').value = savedNotice;
+            }
+        });
+
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (html.getAttribute('data-theme') === 'light') {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon';
+            }
+        }
+
+        // Live Clock & Date
+        function updateClock() {
+            const now = new Date();
+            
+            // Date formatting in Bengali
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            const dateStr = now.toLocaleDateString('bn-BD', options);
+            document.getElementById('currentDate').innerText = dateStr;
+
+            // Time formatting
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            let ampm = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            const timeStr = `${hours}:${minutes}:${seconds} ${ampm}`;
+            document.getElementById('currentTime').innerText = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Admin Panel Password Protection & Toggle
+        function openAdminPanel() {
+            const password = prompt("অ্যাডমিন প্যানেল খুলতে পাসওয়ার্ড দিন:");
+            
+            if (password === null) {
+                return; // Cancelled
+            }
+
+            if (password === "Saiful007") {
+                const controlBox = document.getElementById('adminControlBox');
+                if (controlBox.style.display === 'block') {
+                    controlBox.style.display = 'none';
+                } else {
+                    controlBox.style.display = 'block';
+                }
+            } else {
+                alert('ভুল পাসওয়ার্ড! প্যানেল খোলা সম্ভব হয়নি।');
+            }
+        }
+
+        // Update Notice Function
+        function updateNotice() {
+            const noticeInput = document.getElementById('noticeInput').value;
+            if (noticeInput.trim() !== "") {
+                document.getElementById('noticeDisplay').innerText = noticeInput;
+                localStorage.setItem('schoolNotice', noticeInput);
+                alert('নোটিশ সফলভাবে আপডেট করা হয়েছে!');
+                document.getElementById('adminControlBox').style.display = 'none'; // Close panel after update
+            } else {
+                alert('দয়া করে কিছু লিখে তারপর আপডেট করুন।');
+            }
+        }
+    </script>
 
 </body>
 </html>
