@@ -756,8 +756,10 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // npoint.io API Link
-        const API_URL = "https://api.npoint.io/e68f41266f718f407b78";
+        // JSONBin.io কনফিগারেশন
+        const BIN_ID = "6a70d4e5da38895dfeb4c7eb";
+        const MASTER_KEY = "$2a$10$TWz.OzRyzXF60E/1W/sGU.2237MZoNS0LIz/IbxEYeaSIaZL16Bt6";
+        const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
         // Preloader Logic
         window.addEventListener('load', function() {
@@ -767,21 +769,25 @@
                 preloader.style.visibility = 'hidden';
             }, 500);
 
-            // Load live notice
             fetchNotice();
         });
 
-        // Fetch Notice from npoint
+        // Fetch Notice from JSONBin
         function fetchNotice() {
-            fetch(API_URL)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.notice) {
-                        document.getElementById('noticeDisplay').innerText = data.notice;
-                        document.getElementById('noticeInput').value = data.notice;
-                    }
-                })
-                .catch(error => console.log('Error fetching notice:', error));
+            fetch(API_URL, {
+                headers: {
+                    'X-Master-Key': MASTER_KEY
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const noticeText = data.record ? data.record.notice : data.notice;
+                if (noticeText) {
+                    document.getElementById('noticeDisplay').innerText = noticeText;
+                    document.getElementById('noticeInput').value = noticeText;
+                }
+            })
+            .catch(error => console.log('Error fetching notice:', error));
         }
 
         // Theme Toggle Logic
@@ -841,7 +847,7 @@
             }
         }
 
-        // Update Notice Function (Direct via npoint API)
+        // Update Notice Function via JSONBin
         function updateNotice() {
             const noticeInput = document.getElementById('noticeInput').value;
             if (noticeInput.trim() === "") {
@@ -856,7 +862,8 @@
             fetch(API_URL, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': MASTER_KEY
                 },
                 body: JSON.stringify(payload)
             })
