@@ -375,7 +375,7 @@
         }
 
         .notice-control-box {
-            display: none; /* Hidden by default */
+            display: none;
             width: 100%;
             background: var(--card-bg);
             backdrop-filter: blur(10px);
@@ -756,6 +756,9 @@
 
     <!-- JavaScript Logic -->
     <script>
+        // npoint.io API Link
+        const API_URL = "https://api.npoint.io/e68f41266f718f407b78";
+
         // Preloader Logic
         window.addEventListener('load', function() {
             const preloader = document.getElementById('preloader');
@@ -764,13 +767,22 @@
                 preloader.style.visibility = 'hidden';
             }, 500);
 
-            // Load saved notice if exists
-            const savedNotice = localStorage.getItem('schoolNotice');
-            if (savedNotice) {
-                document.getElementById('noticeDisplay').innerText = savedNotice;
-                document.getElementById('noticeInput').value = savedNotice;
-            }
+            // Load live notice
+            fetchNotice();
         });
+
+        // Fetch Notice from npoint
+        function fetchNotice() {
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.notice) {
+                        document.getElementById('noticeDisplay').innerText = data.notice;
+                        document.getElementById('noticeInput').value = data.notice;
+                    }
+                })
+                .catch(error => console.log('Error fetching notice:', error));
+        }
 
         // Theme Toggle Logic
         function toggleTheme() {
@@ -789,13 +801,10 @@
         // Live Clock & Date
         function updateClock() {
             const now = new Date();
-            
-            // Date formatting in Bengali
             const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
             const dateStr = now.toLocaleDateString('bn-BD', options);
             document.getElementById('currentDate').innerText = dateStr;
 
-            // Time formatting
             let hours = now.getHours();
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
@@ -817,7 +826,7 @@
             const password = prompt("অ্যাডমিন প্যানেল খুলতে পাসওয়ার্ড দিন:");
             
             if (password === null) {
-                return; // Cancelled
+                return;
             }
 
             if (password === "Saiful007") {
@@ -832,17 +841,38 @@
             }
         }
 
-        // Update Notice Function
+        // Update Notice Function (Direct via npoint API)
         function updateNotice() {
             const noticeInput = document.getElementById('noticeInput').value;
-            if (noticeInput.trim() !== "") {
-                document.getElementById('noticeDisplay').innerText = noticeInput;
-                localStorage.setItem('schoolNotice', noticeInput);
-                alert('নোটিশ সফলভাবে আপডেট করা হয়েছে!');
-                document.getElementById('adminControlBox').style.display = 'none'; // Close panel after update
-            } else {
+            if (noticeInput.trim() === "") {
                 alert('দয়া করে কিছু লিখে তারপর আপডেট করুন।');
+                return;
             }
+
+            alert('নোটিশ আপডেট হচ্ছে...');
+
+            const payload = { notice: noticeInput };
+
+            fetch(API_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('নোটিশ সফলভাবে সকল ব্রাউজারে আপডেট করা হয়েছে!');
+                    document.getElementById('noticeDisplay').innerText = noticeInput;
+                    document.getElementById('adminControlBox').style.display = 'none';
+                } else {
+                    alert('আপডেট করতে সমস্যা হয়েছে!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('সংযোগে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+            });
         }
     </script>
 
