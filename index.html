@@ -264,6 +264,104 @@
             overflow: hidden;
         }
 
+        /* Gorgeous Principal Message Section */
+        .principal-message-card {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 183, 3, 0.4);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .principal-message-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #0d3b66, #ffb703, #e63946);
+        }
+
+        .principal-img-container {
+            width: 100%;
+            max-height: 380px;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border: 3px solid rgba(255, 183, 3, 0.6);
+            background: #000;
+        }
+
+        .principal-img {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .principal-img:hover {
+            transform: scale(1.02);
+        }
+
+        .principal-title-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #0d3b66, #0077b6);
+            color: #ffffff;
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,119,182,0.3);
+        }
+
+        .principal-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-color);
+            font-style: italic;
+            background: rgba(0, 119, 182, 0.05);
+            padding: 18px 22px;
+            border-radius: 12px;
+            border-left: 5px solid #ffb703;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        /* Gorgeous Animated Author Name Styling */
+        .animated-author-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: inline-block;
+            background: linear-gradient(270deg, #ffb703, #e63946, #3b82f6, #10b981, #ffb703);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glowingTextAnimation 6s ease infinite;
+            text-transform: uppercase;
+            padding: 5px 10px;
+        }
+
+        @keyframes glowingTextAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* Navigation Grid Buttons */
         .main-container {
             width: 100%;
@@ -651,6 +749,24 @@
         </div>
     </div>
 
+    <!-- Principal Message Section (Before Main Navigation Buttons) -->
+    <section class="principal-message-card">
+        <div class="principal-img-container">
+            <img src="https://lh3.googleusercontent.com/d/1PRy_QmcCtKkP_2I5VhTPwhYUoqIURwOR" alt="Principal Message" class="principal-img">
+        </div>
+        <div class="principal-title-badge">
+            <i class="fa-solid fa-quote-left"></i> প্রিন্সিপাল মহোদয়ের বাণী <i class="fa-solid fa-quote-right"></i>
+        </div>
+        <p class="principal-text">
+            "Ibn Taimiya School & College is one of the best institutions all over the country. Friendly learning environment is the quality of it. The teaching stuff and management of Ibn Taimiya School & College is excellent and favorite to the students."
+        </p>
+        
+        <!-- প্রফেসরের নাম কালারিং অ্যানিমেশন সহ -->
+        <div class="animated-author-name">
+            Professor Dr. Md. Shafiul Alam Helal
+        </div>
+    </section>
+
     <!-- Main Navigation Section -->
     <main class="main-container">
         <a href="progress-report.html" class="nav-btn btn-1">
@@ -794,7 +910,7 @@
         function toggleTheme() {
             const html = document.documentElement;
             const themeIcon = document.getElementById('themeIcon');
-            
+
             if (html.getAttribute('data-theme') === 'light') {
                 html.setAttribute('data-theme', 'dark');
                 themeIcon.className = 'fa-solid fa-sun';
@@ -815,7 +931,7 @@
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
             let ampm = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
-            
+
             hours = hours % 12;
             hours = hours ? hours : 12;
             minutes = minutes < 10 ? '0' + minutes : minutes;
@@ -830,7 +946,7 @@
         // Admin Panel Password Protection & Toggle
         function openAdminPanel() {
             const password = prompt("অ্যাডমিন প্যানেল খুলতে পাসওয়ার্ড দিন:");
-            
+
             if (password === null) {
                 return;
             }
