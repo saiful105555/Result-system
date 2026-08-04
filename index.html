@@ -277,7 +277,7 @@
             border: 1px solid rgba(255, 183, 3, 0.4);
             text-align: center;
             position: relative;
-            z-index: 1; /* শেপ ওভারল্যাপ সমস্যা সমাধানের জন্য যোগ করা হয়েছে */
+            z-index: 1;
         }
 
         .principal-message-card::before {
@@ -300,17 +300,38 @@
             margin-bottom: 18px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
             border: 3px solid rgba(255, 183, 3, 0.6);
-            background: #000;
-            position: relative; /* পজিশনিং ঠিক রাখার জন্য */
+            position: relative;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ছবির পেছনের খালি জায়গা ঢাকতে ব্লার ব্যাকগ্রাউন্ড ইফেক্ট */
+        .principal-img-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://lh3.googleusercontent.com/d/1PRy_QmcCtKkP_2I5VhTPwhYUoqIURwOR');
+            background-size: cover;
+            background-position: center;
+            filter: blur(15px);
+            opacity: 0.4;
+            z-index: 1;
         }
 
         .principal-img {
             width: 100%;
             height: auto;
             max-height: 420px;
-            object-fit: contain; /* ছবি যেন কেটে না যায় বা উপরে উঠে না যায় */
+            object-fit: contain;
             display: block;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
             transition: transform 0.5s ease;
         }
 
@@ -947,7 +968,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-    // Admin Panel Password Protection & Toggle
+        // Admin Panel Password Protection & Toggle
         function openAdminPanel() {
             const password = prompt("অ্যাডমিন প্যানেল খুলতে পাসওয়ার্ড দিন:");
 
