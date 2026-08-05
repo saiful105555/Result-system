@@ -192,7 +192,7 @@
       background: #faf5ff;
       font-weight: 600;
     }
-    
+
     .multi-input-table input:focus {
       background: #ffffff;
       border-color: #4f46e5;
@@ -230,6 +230,12 @@
 
     .btn-add-10 { background: #6366f1; }
     .btn-add-10:hover { background: #4f46e5; }
+
+    .btn-clear-cache {
+      background: #ef4444;
+      margin-left: auto;
+    }
+    .btn-clear-cache:hover { background: #dc2626; }
 
     .btn-download-all {
       background: linear-gradient(135deg, #059669 0%, #10b981 100%);
@@ -312,22 +318,22 @@
   <div class="global-info-bar">
     <div>
       <label for="globalClass">শ্রেণি (Class):</label>
-      <input type="text" id="globalClass" value="Eight">
+      <input type="text" id="globalClass" value="Eight" oninput="saveDataToCache()">
     </div>
     <div>
       <label for="globalSection">শাখা (Section):</label>
-      <input type="text" id="globalSection" value="A">
+      <input type="text" id="globalSection" value="A" oninput="saveDataToCache()">
     </div>
     <div>
       <label for="globalShift">শিফট (Shift):</label>
-      <input type="text" id="globalShift" value="Joba">
+      <input type="text" id="globalShift" value="Joba" oninput="saveDataToCache()">
     </div>
   </div>
 
   <div class="section-card">
     <div class="section-title"><i class="fa-solid fa-users-rectangle"></i> শিক্ষার্থীদের তথ্য ও বিষয়ভিত্তিক নম্বর ইনপুট টেবিল</div>
     <p style="font-size: 13px; color: #475569; margin-bottom: 12px;">
-      নিচের টেবিলে প্রতিটি শিক্ষার্থীর তথ্য এবং প্রতিটি বিষয়ের ই.টি. (ET) ও টিউটোরিয়াল (Tu) নম্বর খালি ঘরে বসান।
+      নিচের টেবিলে প্রতিটি শিক্ষার্থীর তথ্য এবং প্রতিটি বিষয়ের ই.টি. (ET) ও টিউটোরিয়াল (Tu) নম্বর খালি ঘরে বসান। (ব্রাউজারে অটো-সেভ হচ্ছে)
     </p>
 
     <div class="multi-table-container">
@@ -383,6 +389,7 @@
     <div class="btn-action-group">
       <button class="btn-custom btn-add" onclick="addStudentRow()"><i class="fa-solid fa-plus"></i> ১ জন যোগ করুন</button>
       <button class="btn-custom btn-add-10" onclick="addMultipleRows(10)"><i class="fa-solid fa-user-plus"></i> ১০ জন যোগ করুন</button>
+      <button class="btn-custom btn-clear-cache" onclick="clearCacheData()"><i class="fa-solid fa-trash-can"></i> ক্যাশ মেমোরি রিসেট</button>
     </div>
   </div>
 
@@ -405,74 +412,158 @@
 
 <script>
   window.onload = function() {
-    addMultipleRows(5);
+    loadDataFromCache();
   };
 
-  function addStudentRow() {
+  // ক্যাশ মেমোরিতে ডেটা সেভ করার ফাংশন
+  function saveDataToCache() {
+    const globalData = {
+      cls: document.getElementById('globalClass').value,
+      sec: document.getElementById('globalSection').value,
+      shift: document.getElementById('globalShift').value
+    };
+
+    const rows = document.querySelectorAll('#mainTableBody tr');
+    const studentsData = [];
+
+    rows.forEach(row => {
+      const student = {
+        roll: row.querySelector('.in-roll').value,
+        name: row.querySelector('.in-name').value,
+        fname: row.querySelector('.in-fname').value,
+        mname: row.querySelector('.in-mname').value,
+        att: row.querySelector('.in-att').value,
+        
+        b1et: row.querySelector('.b1-et').value, b1tu: row.querySelector('.b1-tu').value,
+        b2et: row.querySelector('.b2-et').value, b2tu: row.querySelector('.b2-tu').value,
+        e1et: row.querySelector('.e1-et').value, e1tu: row.querySelector('.e1-tu').value,
+        e2et: row.querySelector('.e2-et').value, e2tu: row.querySelector('.e2-tu').value,
+        mathet: row.querySelector('.math-et').value, mathtu: row.querySelector('.math-tu').value,
+        socet: row.querySelector('.soc-et').value, soctu: row.querySelector('.soc-tu').value,
+        arabet: row.querySelector('.arab-et').value, arabtu: row.querySelector('.arab-tu').value,
+        bgset: row.querySelector('.bgs-et').value, bgstu: row.querySelector('.bgs-tu').value,
+        sciet: row.querySelector('.sci-et').value, scitu: row.querySelector('.sci-tu').value,
+        ictet: row.querySelector('.ict-et').value, icttu: row.querySelector('.ict-tu').value,
+        agriet: row.querySelector('.agri-et').value, agritu: row.querySelector('.agri-tu').value,
+        artet: row.querySelector('.art-et').value, arttu: row.querySelector('.art-tu').value,
+        spokenet: row.querySelector('.spoken-et').value, spokentu: row.querySelector('.spoken-tu').value,
+        moralet: row.querySelector('.moral-et').value, moraltu: row.querySelector('.moral-tu').value,
+        drillet: row.querySelector('.drill-et').value, drilltu: row.querySelector('.drill-tu').value
+      };
+      studentsData.push(student);
+    });
+
+    localStorage.setItem('itsc_global_info', JSON.stringify(globalData));
+    localStorage.setItem('itsc_students_data', JSON.stringify(studentsData));
+  }
+
+  // ক্যাশ মেমোরি থেকে ডেটা লোড করার ফাংশন
+  function loadDataFromCache() {
+    const savedGlobal = localStorage.getItem('itsc_global_info');
+    if (savedGlobal) {
+      const gData = JSON.parse(savedGlobal);
+      document.getElementById('globalClass').value = gData.cls || '';
+      document.getElementById('globalSection').value = gData.sec || '';
+      document.getElementById('globalShift').value = gData.shift || '';
+    }
+
+    const savedStudents = localStorage.getItem('itsc_students_data');
+    if (savedStudents) {
+      const sData = JSON.parse(savedStudents);
+      if (sData.length > 0) {
+        sData.forEach(data => {
+          addStudentRow(data);
+        });
+        return;
+      }
+    }
+    // যদি ক্যাশে কিছু না থাকে তবে ডিফলต์ ৫টি রো যোগ হবে
+    addMultipleRows(5);
+  }
+
+  // ক্যাশ মেমোরি রিসেট বা মুছে ফেলার ফাংশন
+  function clearCacheData() {
+    if(confirm('আপনি কি নিশ্চিতভাবে ক্যাশ মেমোরি থেকে সমস্ত সংরক্ষিত ডেটা মুছে ফেলতে চান?')) {
+      localStorage.removeItem('itsc_global_info');
+      localStorage.removeItem('itsc_students_data');
+      document.getElementById('mainTableBody').innerHTML = '';
+      addMultipleRows(5);
+      alert('ক্যাশ মেমোরি সফলভাবে পরিষ্কার করা হয়েছে!');
+    }
+  }
+
+  function addStudentRow(data = null) {
     const tbody = document.getElementById('mainTableBody');
     const count = tbody.rows.length + 1;
     const tr = document.createElement('tr');
+    
     tr.innerHTML = `
-      <td><input type="text" class="in-roll" value="${count}"></td>
-      <td><input type="text" class="in-name" value=""></td>
-      <td><input type="text" class="in-fname" value=""></td>
-      <td><input type="text" class="in-mname" value=""></td>
-      <td><input type="number" class="in-att" value=""></td>
+      <td><input type="text" class="in-roll" value="${data ? data.roll : count}" oninput="saveDataToCache()"></td>
+      <td><input type="text" class="in-name" value="${data ? data.name : ''}" oninput="saveDataToCache()"></td>
+      <td><input type="text" class="in-fname" value="${data ? data.fname : ''}" oninput="saveDataToCache()"></td>
+      <td><input type="text" class="in-mname" value="${data ? data.mname : ''}" oninput="saveDataToCache()"></td>
+      <td><input type="number" class="in-att" value="${data ? data.att : ''}" oninput="saveDataToCache()"></td>
       
       <!-- Bangla-1 -->
-      <td><input type="number" class="b1-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="b1-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="b1-tot">0</span></td><td><span class="b1-gr">-</span></td>
+      <td><input type="number" class="b1-et" value="${data ? data.b1et : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="b1-tu" value="${data ? data.b1tu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="b1-tot">0</span></td><td><span class="b1-gr">-</span></td>
       
       <!-- Bangla-2 -->
-      <td><input type="number" class="b2-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="b2-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="b2-tot">0</span></td><td><span class="b2-gr">-</span></td>
+      <td><input type="number" class="b2-et" value="${data ? data.b2et : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="b2-tu" value="${data ? data.b2tu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="b2-tot">0</span></td><td><span class="b2-gr">-</span></td>
       
       <!-- English-1 -->
-      <td><input type="number" class="e1-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="e1-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="e1-tot">0</span></td><td><span class="e1-gr">-</span></td>
+      <td><input type="number" class="e1-et" value="${data ? data.e1et : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="e1-tu" value="${data ? data.e1tu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="e1-tot">0</span></td><td><span class="e1-gr">-</span></td>
       
       <!-- English-2 -->
-      <td><input type="number" class="e2-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="e2-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="e2-tot">0</span></td><td><span class="e2-gr">-</span></td>
+      <td><input type="number" class="e2-et" value="${data ? data.e2et : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="e2-tu" value="${data ? data.e2tu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="e2-tot">0</span></td><td><span class="e2-gr">-</span></td>
       
       <!-- Math -->
-      <td><input type="number" class="math-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="math-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="math-tot">0</span></td><td><span class="math-gr">-</span></td>
+      <td><input type="number" class="math-et" value="${data ? data.mathet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="math-tu" value="${data ? data.mathtu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="math-tot">0</span></td><td><span class="math-gr">-</span></td>
       
       <!-- Social Studies -->
-      <td><input type="number" class="soc-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="soc-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="soc-tot">0</span></td><td><span class="soc-gr">-</span></td>
+      <td><input type="number" class="soc-et" value="${data ? data.socet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="soc-tu" value="${data ? data.soctu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="soc-tot">0</span></td><td><span class="soc-gr">-</span></td>
       
       <!-- Arabic -->
-      <td><input type="number" class="arab-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="arab-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="arab-tot">0</span></td><td><span class="arab-gr">-</span></td>
+      <td><input type="number" class="arab-et" value="${data ? data.arabet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="arab-tu" value="${data ? data.arabtu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="arab-tot">0</span></td><td><span class="arab-gr">-</span></td>
       
       <!-- BGS -->
-      <td><input type="number" class="bgs-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="bgs-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="bgs-tot">0</span></td><td><span class="bgs-gr">-</span></td>
+      <td><input type="number" class="bgs-et" value="${data ? data.bgset : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="bgs-tu" value="${data ? data.bgstu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="bgs-tot">0</span></td><td><span class="bgs-gr">-</span></td>
       
       <!-- Science -->
-      <td><input type="number" class="sci-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="sci-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="sci-tot">0</span></td><td><span class="sci-gr">-</span></td>
+      <td><input type="number" class="sci-et" value="${data ? data.sciet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="sci-tu" value="${data ? data.scitu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="sci-tot">0</span></td><td><span class="sci-gr">-</span></td>
       
       <!-- ICT -->
-      <td><input type="number" class="ict-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="ict-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="ict-tot">0</span></td><td><span class="ict-gr">-</span></td>
+      <td><input type="number" class="ict-et" value="${data ? data.ictet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="ict-tu" value="${data ? data.icttu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="ict-tot">0</span></td><td><span class="ict-gr">-</span></td>
       
       <!-- Agriculture -->
-      <td><input type="number" class="agri-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="agri-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="agri-tot">0</span></td><td><span class="agri-gr">-</span></td>
+      <td><input type="number" class="agri-et" value="${data ? data.agriet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="agri-tu" value="${data ? data.agritu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="agri-tot">0</span></td><td><span class="agri-gr">-</span></td>
       
       <!-- Art & Craft -->
-      <td><input type="number" class="art-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="art-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="art-tot">0</span></td><td><span class="art-gr">-</span></td>
+      <td><input type="number" class="art-et" value="${data ? data.artet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="art-tu" value="${data ? data.arttu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="art-tot">0</span></td><td><span class="art-gr">-</span></td>
       
       <!-- Spoken English -->
-      <td><input type="number" class="spoken-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="spoken-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="spoken-tot">0</span></td><td><span class="spoken-gr">-</span></td>
+      <td><input type="number" class="spoken-et" value="${data ? data.spokenet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="spoken-tu" value="${data ? data.spokentu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="spoken-tot">0</span></td><td><span class="spoken-gr">-</span></td>
       
       <!-- Moral Activ -->
-      <td><input type="number" class="moral-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="moral-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="moral-tot">0</span></td><td><span class="moral-gr">-</span></td>
+      <td><input type="number" class="moral-et" value="${data ? data.moralet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="moral-tu" value="${data ? data.moraltu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="moral-tot">0</span></td><td><span class="moral-gr">-</span></td>
       
       <!-- Drill -->
-      <td><input type="number" class="drill-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="drill-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="drill-tot">0</span></td><td><span class="drill-gr">-</span></td>
+      <td><input type="number" class="drill-et" value="${data ? data.drillet : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><input type="number" class="drill-tu" value="${data ? data.drilltu : ''}" oninput="updateRowSummary(this); saveDataToCache()"></td><td><span class="drill-tot">0</span></td><td><span class="drill-gr">-</span></td>
       
-      <td><button onclick="this.closest('tr').remove()" style="background:#ef4444; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+      <td><button onclick="this.closest('tr').remove(); saveDataToCache();" style="background:#ef4444; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
     `;
     tbody.appendChild(tr);
+    
+    // লোড করার সময় টোটাল মার্কস ও গ্রেড আপডেট করার জন্য
+    if (data) {
+      updateRowSummary(tr.querySelector('.b1-et'));
+    }
   }
 
   function addMultipleRows(num) {
     for(let i=0; i<num; i++) {
       addStudentRow();
     }
+    saveDataToCache();
   }
 
   function getGrading(percentage) {
@@ -489,7 +580,7 @@
     let tuInput = parseFloat(row.querySelector(`.${cls}-tu`).value) || 0;
 
     let et70 = Math.round(etInput * 0.70);
-    
+
     let tuVal = tuInput;
     if (cls === 'ict' || cls === 'agri' || cls === 'b2') {
       tuVal = Math.round(tuInput * 0.50);
@@ -587,7 +678,7 @@
       subjectsConfig.forEach(sub => {
         const res = calculateSubject(row, sub.id, sub.max);
         grandTotalMarks += res.tot;
-        
+
         subCellsHTML += `
           <td>${res.etInput}</td>
           <td>${res.tuInput}</td>
@@ -761,14 +852,14 @@
 
     const banglaTotal = b1.tot + b2.tot;
     const englishTotal = e1.tot + e2.tot;
-    
+
     const banglaRes = getGrading((banglaTotal / 150) * 100);
     const englishRes = getGrading((englishTotal / 200) * 100);
 
     const gpaSubjects = [banglaRes, englishRes, math, soc, arab, bgs, sci, ict, agri];
-    
+
     let grandTotalMarks = banglaTotal + englishTotal + math.tot + soc.tot + arab.tot + bgs.tot + sci.tot + ict.tot + agri.tot + art.tot + spoken.tot + moral.tot + drill.tot;
-    
+
     let totalGP = gpaSubjects.reduce((acc, sub) => acc + sub.gp, 0);
     let finalGPA = (totalGP / gpaSubjects.length).toFixed(2);
     if (finalGPA > 5.00) finalGPA = "5.00";
