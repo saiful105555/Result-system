@@ -264,6 +264,86 @@
             overflow: hidden;
         }
 
+        /* ========================================= */
+        /* Special Mega Glowing Button Style */
+        /* ========================================= */
+        .mega-eknojor-container {
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .mega-eknojor-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #4facfe 100%);
+            background-size: 250% 250%;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 22px 25px;
+            border-radius: 18px;
+            font-size: 1.45rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(121, 40, 202, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            animation: megaGlowAnim 4s ease infinite, buttonPulse 2s infinite alternate;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .mega-eknojor-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.6s;
+        }
+
+        .mega-eknojor-btn:hover::before {
+            left: 100%;
+        }
+
+        .mega-eknojor-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 0, 127, 0.6);
+        }
+
+        .mega-eknojor-btn .btn-shine-icon {
+            font-size: 1.8rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            animation: iconBounce 1.5s infinite alternate;
+        }
+
+        @keyframes megaGlowAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 15px rgba(79, 172, 254, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(255, 0, 127, 0.8), 0 0 10px rgba(255, 255, 255, 0.8); }
+        }
+
+        @keyframes iconBounce {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.12); }
+        }
+
         /* Gorgeous Principal Message Section */
         .principal-message-card {
             width: 100%;
@@ -307,7 +387,6 @@
             justify-content: center;
         }
 
-        /* ছবির পেছনের খালি জায়গা ঢাকতে ব্লার ব্যাকগ্রাউন্ড ইফেক্ট */
         .principal-img-container::before {
             content: '';
             position: absolute;
@@ -366,7 +445,6 @@
             margin-bottom: 20px;
         }
 
-        /* Gorgeous Animated Author Name Styling */
         .animated-author-name {
             font-size: 1.35rem;
             font-weight: 700;
@@ -387,7 +465,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Navigation Grid Buttons */
+        /* Main Navigation Grid Buttons */
         .main-container {
             width: 100%;
             max-width: 850px;
@@ -727,6 +805,10 @@
                 align-items: center;
                 gap: 40px;
             }
+            .mega-eknojor-btn {
+                font-size: 1.15rem;
+                padding: 18px 15px;
+            }
         }
     </style>
 </head>
@@ -774,7 +856,16 @@
         </div>
     </div>
 
-    <!-- Principal Message Section (Before Main Navigation Buttons) -->
+    <!-- Mega Glowing Eknojor Button Section -->
+    <div class="mega-eknojor-container">
+        <a href="eknojor.html" class="mega-eknojor-btn">
+            <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <span>এক সাথে সকলের রেজাল্ট এবং একনজরে রেজাল্ট তৈরী</span>
+            <div class="btn-shine-icon"><i class="fa-solid fa-angles-right"></i></div>
+        </a>
+    </div>
+
+    <!-- Principal Message Section -->
     <section class="principal-message-card">
         <div class="principal-img-container">
             <img src="https://lh3.googleusercontent.com/d/1PRy_QmcCtKkP_2I5VhTPwhYUoqIURwOR" alt="Principal Message" class="principal-img">
@@ -785,7 +876,7 @@
         <p class="principal-text">
             "Ibn Taimiya School & College is one of the best institutions all over the country. Friendly learning environment is the quality of it. The teaching stuff and management of Ibn Taimiya School & College is excellent and favorite to the students."
         </p>
-        
+
         <!-- প্রফেসরের নাম কালারিং অ্যানিমেশন সহ -->
         <div class="animated-author-name">
             Professor Dr. Md. Shafiul Alam Helal
