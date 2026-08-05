@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Report Generator - Ibn Taimiya School & College</title>
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- PDF & ZIP Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <style>
+    * { 
+      box-sizing: border-box; 
+      font-family: 'Hind Siliguri', 'Poppins', sans-serif; 
+      transition: all 0.25s ease-in-out;
+    }
+
+    body { 
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #31103f 100%);
+      margin: 0; 
+      padding: 15px 10px; 
+      min-height: 100vh;
+      color: #1e293b;
+    }
+
+    .container {
+      max-width: 1250px;
+      width: 100%;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      padding: 20px 15px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(124, 58, 237, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .input-header-custom {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed, #c026d3);
+      border-radius: 14px;
+      color: white;
+      box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+    }
+
+    .css-logo {
+      width: 75px;
+      height: 75px;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #4f46e5;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      flex-shrink: 0;
+      border: 3px solid #facc15;
+    }
+    .css-logo span { font-size: 10px; color: #1e293b; line-height: 1; }
+    .css-logo i { font-size: 24px; margin-bottom: 2px; }
+
+    .header-text-container {
+      flex-grow: 1;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .input-header-custom h1 { margin: 0; font-size: 22px; font-weight: 700; }
+    .input-header-custom h2 { margin: 3px 0; color: #e0e7ff; font-size: 15px; font-weight: 600; }
+
+    .global-info-bar {
+      display: flex;
+      gap: 15px;
+      background: #f8fafc;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .global-info-bar label {
+      font-weight: 700;
+      font-size: 13.5px;
+      color: #334155;
+    }
+
+    .global-info-bar input {
+      padding: 6px 10px;
+      border: 1px solid #94a3b8;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 140px;
+    }
+
+    .running-text-wrapper {
+      width: 100%;
+      overflow: hidden;
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 5px 0;
+    }
+
+    .running-text {
+      display: inline-block;
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: marqueeText 12s linear infinite;
+      color: #dc2626; 
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+
+    @keyframes marqueeText {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-100%, 0); }
+    }
+
+    .section-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 15px 12px;
+      margin-bottom: 18px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #4338ca;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .multi-table-container {
+      width: 100%;
+      overflow-x: auto;
+      max-height: 520px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 15px;
+    }
+
+    .multi-input-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 2200px;
+    }
+
+    .multi-input-table th, .multi-input-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .multi-input-table th {
+      background: #1e1b4b;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      font-size: 12.5px;
+    }
+
+    .multi-input-table input, .multi-input-table select {
+      width: 100%;
+      min-width: 55px;
+      padding: 8px 10px;
+      border: 1.5px solid #6366f1;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 13.5px;
+      background: #faf5ff;
+      font-weight: 600;
+    }
+    
+    .multi-input-table input:focus {
+      background: #ffffff;
+      border-color: #4f46e5;
+      box-shadow: 0 0 5px rgba(79, 70, 229, 0.4);
+      outline: none;
+    }
+
+    .multi-input-table input[type="text"] { text-align: left; padding-left: 10px; min-width: 150px; }
+    .multi-input-table td:nth-child(2) input, .multi-input-table td:nth-child(3) input, .multi-input-table td:nth-child(4) input { min-width: 150px; }
+    .multi-input-table td:nth-child(1) input { min-width: 70px; text-align: center; }
+    .multi-input-table td:nth-child(5) input { min-width: 80px; }
+
+    .btn-action-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .btn-custom {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+    }
+
+    .btn-add { background: #3b82f6; }
+    .btn-add:hover { background: #2563eb; }
+
+    .btn-add-10 { background: #6366f1; }
+    .btn-add-10:hover { background: #4f46e5; }
+
+    .btn-download-all {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      flex: 1;
+      justify-content: center;
+      padding: 14px;
+      font-size: 15px;
+      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
+    }
+    .btn-download-all:hover { background: linear-gradient(135deg, #047857 0%, #059669 100%); }
+
+    .btn-print-all {
+      background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+      flex: 1;
+      justify-content: center;
+      padding: 14px;
+      font-size: 15px;
+      box-shadow: 0 8px 18px rgba(245, 158, 11, 0.35);
+    }
+    .btn-print-all:hover { background: linear-gradient(135deg, #b45309 0%, #d97706 100%); }
+
+    .btn-poster-view {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      flex: 1;
+      justify-content: center;
+      padding: 14px;
+      font-size: 15px;
+      box-shadow: 0 8px 18px rgba(124, 58, 237, 0.35);
+    }
+    .btn-poster-view:hover { background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%); }
+
+    #batchRenderContainer { 
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      width: 794px;
+    }
+
+    #printArea {
+      display: none;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #printArea, #printArea * {
+        visibility: visible !important;
+      }
+      #printArea {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="mainAppContainer">
+  <div class="input-header-custom">
+    <div class="css-logo">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <span>ITS&C</span>
+    </div>
+    <div class="header-text-container">
+      <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
+      <h2>একাধিক শিক্ষার্থীর একসাথে মার্কস ইনপুট ও রেজাল্ট জেনারেটর</h2>
+      <div class="running-text-wrapper">
+        <div class="running-text">
+          <i class="fa-solid fa-code"></i> প্রস্তুতকারক: ইঞ্জি: সাইফুল ইসলাম (সহ শিক্ষক, জবা শিফট)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- গ্লোবাল ক্লাস ও শাখা ইনপুট বার -->
+  <div class="global-info-bar">
+    <div>
+      <label for="globalClass">শ্রেণি (Class):</label>
+      <input type="text" id="globalClass" value="Eight">
+    </div>
+    <div>
+      <label for="globalSection">শাখা (Section):</label>
+      <input type="text" id="globalSection" value="A">
+    </div>
+    <div>
+      <label for="globalShift">শিফট (Shift):</label>
+      <input type="text" id="globalShift" value="Joba">
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title"><i class="fa-solid fa-users-rectangle"></i> শিক্ষার্থীদের তথ্য ও বিষয়ভিত্তিক নম্বর ইনপুট টেবিল</div>
+    <p style="font-size: 13px; color: #475569; margin-bottom: 12px;">
+      নিচের টেবিলে প্রতিটি শিক্ষার্থীর তথ্য এবং প্রতিটি বিষয়ের ই.টি. (ET) ও টিউটোরিয়াল (Tu) নম্বর খালি ঘরে বসান।
+    </p>
+
+    <div class="multi-table-container">
+      <table class="multi-input-table" id="mainInputTable">
+        <thead>
+          <tr>
+            <th rowspan="2" style="width: 70px;">রোল</th>
+            <th rowspan="2" style="width: 170px;">শিক্ষার্থীর নাম</th>
+            <th rowspan="2" style="width: 150px;">পিতার নাম</th>
+            <th rowspan="2" style="width: 150px;">মাতার নাম</th>
+            <th rowspan="2" style="width: 80px;">উপস্থিতি</th>
+            <th colspan="4">বাংলা-১</th>
+            <th colspan="4">বাংলা-২</th>
+            <th colspan="4">ইংরেজি-১</th>
+            <th colspan="4">ইংরেজি-২</th>
+            <th colspan="4">গণিত</th>
+            <th colspan="4">Social Studies</th>
+            <th colspan="4">আরবী</th>
+            <th colspan="4">BGS</th>
+            <th colspan="4">বিজ্ঞান</th>
+            <th colspan="4">ICT</th>
+            <th colspan="4">Agriculture/Home</th>
+            <th colspan="4">Art & Craft</th>
+            <th colspan="4">Spoken English</th>
+            <th colspan="4">Moral Activ.</th>
+            <th colspan="4">ড্রীল</th>
+            <th rowspan="2" style="width: 65px;">ডিলিট</th>
+          </tr>
+          <tr>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+          </tr>
+        </thead>
+        <tbody id="mainTableBody">
+          <!-- ডাইনামিক রো এখানে যুক্ত হবে -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="btn-action-group">
+      <button class="btn-custom btn-add" onclick="addStudentRow()"><i class="fa-solid fa-plus"></i> ১ জন যোগ করুন</button>
+      <button class="btn-custom btn-add-10" onclick="addMultipleRows(10)"><i class="fa-solid fa-user-plus"></i> ১০ জন যোগ করুন</button>
+    </div>
+  </div>
+
+  <div class="btn-action-group" style="margin-top: 20px;">
+    <button class="btn-custom btn-poster-view" onclick="openPosterSummaryView()">
+      <i class="fa-solid fa-chalkboard"></i> এক নজরে সকল শিক্ষার্থীর মার্কস শিট (Poster View)
+    </button>
+    <button class="btn-custom btn-download-all" id="downloadAllBtn" onclick="generateAllStudentsZip()">
+      <i class="fa-solid fa-file-zipper"></i> ZIP ফাইল ডাউনলোড
+    </button>
+    <button class="btn-custom btn-print-all" onclick="printAllReports()">
+      <i class="fa-solid fa-print"></i> সব মার্কশীট প্রিন্ট
+    </button>
+  </div>
+</div>
+
+<!-- Hidden containers -->
+<div id="batchRenderContainer"></div>
+<div id="printArea"></div>
+
+<script>
+  window.onload = function() {
+    addMultipleRows(5);
+  };
+
+  function addStudentRow() {
+    const tbody = document.getElementById('mainTableBody');
+    const count = tbody.rows.length + 1;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" class="in-roll" value="${count}"></td>
+      <td><input type="text" class="in-name" value=""></td>
+      <td><input type="text" class="in-fname" value=""></td>
+      <td><input type="text" class="in-mname" value=""></td>
+      <td><input type="number" class="in-att" value=""></td>
+      
+      <!-- Bangla-1 -->
+      <td><input type="number" class="b1-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="b1-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="b1-tot">0</span></td><td><span class="b1-gr">-</span></td>
+      
+      <!-- Bangla-2 -->
+      <td><input type="number" class="b2-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="b2-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="b2-tot">0</span></td><td><span class="b2-gr">-</span></td>
+      
+      <!-- English-1 -->
+      <td><input type="number" class="e1-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="e1-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="e1-tot">0</span></td><td><span class="e1-gr">-</span></td>
+      
+      <!-- English-2 -->
+      <td><input type="number" class="e2-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="e2-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="e2-tot">0</span></td><td><span class="e2-gr">-</span></td>
+      
+      <!-- Math -->
+      <td><input type="number" class="math-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="math-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="math-tot">0</span></td><td><span class="math-gr">-</span></td>
+      
+      <!-- Social Studies -->
+      <td><input type="number" class="soc-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="soc-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="soc-tot">0</span></td><td><span class="soc-gr">-</span></td>
+      
+      <!-- Arabic -->
+      <td><input type="number" class="arab-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="arab-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="arab-tot">0</span></td><td><span class="arab-gr">-</span></td>
+      
+      <!-- BGS -->
+      <td><input type="number" class="bgs-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="bgs-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="bgs-tot">0</span></td><td><span class="bgs-gr">-</span></td>
+      
+      <!-- Science -->
+      <td><input type="number" class="sci-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="sci-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="sci-tot">0</span></td><td><span class="sci-gr">-</span></td>
+      
+      <!-- ICT -->
+      <td><input type="number" class="ict-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="ict-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="ict-tot">0</span></td><td><span class="ict-gr">-</span></td>
+      
+      <!-- Agriculture -->
+      <td><input type="number" class="agri-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="agri-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="agri-tot">0</span></td><td><span class="agri-gr">-</span></td>
+      
+      <!-- Art & Craft -->
+      <td><input type="number" class="art-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="art-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="art-tot">0</span></td><td><span class="art-gr">-</span></td>
+      
+      <!-- Spoken English -->
+      <td><input type="number" class="spoken-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="spoken-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="spoken-tot">0</span></td><td><span class="spoken-gr">-</span></td>
+      
+      <!-- Moral Activ -->
+      <td><input type="number" class="moral-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="moral-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="moral-tot">0</span></td><td><span class="moral-gr">-</span></td>
+      
+      <!-- Drill -->
+      <td><input type="number" class="drill-et" value="" oninput="updateRowSummary(this)"></td><td><input type="number" class="drill-tu" value="" oninput="updateRowSummary(this)"></td><td><span class="drill-tot">0</span></td><td><span class="drill-gr">-</span></td>
+      
+      <td><button onclick="this.closest('tr').remove()" style="background:#ef4444; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function addMultipleRows(num) {
+    for(let i=0; i<num; i++) {
+      addStudentRow();
+    }
+  }
+
+  function getGrading(percentage) {
+    if (percentage >= 80) return { lg: 'A+', gp: 5.00 };
+    if (percentage >= 70) return { lg: 'A',  gp: 4.00 };
+    if (percentage >= 60) return { lg: 'A-', gp: 3.50 };
+    if (percentage >= 50) return { lg: 'B',  gp: 3.00 };
+    if (percentage >= 40) return { lg: 'C',  gp: 2.00 };
+    return { lg: 'F', gp: 0.00 };
+  }
+
+  function calculateSubject(row, cls, totalMarks) {
+    let etInput = parseFloat(row.querySelector(`.${cls}-et`).value) || 0;
+    let tuInput = parseFloat(row.querySelector(`.${cls}-tu`).value) || 0;
+
+    let et70 = Math.round(etInput * 0.70);
+    
+    let tuVal = tuInput;
+    if (cls === 'ict' || cls === 'agri' || cls === 'b2') {
+      tuVal = Math.round(tuInput * 0.50);
+    }
+
+    let tot = et70 + tuVal;
+    if (tot > totalMarks) tot = totalMarks;
+
+    const percentage = (tot / totalMarks) * 100;
+    const grading = getGrading(percentage);
+
+    return {
+      etInput: etInput,
+      tuInput: tuInput,
+      et70: et70,
+      tu: tuVal,
+      tot: tot,
+      lg: grading.lg,
+      gp: grading.gp
+    };
+  }
+
+  function updateRowSummary(element) {
+    const tr = element.closest('tr');
+    const subjects = [
+      { id: 'b1', max: 100 },
+      { id: 'b2', max: 50 },
+      { id: 'e1', max: 100 },
+      { id: 'e2', max: 100 },
+      { id: 'math', max: 100 },
+      { id: 'soc', max: 100 },
+      { id: 'arab', max: 100 },
+      { id: 'bgs', max: 100 },
+      { id: 'sci', max: 100 },
+      { id: 'ict', max: 50 },
+      { id: 'agri', max: 50 },
+      { id: 'art', max: 50 },
+      { id: 'spoken', max: 25 },
+      { id: 'moral', max: 50 },
+      { id: 'drill', max: 25 }
+    ];
+
+    subjects.forEach(sub => {
+      const res = calculateSubject(tr, sub.id, sub.max);
+      const totSpan = tr.querySelector(`.${sub.id}-tot`);
+      const grSpan = tr.querySelector(`.${sub.id}-gr`);
+      if(totSpan) totSpan.innerText = res.tot;
+      if(grSpan) grSpan.innerText = res.lg;
+    });
+  }
+
+  function openPosterSummaryView() {
+    const rows = document.querySelectorAll('#mainTableBody tr');
+    if(rows.length === 0) {
+      alert('দয়া করে অন্তত একজন শিক্ষার্থীর তথ্য ইনপুট দিন।');
+      return;
+    }
+
+    const className = document.getElementById('globalClass').value || '-';
+    const section = document.getElementById('globalSection').value || '-';
+    const shift = document.getElementById('globalShift').value || '-';
+
+    const subjectsConfig = [
+      { id: 'b1', name: 'বাংলা-১', max: 100 },
+      { id: 'b2', name: 'বাংলা-২', max: 50 },
+      { id: 'e1', name: 'ইংরেজি-১', max: 100 },
+      { id: 'e2', name: 'ইংরেজি-২', max: 100 },
+      { id: 'math', name: 'গণিত', max: 100 },
+      { id: 'soc', name: 'Social', max: 100 },
+      { id: 'arab', name: 'আরবী', max: 100 },
+      { id: 'bgs', name: 'BGS', max: 100 },
+      { id: 'sci', name: 'বিজ্ঞান', max: 100 },
+      { id: 'ict', name: 'ICT', max: 50 },
+      { id: 'agri', name: 'Agri', max: 50 },
+      { id: 'art', name: 'Art', max: 50 },
+      { id: 'spoken', name: 'Spoken', max: 25 },
+      { id: 'moral', name: 'Moral', max: 50 },
+      { id: 'drill', name: 'Drill', max: 25 }
+    ];
+
+    let tableRowsHTML = '';
+    rows.forEach((row, index) => {
+      const roll = row.querySelector('.in-roll').value || '-';
+      const name = row.querySelector('.in-name').value || '-';
+      const fname = row.querySelector('.in-fname').value || '-';
+
+      let subCellsHTML = '';
+      let grandTotalMarks = 0;
+
+      const b1 = calculateSubject(row, 'b1', 100);
+      const b2 = calculateSubject(row, 'b2', 50);
+      const e1 = calculateSubject(row, 'e1', 100);
+      const e2 = calculateSubject(row, 'e2', 100);
+
+      subjectsConfig.forEach(sub => {
+        const res = calculateSubject(row, sub.id, sub.max);
+        grandTotalMarks += res.tot;
+        
+        subCellsHTML += `
+          <td>${res.etInput}</td>
+          <td>${res.tuInput}</td>
+          <td><b>${res.tot}</b></td>
+          <td><b style="color:#047857;">${res.lg}</b></td>
+        `;
+
+        if (sub.id === 'b2') {
+          const banglaTotal = b1.tot + b2.tot;
+          const banglaRes = getGrading((banglaTotal / 150) * 100);
+          subCellsHTML += `
+            <td style="background: #e0e7ff;"><b style="color: #1e3a8a;">${banglaTotal}</b><br><span style="font-size: 9px;">(${banglaRes.lg})</span></td>
+          `;
+        }
+
+        if (sub.id === 'e2') {
+          const englishTotal = e1.tot + e2.tot;
+          const englishRes = getGrading((englishTotal / 200) * 100);
+          subCellsHTML += `
+            <td style="background: #e0e7ff;"><b style="color: #1e3a8a;">${englishTotal}</b><br><span style="font-size: 9px;">(${englishRes.lg})</span></td>
+          `;
+        }
+      });
+
+      const banglaTotal = b1.tot + b2.tot;
+      const englishTotal = e1.tot + e2.tot;
+      const banglaRes = getGrading((banglaTotal / 150) * 100);
+      const englishRes = getGrading((englishTotal / 200) * 100);
+
+      const math = calculateSubject(row, 'math', 100);
+      const soc = calculateSubject(row, 'soc', 100);
+      const arab = calculateSubject(row, 'arab', 100);
+      const bgs = calculateSubject(row, 'bgs', 100);
+      const sci = calculateSubject(row, 'sci', 100);
+      const ict = calculateSubject(row, 'ict', 50);
+      const agri = calculateSubject(row, 'agri', 50);
+
+      const gpaSubjects = [banglaRes, englishRes, math, soc, arab, bgs, sci, ict, agri];
+      let totalGP = gpaSubjects.reduce((acc, sub) => acc + sub.gp, 0);
+      let finalGPA = (totalGP / gpaSubjects.length).toFixed(2);
+      if (finalGPA > 5.00) finalGPA = "5.00";
+
+      tableRowsHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td><b>${roll}</b></td>
+          <td style="text-align: left; padding-left: 6px; white-space: nowrap;">${name}</td>
+          <td style="text-align: left; padding-left: 6px; white-space: nowrap;">${fname}</td>
+          ${subCellsHTML}
+          <td><b>${grandTotalMarks}</b></td>
+          <td><b style="color: #b91c1c;">${finalGPA}</b></td>
+        </tr>
+      `;
+    });
+
+    const posterWindow = window.open('', '_blank');
+    posterWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="bn">
+      <head>
+        <meta charset="UTF-8">
+        <title>এক নজরে সকল শিক্ষার্থীর ফলাফল - Poster View</title>
+        <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+          @page { size: landscape; margin: 8mm; }
+          body { font-family: 'Hind Siliguri', sans-serif; margin: 0; padding: 5px; color: #000; background: #fff; }
+          .header { text-align: center; margin-bottom: 12px; border-bottom: 2px solid #1e3a8a; padding-bottom: 8px; }
+          .header h1 { margin: 0; font-size: 20px; color: #1e3a8a; }
+          .header h2 { margin: 3px 0; font-size: 13.5px; color: #333; }
+          .poster-table { width: 100%; border-collapse: collapse; font-size: 10px; text-align: center; }
+          .poster-table th, .poster-table td { border: 1px solid #000; padding: 4px 3px; vertical-align: middle; }
+          .poster-table th { background: #fef08a; font-weight: bold; font-size: 10.5px; }
+          .print-btn-container { text-align: center; margin: 20px 0; }
+          .print-btn { background: #4f46e5; color: white; border: none; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+          .print-btn:hover { background: #4338ca; }
+          @media print {
+            .print-btn-container { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ, কুমিল্লা</h1>
+          <h2>বার্ষিক পরীক্ষা - ২০২৬ | শ্রেণি: ${className}, শাখা: ${section}, শিফট: ${shift} | এক নজরে সকল শিক্ষার্থীর বিষয়ভিত্তিক নম্বর ও গ্রেড</h2>
+        </div>
+
+        <table class="poster-table">
+          <thead>
+            <tr>
+              <th rowspan="2">ক্রঃমিঃ</th>
+              <th rowspan="2">রোল</th>
+              <th rowspan="2">শিক্ষার্থীর নাম</th>
+              <th rowspan="2">পিতার নাম</th>
+              <th colspan="4">বাংলা-১</th>
+              <th colspan="4">বাংলা-২</th>
+              <th rowspan="2" style="background: #bfdbfe;">বাংলা (১+২)</th>
+              <th colspan="4">ইংরেজি-১</th>
+              <th colspan="4">ইংরেজি-২</th>
+              <th rowspan="2" style="background: #bfdbfe;">ইংরেজি (১+২)</th>
+              <th colspan="4">গণিত</th>
+              <th colspan="4">Social</th>
+              <th colspan="4">আরবী</th>
+              <th colspan="4">BGS</th>
+              <th colspan="4">বিজ্ঞান</th>
+              <th colspan="4">ICT</th>
+              <th colspan="4">Agri</th>
+              <th colspan="4">Art</th>
+              <th colspan="4">Spoken</th>
+              <th colspan="4">Moral</th>
+              <th colspan="4">ড্রীল</th>
+              <th rowspan="2">মোট</th>
+              <th rowspan="2">GPA</th>
+            </tr>
+            <tr>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+              <th>ET</th><th>Tu</th><th>Tot</th><th>Gr</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRowsHTML}
+          </tbody>
+        </table>
+
+        <div class="print-btn-container">
+          <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> পেজটি প্রিন্ট / PDF করুন</button>
+        </div>
+      </body>
+      </html>
+    `);
+    posterWindow.document.close();
+  }
+
+  function generateReportHTML(row) {
+    const roll = row.querySelector('.in-roll').value || '1';
+    const name = row.querySelector('.in-name').value || 'Student';
+    const fname = row.querySelector('.in-fname').value || '-';
+    const mname = row.querySelector('.in-mname').value || '-';
+    const className = document.getElementById('globalClass').value || 'Eight';
+    const section = document.getElementById('globalSection').value || '-';
+    const shift = document.getElementById('globalShift').value || 'Joba';
+    const att = row.querySelector('.in-att').value || '-';
+
+    const b1 = calculateSubject(row, 'b1', 100);
+    const b2 = calculateSubject(row, 'b2', 50);
+    const e1 = calculateSubject(row, 'e1', 100);
+    const e2 = calculateSubject(row, 'e2', 100);
+    const math = calculateSubject(row, 'math', 100);
+    const soc = calculateSubject(row, 'soc', 100);
+    const arab = calculateSubject(row, 'arab', 100);
+    const bgs = calculateSubject(row, 'bgs', 100);
+    const sci = calculateSubject(row, 'sci', 100);
+    const ict = calculateSubject(row, 'ict', 50);
+    const agri = calculateSubject(row, 'agri', 50);
+    const art = calculateSubject(row, 'art', 50);
+    const spoken = calculateSubject(row, 'spoken', 25);
+    const moral = calculateSubject(row, 'moral', 50);
+    const drill = calculateSubject(row, 'drill', 25);
+
+    const banglaTotal = b1.tot + b2.tot;
+    const englishTotal = e1.tot + e2.tot;
+    
+    const banglaRes = getGrading((banglaTotal / 150) * 100);
+    const englishRes = getGrading((englishTotal / 200) * 100);
+
+    const gpaSubjects = [banglaRes, englishRes, math, soc, arab, bgs, sci, ict, agri];
+    
+    let grandTotalMarks = banglaTotal + englishTotal + math.tot + soc.tot + arab.tot + bgs.tot + sci.tot + ict.tot + agri.tot + art.tot + spoken.tot + moral.tot + drill.tot;
+    
+    let totalGP = gpaSubjects.reduce((acc, sub) => acc + sub.gp, 0);
+    let finalGPA = (totalGP / gpaSubjects.length).toFixed(2);
+    if (finalGPA > 5.00) finalGPA = "5.00";
+
+    return `
+      <div style="width: 750px; background: #ffffff; padding: 20px; border: 3px solid #facc15; font-family: 'Hind Siliguri', sans-serif; margin: 0 auto 30px auto; page-break-after: always; box-sizing: border-box; color: #000;">
+        
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
+          <tr>
+            <td style="width: 65px; vertical-align: middle;">
+              <div style="width: 55px; height: 55px; background: #1e3a8a; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 9px; border: 2px solid #facc15;">
+                <span>ITS&C</span>
+              </div>
+            </td>
+            <td style="text-align: center; vertical-align: middle;">
+              <h1 style="margin: 0; font-size: 20px; color: #1e3a8a; font-weight: 800;">Ibn Taimiya School & College</h1>
+              <p style="margin: 2px 0; font-size: 11px; font-weight: bold; color: #333;">EPZ Road, Tomsonbridge, Cumilla. Phone : 02334405744</p>
+            </td>
+            <td style="width: 160px; vertical-align: middle;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 8px; text-align: center;">
+                <tr><th style="border: 1px solid #000; background: #fef08a; padding: 2px;">Letter Grade</th><th style="border: 1px solid #000; background: #fef08a; padding: 2px;">Class Interval (%)</th><th style="border: 1px solid #000; background: #fef08a; padding: 2px;">Grade Point</th></tr>
+                <tr><td style="border: 1px solid #000; padding: 1px;">A+</td><td style="border: 1px solid #000; padding: 1px;">80-100</td><td style="border: 1px solid #000; padding: 1px;">5.00</td></tr>
+                <tr><td style="border: 1px solid #000; padding: 1px;">A</td><td style="border: 1px solid #000; padding: 1px;">70-79</td><td style="border: 1px solid #000; padding: 1px;">4.00</td></tr>
+                <tr><td style="border: 1px solid #000; padding: 1px;">A-</td><td style="border: 1px solid #000; padding: 1px;">60-69</td><td style="border: 1px solid #000; padding: 1px;">3.50</td></tr>
+                <tr><td style="border: 1px solid #000; padding: 1px;">B</td><td style="border: 1px solid #000; padding: 1px;">50-59</td><td style="border: 1px solid #000; padding: 1px;">3.00</td></tr>
+                <tr><td style="border: 1px solid #000; padding: 1px;">C</td><td style="border: 1px solid #000; padding: 1px;">40-49</td><td style="border: 1px solid #000; padding: 1px;">2.00</td></tr>
+                <tr><td style="border: 1px solid #000; padding: 1px;">F</td><td style="border: 1px solid #000; padding: 1px;">0-39</td><td style="border: 1px solid #000; padding: 1px;">0.00</td></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 11px; border: 1px solid #000;">
+          <tr style="background: #1e3a8a; color: white;">
+            <td colspan="2" style="padding: 4px 8px; font-weight: bold; text-align: center;">Progress Report (Annual Exam)</td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 8px; border-right: 1px solid #000; width: 50%;"><b>Name :</b> ${name}</td>
+            <td style="padding: 4px 8px;"><b>Father's Name :</b> ${fname}</td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 8px; border-right: 1px solid #000; border-top: 1px solid #000;"><b>Class:</b> ${className}</td>
+            <td style="padding: 4px 8px; border-top: 1px solid #000;"><b>Mother's Name :</b> ${mname}</td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 8px; border-right: 1px solid #000; border-top: 1px solid #000;"><b>Roll No :</b> ${roll}</td>
+            <td style="padding: 4px 8px; border-top: 1px solid #000;"><b>Section :</b> ${section}</td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 8px; border-right: 1px solid #000; border-top: 1px solid #000;"><b>Shift :</b> ${shift}</td>
+            <td style="padding: 4px 8px; border-top: 1px solid #000;"><b>Examination Year :</b> 2026</td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: center; border: 1px solid #000;">
+          <thead>
+            <tr style="background: #fef08a;">
+              <th rowspan="2" style="border: 1px solid #000; padding: 4px; width: 140px;">Subject</th>
+              <th rowspan="2" style="border: 1px solid #000; padding: 4px; width: 50px;">Total Marks</th>
+              <th rowspan="2" style="border: 1px solid #000; padding: 4px; width: 45px;">Pass Marks</th>
+              <th colspan="3" style="border: 1px solid #000; padding: 4px;">Obtained Marks</th>
+              <th rowspan="2" style="border: 1px solid #000; padding: 4px; width: 55px;">Letter Grade</th>
+              <th rowspan="2" style="border: 1px solid #000; padding: 4px; width: 50px;">Grade Point</th>
+              <th rowspan="2" style="border: 1px solid #000; padding: 4px; width: 55px;">GPA</th>
+              <th rowspan="2" style="border: 1px solid #000; padding: 4px; width: 55px;">Final Mark / Place</th>
+            </tr>
+            <tr style="background: #fef08a;">
+              <th style="border: 1px solid #000; padding: 2px;">E.T. 70%</th>
+              <th style="border: 1px solid #000; padding: 2px;">Tu.</th>
+              <th style="border: 1px solid #000; padding: 2px;">Total Marks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border: 1px solid #000; text-align: left; padding: 3px;">Bangla-I</td>
+              <td style="border: 1px solid #000; padding: 3px;">100</td><td style="border: 1px solid #000; padding: 3px;">40</td>
+              <td style="border: 1px solid #000; padding: 3px;">${b1.et70}</td><td style="border: 1px solid #000; padding: 3px;">${b1.tu}</td><td style="border: 1px solid #000; padding: 3px;">${b1.tot}</td>
+              <td style="border: 1px solid #000; padding: 3px;">${b1.lg}</td><td style="border: 1px solid #000; padding: 3px;">${b1.gp.toFixed(2)}</td>
+              <td rowspan="2" style="border: 1px solid #000; vertical-align: middle;"></td><td rowspan="2" style="border: 1px solid #000; vertical-align: middle;"></td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #000; text-align: left; padding: 3px;">Bangla-II</td>
+              <td style="border: 1px solid #000; padding: 3px;">50</td><td style="border: 1px solid #000; padding: 3px;">20</td>
+              <td style="border: 1px solid #000; padding: 3px;">${b2.et70}</td><td style="border: 1px solid #000; padding: 3px;">${b2.tu}</td><td style="border: 1px solid #000; padding: 3px;">${b2.tot}</td>
+              <td style="border: 1px solid #000; padding: 3px;">${b2.lg}</td><td style="border: 1px solid #000; padding: 3px;">${b2.gp.toFixed(2)}</td>
+            </tr>
+            <tr style="background: #bae6fd; font-weight: bold;">
+              <td style="border: 1px solid #000; text-align: left; padding: 3px;">Total</td>
+              <td style="border: 1px solid #000; padding: 3px;">150</td><td style="border: 1px solid #000; padding: 3px;">60</td>
+              <td style="border: 1px solid #000; padding: 3px;">-</td><td style="border: 1px solid #000; padding: 3px;">-</td><td style="border: 1px solid #000; padding: 3px;">${banglaTotal}</td>
+              <td style="border: 1px solid #000; padding: 3px;">${banglaRes.lg}</td><td style="border: 1px solid #000; padding: 3px;">${banglaRes.gp.toFixed(2)}</td>
+              <td style="border: 1px solid #000;"></td><td style="border: 1px solid #000;"></td>
+            </tr>
+            
+            <tr>
+              <td style="border: 1px solid #000; text-align: left; padding: 3px;">English-I</td>
+              <td style="border: 1px solid #000; padding: 3px;">100</td><td style="border: 1px solid #000; padding: 3px;">40</td>
+              <td style="border: 1px solid #000; padding: 3px;">${e1.et70}</td><td style="border: 1px solid #000; padding: 3px;">${e1.tu}</td><td style="border: 1px solid #000; padding: 3px;">${e1.tot}</td>
+              <td style="border: 1px solid #000; padding: 3px;">${e1.lg}</td><td style="border: 1px solid #000; padding: 3px;">${e1.gp.toFixed(2)}</td>
+              <td rowspan="2" style="border: 1px solid #000;"></td><td rowspan="2" style="border: 1px solid #000;"></td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #000; text-align: left; padding: 3px;">English-II</td>
+              <td style="border: 1px solid #000; padding: 3px;">100</td><td style="border: 1px solid #000; padding: 3px;">40</td>
+              <td style="border: 1px solid #000; padding: 3px;">${e2.et70}</td><td style="border: 1px solid #000; padding: 3px;">${e2.tu}</td><td style="border: 1px solid #000; padding: 3px;">${e2.tot}</td>
+              <td style="border: 1px solid #000; padding: 3px;">${e2.lg}</td><td style="border: 1px solid #000; padding: 3px;">${e2.gp.toFixed(2)}</td>
+            </tr>
+            <tr style="background: #bae6fd; font-weight: bold;">
+              <td style="border: 1px solid #000; text-align: left; padding: 3px;">Total</td>
+              <td style="border: 1px solid #000; padding: 3px;">200</td><td style="border: 1px solid #000; padding: 3px;">80</td>
+              <td style="border: 1px solid #000; padding: 3px;">-</td><td style="border: 1px solid #000; padding: 3px;">-</td><td style="border: 1px solid #000; padding: 3px;">${englishTotal}</td>
+              <td style="border: 1px solid #000; padding: 3px;">${englishRes.lg}</td><td style="border: 1px solid #000; padding: 3px;">${englishRes.gp.toFixed(2)}</td>
+              <td style="border: 1px solid #000;"></td><td style="border: 1px solid #000;"></td>
+            </tr>
+
+            ${renderSingleSubjectRow("Mathematics", 100, 40, math)}
+            ${renderSingleSubjectRow("Social Studies", 100, 40, soc)}
+            ${renderSingleSubjectRow("Arabic", 100, 40, arab)}
+            ${renderSingleSubjectRow("Bangladesh & Global Studies", 100, 40, bgs)}
+            ${renderSingleSubjectRow("Science", 100, 40, sci)}
+            ${renderSingleSubjectRow("Information & Communication Technology", 50, 20, ict)}
+            ${renderSingleSubjectRow("Agriculture Studies/Home Science", 50, 20, agri)}
+            ${renderSingleSubjectRow("Art & Craft", 50, 20, art)}
+            ${renderSingleSubjectRow("Spoken English", 25, 10, spoken)}
+            ${renderSingleSubjectRow("Moral Activities", 50, 20, moral)}
+            ${renderSingleSubjectRow("Drill", 25, 10, drill)}
+
+            <tr style="background: #fbcfe8; font-weight: bold;">
+              <td style="border: 1px solid #000; text-align: left; padding: 3px;">GRAND TOTAL</td>
+              <td style="border: 1px solid #000; padding: 3px;">-</td>
+              <td style="border: 1px solid #000; padding: 3px;">-</td>
+              <td style="border: 1px solid #000; padding: 3px;">-</td>
+              <td style="border: 1px solid #000; padding: 3px;">-</td>
+              <td style="border: 1px solid #000; padding: 3px;">${grandTotalMarks}</td>
+              <td style="border: 1px solid #000; padding: 3px;"></td>
+              <td style="border: 1px solid #000; padding: 3px;"></td>
+              <td style="border: 1px solid #000; padding: 3px; color: #b91c1c;">${finalGPA}</td>
+              <td style="border: 1px solid #000; padding: 3px;"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: center; margin-top: 10px; border: 1px solid #000;">
+          <tr style="background: #fef08a;">
+            <th style="border: 1px solid #000; padding: 3px;">Name of Exam.</th>
+            <th style="border: 1px solid #000; padding: 3px;">Total Working Days</th>
+            <th style="border: 1px solid #000; padding: 3px;">Attendance</th>
+            <th style="border: 1px solid #000; padding: 3px;">Highest Attendance</th>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 3px;">Annual Examination</td>
+            <td style="border: 1px solid #000; padding: 3px;">200</td>
+            <td style="border: 1px solid #000; padding: 3px;">${att}</td>
+            <td style="border: 1px solid #000; padding: 3px;">-</td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; border-collapse: collapse; margin-top: 45px; font-size: 10px; font-weight: bold; text-align: center;">
+          <tr>
+            <td style="width: 33%; border-top: 1.5px dashed #000; padding-top: 3px;">Guardian's Signature</td>
+            <td style="width: 33%; border-top: 1.5px dashed #000; padding-top: 3px;">Class Teacher's Signature</td>
+            <td style="width: 33%; border-top: 1.5px dashed #000; padding-top: 3px;">Principal's Signature</td>
+          </tr>
+        </table>
+      </div>
+    `;
+  }
+
+  function renderSingleSubjectRow(name, totalMarks, passMarks, subObj) {
+    return `
+      <tr>
+        <td style="border: 1px solid #000; text-align: left; padding: 3px;">${name}</td>
+        <td style="border: 1px solid #000; padding: 3px;">${totalMarks}</td>
+        <td style="border: 1px solid #000; padding: 3px;">${passMarks}</td>
+        <td style="border: 1px solid #000; padding: 3px;">${subObj.et70}</td>
+        <td style="border: 1px solid #000; padding: 3px;">${subObj.tu}</td>
+        <td style="border: 1px solid #000; padding: 3px;">${subObj.tot}</td>
+        <td style="border: 1px solid #000; padding: 3px;">${subObj.lg}</td>
+        <td style="border: 1px solid #000; padding: 3px;">${subObj.gp.toFixed(2)}</td>
+        <td style="border: 1px solid #000; padding: 3px;"></td>
+        <td style="border: 1px solid #000; padding: 3px;"></td>
+      </tr>
+    `;
+  }
+
+  function printAllReports() {
+    const rows = document.querySelectorAll('#mainTableBody tr');
+    if(rows.length === 0) {
+      alert('দয়া করে অন্তত একজন শিক্ষার্থীর তথ্য ইনপুট দিন।');
+      return;
+    }
+
+    const printArea = document.getElementById('printArea');
+    printArea.innerHTML = '';
+
+    rows.forEach(row => {
+      printArea.innerHTML += generateReportHTML(row);
+    });
+
+    window.print();
+  }
+
+  async function generateAllStudentsZip() {
+    const rows = document.querySelectorAll('#mainTableBody tr');
+    if(rows.length === 0) {
+      alert('দয়া করে অন্তত একজন শিক্ষার্থীর তথ্য ইনপুট দিন।');
+      return;
+    }
+
+    const btn = document.getElementById('downloadAllBtn');
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> জেনারেট হচ্ছে...`;
+    btn.disabled = true;
+
+    const zip = new JSZip();
+    const renderContainer = document.getElementById('batchRenderContainer');
+    let successCount = 0;
+
+    try {
+      for(let i=0; i<rows.length; i++) {
+        const row = rows[i];
+        const roll = row.querySelector('.in-roll').value || `Roll_${i+1}`;
+        renderContainer.innerHTML = generateReportHTML(row);
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const element = renderContainer.firstElementChild;
+        const opt = {
+          margin:       [0.1, 0.1, 0.1, 0.1],
+          filename:     `Progress_Report_Roll_${roll}.pdf`,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, logging: false },
+          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        try {
+          const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
+          if (pdfBlob) {
+            zip.file(`Progress_Report_Roll_${roll}.pdf`, pdfBlob);
+            successCount++;
+          }
+        } catch (innerErr) {
+          console.warn(`Roll ${roll} failed:`, innerErr);
+        }
+      }
+
+      if (successCount > 0) {
+        const content = await zip.generateAsync({ type: "blob" });
+        saveAs(content, "All_Students_Progress_Reports.zip");
+        alert('সকল শিক্ষার্থীর মার্কশীটের ZIP ফাইল সফলভাবে ডাউনলোড হয়েছে!');
+      } else {
+        alert('পিডিএফ জেনারেট করা সম্ভব হয়নি।');
+      }
+    } catch(err) {
+      console.error(err);
+      alert('সমস্যা হয়েছে।');
+    } finally {
+      renderContainer.innerHTML = '';
+      btn.innerHTML = `<i class="fa-solid fa-file-zipper"></i> ZIP ফাইল ডাউনলোড`;
+      btn.disabled = false;
+    }
+  }
+</script>
+
+</body>
+</html>
