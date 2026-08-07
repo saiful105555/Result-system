@@ -901,6 +901,9 @@
     const examYear = document.getElementById('globalExamYear').value || '2026';
 
     let tableRowsHTML = '';
+    
+    // যে বিষয়গুলো একনজরে ভিউ থেকে বাদ দেওয়া হবে 
+    const excludedFromPoster = ['art', 'spoken', 'moral', 'drill'];
 
     rows.forEach((row, index) => {
       const roll = row.querySelector('.in-roll').value || '-';
@@ -927,30 +930,33 @@
       if (finalGPA > 5.00) finalGPA = "5.00";
       if (gpaSubjects.some(sub => sub.gp === 0)) finalGPA = "0.00";
 
-      // Color coding for final GPA
-      let gpaColor = finalGPA === "0.00" ? "#ef4444" : "#16a34a"; // Red for Fail, Green for Pass
+      let gpaColor = finalGPA === "0.00" ? "#ef4444" : "#16a34a";
 
       subjectsConfig.forEach(sub => {
         const res = results[sub.id];
+        
+        // মোট নম্বর হিসেব করার সময় সব বিষয়ের মার্কস যোগ হবে
         grandTotalMarks += res.tot;
         
-        // Smart Color coding for Grades
-        let gradeColor = res.lg === 'F' ? '#ef4444' : (res.lg === 'A+' ? '#16a34a' : '#1e293b');
+        // যদি বিষয়টি exclude লিস্টে না থাকে, তবেই কলামগুলো তৈরি হবে
+        if (!excludedFromPoster.includes(sub.id)) {
+            let gradeColor = res.lg === 'F' ? '#ef4444' : (res.lg === 'A+' ? '#16a34a' : '#1e293b');
 
-        subCellsHTML += `
-          <td>${res.etInput}</td>
-          <td>${res.tuInput}</td>
-          <td><b>${res.tot}</b></td>
-          <td class="subject-divider"><b style="color:${gradeColor};">${res.lg}</b></td>
-        `;
+            subCellsHTML += `
+              <td>${res.etInput}</td>
+              <td>${res.tuInput}</td>
+              <td><b>${res.tot}</b></td>
+              <td class="subject-divider"><b style="color:${gradeColor};">${res.lg}</b></td>
+            `;
 
-        if (sub.id === 'b2') {
-          let bTotalColor = banglaRes.lg === 'F' ? '#ef4444' : (banglaRes.lg === 'A+' ? '#16a34a' : '#1e3a8a');
-          subCellsHTML += `<td class="subject-divider" style="background: #e0e7ff;"><b style="color: #1e3a8a;">${banglaTotal}</b><br><span style="font-size: 10px; color:${bTotalColor}; font-weight:bold;">(${banglaRes.lg})</span></td>`;
-        }
-        if (sub.id === 'e2') {
-          let eTotalColor = englishRes.lg === 'F' ? '#ef4444' : (englishRes.lg === 'A+' ? '#16a34a' : '#1e3a8a');
-          subCellsHTML += `<td class="subject-divider" style="background: #e0e7ff;"><b style="color: #1e3a8a;">${englishTotal}</b><br><span style="font-size: 10px; color:${eTotalColor}; font-weight:bold;">(${englishRes.lg})</span></td>`;
+            if (sub.id === 'b2') {
+              let bTotalColor = banglaRes.lg === 'F' ? '#ef4444' : (banglaRes.lg === 'A+' ? '#16a34a' : '#1e3a8a');
+              subCellsHTML += `<td class="subject-divider" style="background: #e0e7ff;"><b style="color: #1e3a8a;">${banglaTotal}</b><br><span style="font-size: 10px; color:${bTotalColor}; font-weight:bold;">(${banglaRes.lg})</span></td>`;
+            }
+            if (sub.id === 'e2') {
+              let eTotalColor = englishRes.lg === 'F' ? '#ef4444' : (englishRes.lg === 'A+' ? '#16a34a' : '#1e3a8a');
+              subCellsHTML += `<td class="subject-divider" style="background: #e0e7ff;"><b style="color: #1e3a8a;">${englishTotal}</b><br><span style="font-size: 10px; color:${eTotalColor}; font-weight:bold;">(${englishRes.lg})</span></td>`;
+            }
         }
       });
 
@@ -996,7 +1002,6 @@
           .poster-table tbody tr:nth-child(even) { background-color: #f1f5f9; }
           .poster-table tbody tr:hover { background-color: #e2e8f0; }
           
-          /* মোটা বর্ডার দিয়ে সাবজেক্ট আলাদা করা */
           .subject-divider { border-right: 2.5px solid #475569 !important; }
           
           .print-btn-container { text-align: center; margin: 30px 0 10px 0; }
@@ -1049,10 +1054,6 @@
                 <th colspan="4" class="subject-divider">বিজ্ঞান</th>
                 <th colspan="4" class="subject-divider">ICT</th>
                 <th colspan="4" class="subject-divider">Agri/Home</th>
-                <th colspan="4" class="subject-divider">Art</th>
-                <th colspan="4" class="subject-divider">Spoken</th>
-                <th colspan="4" class="subject-divider">Moral</th>
-                <th colspan="4" class="subject-divider">ড্রীল</th>
                 
                 <th rowspan="2" class="subject-divider" style="background:#059669;">মোট নম্বর</th>
                 <th rowspan="2" style="background:#ea580c;">GPA</th>
@@ -1064,10 +1065,6 @@
                 <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
