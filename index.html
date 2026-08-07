@@ -264,6 +264,74 @@
             overflow: hidden;
         }
 
+        /* --- Image Slider Section (New Addition) --- */
+        .image-slider-container {
+            width: 100%;
+            max-width: 850px;
+            height: 380px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            border: 2px solid rgba(255, 183, 3, 0.5);
+            position: relative;
+            background: var(--card-bg);
+        }
+
+        .slider-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Slider Navigation Dots */
+        .slider-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .dot.active {
+            background: #ffb703;
+            transform: scale(1.2);
+        }
+        /* --- End of Image Slider Section --- */
+
         /* Special Mega Glowing Button Section */
         .mega-eknojor-container {
             width: 100%;
@@ -513,7 +581,7 @@
         .btn-2 { border-left-color: #3b82f6; }
         .btn-3 { border-left-color: #10b981; }
         .btn-4 { border-left-color: #f59e0b; }
-        .btn-5 { border-left-color: #8b5cf6; } /* ডিউটি রোস্টার জেনারেটরের জন্য নতুন কালার থিম */
+        .btn-5 { border-left-color: #8b5cf6; }
 
         .btn-icon {
             font-size: 1.8rem;
@@ -809,6 +877,9 @@
                 font-size: 1.15rem;
                 padding: 18px 15px;
             }
+            .image-slider-container {
+                height: 240px;
+            }
         }
     </style>
 </head>
@@ -853,6 +924,26 @@
             <marquee scrollamount="5" id="noticeDisplay">
                 সকল বিষয়ের নাম্বারফর্দ এবং অটোমেটিক মার্কশীট তৈরির কাজ নির্দিষ্ট সময়ের মধ্যে সম্পন্ন করার জন্য সম্মানিত শিক্ষকদের অনুরোধ করা যাচ্ছে।
             </marquee>
+        </div>
+    </div>
+
+    <!-- Image Slider Section (আপনার দেওয়া ৩টি ছবি স্লাইড করার জন্য) -->
+    <div class="image-slider-container">
+        <div class="slider-wrapper" id="sliderWrapper">
+            <div class="slide active">
+                <img src="https://lh3.googleusercontent.com/d/1wK00G0c0jw8YpqT_i-H_zbKe_tAk7zIq" alt="Banner 1">
+            </div>
+            <div class="slide">
+                <img src="https://lh3.googleusercontent.com/d/1C8azr1CtJuOsVx74a7UlgYWKoyXS51ku" alt="Banner 2">
+            </div>
+            <div class="slide">
+                <img src="https://lh3.googleusercontent.com/d/1JFgc3DnG7h0uscQndI7vydfO9PwGkS1e" alt="Banner 3">
+            </div>
+        </div>
+        <div class="slider-dots" id="sliderDots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
         </div>
     </div>
 
@@ -1067,6 +1158,39 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
+
+        // Image Slider Automatic Logic
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                dots[index].classList.remove('active');
+            });
+            
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            
+            slides[slideIndex - 1].classList.add('active');
+            dots[slideIndex - 1].classList.add('active');
+            
+            setTimeout(showSlides, 3500); // প্রতি ৩.৫ সেকেন্ড পর পর ছবি পরিবর্তন হবে
+        }
+
+        function currentSlide(n) {
+            slideIndex = n;
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                dots[index].classList.remove('active');
+            });
+            slides[n].classList.add('active');
+            dots[n].classList.add('active');
+        }
+
+        // Start Slider on load
+        setTimeout(showSlides, 3500);
 
         // Admin Panel Password Protection & Toggle
         function openAdminPanel() {
