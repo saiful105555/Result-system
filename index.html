@@ -227,7 +227,7 @@
             border: 1px solid rgba(255, 183, 3, 0.3);
         }
 
-        /* Notice Board Section */
+        /* Notice Board Section with CSS Animation */
         .notice-board {
             width: 100%;
             max-width: 850px;
@@ -254,17 +254,37 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            z-index: 2;
         }
 
-        .notice-text {
+        .notice-text-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scrollText 20s linear infinite;
             color: var(--text-color);
             font-size: 0.95rem;
             font-weight: 600;
-            width: 100%;
-            overflow: hidden;
         }
 
-        /* --- Image Slider Section (New Addition) --- */
+        .scrolling-text:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Image Slider Section */
         .image-slider-container {
             width: 100%;
             max-width: 850px;
@@ -306,7 +326,6 @@
             object-fit: cover;
         }
 
-        /* Slider Navigation Dots */
         .slider-dots {
             position: absolute;
             bottom: 15px;
@@ -330,9 +349,8 @@
             background: #ffb703;
             transform: scale(1.2);
         }
-        /* --- End of Image Slider Section --- */
 
-        /* Special Mega Glowing Button Section */
+        /* Mega Glowing Button Section */
         .mega-eknojor-container {
             width: 100%;
             max-width: 850px;
@@ -410,7 +428,7 @@
             100% { transform: scale(1.12); }
         }
 
-        /* Gorgeous Principal Message Section */
+        /* Principal Message Section */
         .principal-message-card {
             width: 100%;
             max-width: 850px;
@@ -525,13 +543,7 @@
             padding: 5px 10px;
         }
 
-        @keyframes glowingTextAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Main Navigation Grid Buttons */
+        /* Main Navigation Grid */
         .main-container {
             width: 100%;
             max-width: 850px;
@@ -613,7 +625,74 @@
             color: var(--sub-text);
         }
 
-        /* Admin Panel Toggle Button & Box */
+        /* Support & Bug Report Section */
+        .support-section {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 22px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 183, 3, 0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .support-title {
+            font-size: 1.25rem;
+            color: var(--heading-color);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .support-desc {
+            color: var(--sub-text);
+            margin-bottom: 18px;
+            font-size: 0.95rem;
+        }
+
+        .support-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .support-btn {
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .support-btn.email {
+            background: #ea4335;
+        }
+
+        .support-btn.email:hover {
+            background: #c5221f;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(234, 67, 53, 0.3);
+        }
+
+        .support-btn.whatsapp {
+            background: #25d366;
+        }
+
+        .support-btn.whatsapp:hover {
+            background: #1da851;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        /* Admin Panel Toggle */
         .admin-panel-container {
             width: 100%;
             max-width: 850px;
@@ -712,6 +791,7 @@
             text-align: center;
             position: relative;
             border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 20px;
         }
 
         .supervisor-title {
@@ -829,26 +909,16 @@
             border: 1px solid rgba(0, 119, 182, 0.3);
         }
 
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #25d366;
-            color: white;
-            padding: 8px 18px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-top: 18px;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .whatsapp-btn:hover {
-            background: #1da851;
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+        /* Copyright Footer */
+        .copyright-footer {
+            width: 100%;
+            max-width: 850px;
+            text-align: center;
+            padding: 15px 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 10px;
         }
 
         /* Responsive Adjustments */
@@ -858,9 +928,7 @@
                 text-align: center;
                 gap: 15px;
             }
-            .header {
-                text-align: center;
-            }
+            .header { text-align: center; }
             .header h1 { font-size: 1.5rem; }
             .header p.address { font-size: 0.9rem; }
             .header .subtitle { font-size: 0.95rem; }
@@ -868,18 +936,11 @@
             .dev-name { font-size: 1.4rem; }
             .main-container { grid-template-columns: 1fr; }
             .developer-card { padding: 20px 15px; }
-            .developers-wrapper {
-                flex-direction: column;
-                align-items: center;
-                gap: 40px;
-            }
-            .mega-eknojor-btn {
-                font-size: 1.15rem;
-                padding: 18px 15px;
-            }
-            .image-slider-container {
-                height: 240px;
-            }
+            .developers-wrapper { flex-direction: column; align-items: center; gap: 40px; }
+            .mega-eknojor-btn { font-size: 1.15rem; padding: 18px 15px; }
+            .image-slider-container { height: 240px; }
+            .support-buttons { flex-direction: column; }
+            .support-btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -915,19 +976,19 @@
         <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="currentTime">00:00:00</span></div>
     </div>
 
-    <!-- Notice Board Section -->
+    <!-- Notice Board Section with CSS Animation -->
     <div class="notice-board">
         <div class="notice-badge">
             <i class="fa-solid fa-bullhorn"></i> জরুরি বিজ্ঞপ্তি:
         </div>
-        <div class="notice-text">
-            <marquee scrollamount="5" id="noticeDisplay">
+        <div class="notice-text-wrapper">
+            <div class="scrolling-text" id="noticeDisplay">
                 সকল বিষয়ের নাম্বারফর্দ এবং অটোমেটিক মার্কশীট তৈরির কাজ নির্দিষ্ট সময়ের মধ্যে সম্পন্ন করার জন্য সম্মানিত শিক্ষকদের অনুরোধ করা যাচ্ছে।
-            </marquee>
+            </div>
         </div>
     </div>
 
-    <!-- Image Slider Section (আপনার দেওয়া ৩টি ছবি স্লাইড করার জন্য) -->
+    <!-- Image Slider Section -->
     <div class="image-slider-container">
         <div class="slider-wrapper" id="sliderWrapper">
             <div class="slide active">
@@ -1033,6 +1094,20 @@
         </div>
     </div>
 
+    <!-- 6. Support / Contact Section -->
+    <section class="support-section">
+        <h3 class="support-title"><i class="fa-solid fa-headset"></i> টেকনিক্যাল সাপোর্ট ও যোগাযোগ</h3>
+        <p class="support-desc">সিস্টেম ব্যবহারে কোনো সমস্যা হলে বা নতুন ফিচার প্রয়োজন হলে সরাসরি আমাদের সাথে যোগাযোগ করুন।</p>
+        <div class="support-buttons">
+            <a href="mailto:Saiful.cou10@gmail.com" class="support-btn email">
+                <i class="fa-solid fa-envelope"></i> ইমেইল করুন
+            </a>
+            <a href="https://wa.me/8801622186812" class="support-btn whatsapp" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ
+            </a>
+        </div>
+    </section>
+
     <!-- Developer Information Footer Section -->
     <footer class="developer-card">
         <div class="supervisor-title">সার্বিক তত্ত্বাবধানে</div>
@@ -1056,10 +1131,6 @@
                     <span class="badge"><i class="fa-solid fa-code"></i> ফুল স্ট্যাক ডেভেলপার</span>
                     <span class="badge"><i class="fa-solid fa-trophy"></i> প্রোগ্রামিং রানার্সআপ</span>
                 </div>
-
-                <a href="https://wa.me/8801622186812" target="_blank" class="whatsapp-btn">
-                    <i class="fa-brands fa-whatsapp"></i> WhatsApp: 01622186812
-                </a>
             </div>
 
             <!-- Second Developer -->
@@ -1078,13 +1149,14 @@
                 <div class="badge-container">
                     <span class="badge"><i class="fa-solid fa-laptop-code"></i> সফটওয়্যার ডেভেলপার</span>
                 </div>
-
-                <a href="https://wa.me/8801770169016" target="_blank" class="whatsapp-btn">
-                    <i class="fa-brands fa-whatsapp"></i> WhatsApp: 01770169016
-                </a>
             </div>
         </div>
     </footer>
+
+    <!-- 7. Standard Copyright Footer -->
+    <div class="copyright-footer">
+        &copy; ২০২৪ - ২০২৬ ইবনে তাইমিয়া স্কুল এন্ড কলেজ। সর্বস্বত্ব সংরক্ষিত। | Developed by IT Department.
+    </div>
 
     <!-- JavaScript Logic -->
     <script>
@@ -1169,14 +1241,14 @@
                 slide.classList.remove('active');
                 dots[index].classList.remove('active');
             });
-            
+
             slideIndex++;
             if (slideIndex > slides.length) { slideIndex = 1; }
-            
+
             slides[slideIndex - 1].classList.add('active');
             dots[slideIndex - 1].classList.add('active');
-            
-            setTimeout(showSlides, 3500); // প্রতি ৩.৫ সেকেন্ড পর পর ছবি পরিবর্তন হবে
+
+            setTimeout(showSlides, 3500); 
         }
 
         function currentSlide(n) {
