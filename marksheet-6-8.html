@@ -235,10 +235,6 @@
 
         <div class="form-grid">
             <div class="form-group">
-                <label>Institution Name:</label>
-                <input type="text" id="in_inst" value="Ibn Taimiya School & College" oninput="saveToCache()">
-            </div>
-            <div class="form-group">
                 <label>Examination Name:</label>
                 <input type="text" id="in_exam" value="Half Yearly Examination-2026" oninput="saveToCache()">
             </div>
@@ -374,7 +370,6 @@
         // LocalStorage এ ডেটা সেভ করার ফাংশন
         function saveToCache() {
             const data = {
-                in_inst: document.getElementById('in_inst').value,
                 in_exam: document.getElementById('in_exam').value,
                 in_class: document.getElementById('in_class').value,
                 in_sec: document.getElementById('in_sec').value,
@@ -404,7 +399,6 @@
 
             try {
                 const data = JSON.parse(savedData);
-                document.getElementById('in_inst').value = data.in_inst || '';
                 document.getElementById('in_exam').value = data.in_exam || '';
                 document.getElementById('in_class').value = data.in_class || '';
                 document.getElementById('in_sec').value = data.in_sec || '';
@@ -466,7 +460,7 @@
             saveToCache(); // জেনারেট করার আগেও সেভ করে রাখা ভালো
             const total = parseInt(document.getElementById('in_total_students').value) || 0;
 
-            document.getElementById('out_inst').innerText = document.getElementById('in_inst').value;
+            // 'Ibn Taimiya School & College' is fixed in HTML, so no need to update it via JS.
             document.getElementById('out_exam').innerHTML = `Marks Sheet (Six–Eight) <br> ${document.getElementById('in_exam').value}`;
             document.getElementById('out_total_students').innerText = total;
             document.getElementById('out_total_marks').innerText = document.getElementById('in_total_marks').value;
