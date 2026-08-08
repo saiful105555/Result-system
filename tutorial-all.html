@@ -74,7 +74,7 @@
             background-color: #005691;
             color: white;
         }
-        
+
         /* Tuto input field smaller */
         .marks-input-table input {
             width: 80px; 
@@ -284,14 +284,6 @@
 
         <div class="form-grid">
             <div class="form-group">
-                <label>Institution Name:</label>
-                <input type="text" id="in_inst" value="Ibn Taimiya School & College" oninput="saveData()">
-            </div>
-            <div class="form-group">
-                <label>Examination Name:</label>
-                <input type="text" id="in_exam" value="Tutorial Exam-2026" oninput="saveData()">
-            </div>
-            <div class="form-group">
                 <label>Class:</label>
                 <input type="text" id="in_class" value="8" oninput="saveData()">
             </div>
@@ -431,8 +423,6 @@
         function saveData() {
             // Save Top Form Info
             const formData = {
-                in_inst: document.getElementById('in_inst').value,
-                in_exam: document.getElementById('in_exam').value,
                 in_class: document.getElementById('in_class').value,
                 in_sec: document.getElementById('in_sec').value,
                 in_shift: document.getElementById('in_shift').value,
@@ -474,7 +464,7 @@
         function renderInputRows() {
             const count = parseInt(document.getElementById('in_total_students').value) || 0;
             const inputMarksBody = document.getElementById('inputMarksBody');
-            
+
             // Get data from local storage
             const savedMarks = JSON.parse(localStorage.getItem('marksSheetMarksData')) || {};
 
@@ -513,8 +503,6 @@
 
             const total = parseInt(document.getElementById('in_total_students').value) || 0;
 
-            document.getElementById('out_inst').innerText = document.getElementById('in_inst').value;
-            document.getElementById('out_exam').innerHTML = `Marks Sheet <br> ${document.getElementById('in_exam').value}`;
             document.getElementById('out_total_students').innerText = total;
             document.getElementById('out_total_marks').innerText = document.getElementById('in_total_marks').value;
             document.getElementById('out_class').innerText = document.getElementById('in_class').value;
