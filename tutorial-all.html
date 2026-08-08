@@ -74,15 +74,29 @@
             background-color: #005691;
             color: white;
         }
+        
+        /* Tuto input field smaller */
         .marks-input-table input {
-            width: 100%;
+            width: 80px; 
             padding: 5px;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            margin: 0 auto;
+            display: block;
+        }
+        .marks-input-table input:focus {
+            outline: 2px solid #005691;
+        }
+
+        /* Form Buttons Styling */
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
         }
         .btn-submit {
-            display: block;
-            width: 100%;
+            flex: 2;
             background-color: #005691;
             color: white;
             border: none;
@@ -91,10 +105,23 @@
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
         }
         .btn-submit:hover {
             background-color: #003d66;
+        }
+        .btn-clear {
+            flex: 1;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-clear:hover {
+            background-color: #c82333;
         }
 
         /* Action Buttons Area */
@@ -122,7 +149,7 @@
         .btn-edit { background-color: #6c757d; }
         .btn-edit:hover { background-color: #5a6268; }
 
-        /* Output Marks Sheet Styling (Optimized for A4 Scaling & Avoiding Broken Rows) */
+        /* Output Marks Sheet Styling */
         .sheet-container {
             display: none;
             width: 100%;
@@ -165,7 +192,7 @@
             text-decoration: underline;
         }
 
-        /* Tables Grid (Four Parallel Columns) */
+        /* Tables Grid */
         .tables-wrapper {
             display: flex;
             gap: 8px;
@@ -192,8 +219,7 @@
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
-        
-        /* Page Break Prevention for Rows */
+
         .marks-table tr {
             page-break-inside: avoid;
             break-inside: avoid;
@@ -255,43 +281,43 @@
     <!-- 1. INPUT PAGE -->
     <div class="form-container" id="inputForm">
         <h2 class="form-title">Marks Sheet Information Input</h2>
-        
+
         <div class="form-grid">
             <div class="form-group">
                 <label>Institution Name:</label>
-                <input type="text" id="in_inst" value="Ibn Taimiya School & College">
+                <input type="text" id="in_inst" value="Ibn Taimiya School & College" oninput="saveData()">
             </div>
             <div class="form-group">
                 <label>Examination Name:</label>
-                <input type="text" id="in_exam" value="Tutorial Exam-2026">
+                <input type="text" id="in_exam" value="Tutorial Exam-2026" oninput="saveData()">
             </div>
             <div class="form-group">
                 <label>Class:</label>
-                <input type="text" id="in_class" value="8">
+                <input type="text" id="in_class" value="8" oninput="saveData()">
             </div>
             <div class="form-group">
                 <label>Section:</label>
-                <input type="text" id="in_sec" value="A">
+                <input type="text" id="in_sec" value="A" oninput="saveData()">
             </div>
             <div class="form-group">
                 <label>Shift:</label>
-                <input type="text" id="in_shift" value="Joba">
+                <input type="text" id="in_shift" value="Joba" oninput="saveData()">
             </div>
             <div class="form-group">
                 <label>Subject:</label>
-                <input type="text" id="in_subject" value="ICT">
+                <input type="text" id="in_subject" value="ICT" oninput="saveData()">
             </div>
             <div class="form-group">
                 <label>Total Students:</label>
-                <input type="number" id="in_total_students" value="70" min="1" oninput="renderInputRows()">
+                <input type="number" id="in_total_students" value="70" min="1" oninput="handleStudentCountChange()">
             </div>
             <div class="form-group">
                 <label>Total Marks:</label>
-                <input type="text" id="in_total_marks" value="50">
+                <input type="text" id="in_total_marks" value="50" oninput="saveData()">
             </div>
             <div class="form-group">
                 <label>Subject Teacher's Name & Mobile:</label>
-                <input type="text" id="in_teacher" value="Md. Saiful Islam (018XXXXXXXX)">
+                <input type="text" id="in_teacher" value="Md. Saiful Islam (018XXXXXXXX)" oninput="saveData()">
             </div>
         </div>
 
@@ -310,7 +336,10 @@
             </table>
         </div>
 
-        <button class="btn-submit" onclick="generateMarksSheet()">Generate Marks Sheet</button>
+        <div class="form-buttons">
+            <button class="btn-submit" onclick="generateMarksSheet()">Generate Marks Sheet</button>
+            <button class="btn-clear" onclick="clearCache()">🗑️ Clear Cache</button>
+        </div>
     </div>
 
     <!-- ACTION BUTTONS AREA -->
@@ -319,18 +348,18 @@
         <button class="btn-action btn-edit" onclick="backToForm()">✏ Edit Marks</button>
     </div>
 
-    <!-- 2. OUTPUT MARKS SHEET (Shows after submit) -->
+    <!-- 2. OUTPUT MARKS SHEET -->
     <div class="sheet-container" id="outputSheet">
-        
+
         <!-- Header -->
         <div class="inst-title" id="out_inst">Ibn Taimiya School & College</div>
         <div class="header-banner" id="out_exam">Marks Sheet <br> Tutorial Exam-2026</div>
-        
+
         <div class="info-row">
             <div>Total Students: <span id="out_total_students"></span></div>
             <div>Total Marks: <span id="out_total_marks"></span></div>
         </div>
-        
+
         <div class="info-row">
             <div>Class: <span id="out_class"></span></div>
             <div>Sec: <span id="out_sec"></span></div>
@@ -338,56 +367,29 @@
             <div>Subject: <span id="out_subject"></span></div>
         </div>
 
-        <!-- Marks Tables (Split into 4 parallel columns dynamically) -->
+        <!-- Marks Tables -->
         <div class="tables-wrapper">
-            <!-- Table 1 -->
             <div class="table-quarter">
                 <table class="marks-table">
-                    <thead>
-                        <tr>
-                            <th>Roll</th>
-                            <th>Tuto</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Roll</th><th>Tuto</th></tr></thead>
                     <tbody id="tableBody1"></tbody>
                 </table>
             </div>
-
-            <!-- Table 2 -->
             <div class="table-quarter">
                 <table class="marks-table">
-                    <thead>
-                        <tr>
-                            <th>Roll</th>
-                            <th>Tuto</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Roll</th><th>Tuto</th></tr></thead>
                     <tbody id="tableBody2"></tbody>
                 </table>
             </div>
-
-            <!-- Table 3 -->
             <div class="table-quarter">
                 <table class="marks-table">
-                    <thead>
-                        <tr>
-                            <th>Roll</th>
-                            <th>Tuto</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Roll</th><th>Tuto</th></tr></thead>
                     <tbody id="tableBody3"></tbody>
                 </table>
             </div>
-
-            <!-- Table 4 -->
             <div class="table-quarter">
                 <table class="marks-table">
-                    <thead>
-                        <tr>
-                            <th>Roll</th>
-                            <th>Tuto</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Roll</th><th>Tuto</th></tr></thead>
                     <tbody id="tableBody4"></tbody>
                 </table>
             </div>
@@ -420,11 +422,63 @@
     </div>
 
     <script>
-        // ডাইনামিক ইনপুট রো তৈরি (ছাত্রসংখ্যার সমান)
+        // Load data from Local Storage on Page Load
+        window.onload = function() {
+            loadData();
+            renderInputRows();
+        };
+
+        function saveData() {
+            // Save Top Form Info
+            const formData = {
+                in_inst: document.getElementById('in_inst').value,
+                in_exam: document.getElementById('in_exam').value,
+                in_class: document.getElementById('in_class').value,
+                in_sec: document.getElementById('in_sec').value,
+                in_shift: document.getElementById('in_shift').value,
+                in_subject: document.getElementById('in_subject').value,
+                in_total_students: document.getElementById('in_total_students').value,
+                in_total_marks: document.getElementById('in_total_marks').value,
+                in_teacher: document.getElementById('in_teacher').value,
+            };
+            localStorage.setItem('marksSheetFormData', JSON.stringify(formData));
+
+            // Save Marks
+            const count = parseInt(document.getElementById('in_total_students').value) || 0;
+            const marksData = {};
+            for (let i = 1; i <= count; i++) {
+                const el = document.getElementById(`tuto_${i}`);
+                if (el) {
+                    marksData[`tuto_${i}`] = el.value;
+                }
+            }
+            localStorage.setItem('marksSheetMarksData', JSON.stringify(marksData));
+        }
+
+        function loadData() {
+            const formData = JSON.parse(localStorage.getItem('marksSheetFormData'));
+            if (formData) {
+                for (let key in formData) {
+                    if (document.getElementById(key)) {
+                        document.getElementById(key).value = formData[key];
+                    }
+                }
+            }
+        }
+
+        function handleStudentCountChange() {
+            saveData();
+            renderInputRows();
+        }
+
         function renderInputRows() {
             const count = parseInt(document.getElementById('in_total_students').value) || 0;
             const inputMarksBody = document.getElementById('inputMarksBody');
+            
+            // Get data from local storage
+            const savedMarks = JSON.parse(localStorage.getItem('marksSheetMarksData')) || {};
 
+            // Capture current data
             let existingData = {};
             const inputs = inputMarksBody.querySelectorAll('input');
             inputs.forEach(input => {
@@ -433,20 +487,30 @@
 
             inputMarksBody.innerHTML = '';
             for (let i = 1; i <= count; i++) {
-                let tutoVal = existingData[`tuto_${i}`] || '';
+                // Priority: existing typed data > local storage data > empty string
+                let tutoVal = existingData[`tuto_${i}`] !== undefined ? existingData[`tuto_${i}`] : (savedMarks[`tuto_${i}`] || '');
 
                 inputMarksBody.innerHTML += `
                     <tr>
                         <td><b>${i}</b></td>
-                        <td><input type="text" id="tuto_${i}" value="${tutoVal}"></td>
+                        <td><input type="text" id="tuto_${i}" value="${tutoVal}" oninput="saveData()"></td>
                     </tr>
                 `;
             }
         }
 
-        renderInputRows();
+        function clearCache() {
+            // সতর্কবার্তা দেখানো হচ্ছে
+            if (confirm("আপনি কি নিশ্চিত যে আপনি সেভ করা সমস্ত ডেটা মুছে ফেলতে চান? এটি মুছে ফেললে মার্কস আর ফেরত পাওয়া যাবে না।")) {
+                localStorage.removeItem('marksSheetFormData');
+                localStorage.removeItem('marksSheetMarksData');
+                location.reload(); // পেজ রিলোড দিয়ে ডিফল্ট অবস্থায় নিয়ে আসবে
+            }
+        }
 
         function generateMarksSheet() {
+            saveData(); // Save data one final time before generating
+
             const total = parseInt(document.getElementById('in_total_students').value) || 0;
 
             document.getElementById('out_inst').innerText = document.getElementById('in_inst').value;
@@ -499,7 +563,6 @@
             document.getElementById('actionButtons').style.display = 'none';
         }
 
-        // High Quality PDF Download Handler
         function downloadHighQualityPDF() {
             const element = document.getElementById('outputSheet');
             const subject = document.getElementById('in_subject').value || 'MarksSheet';
