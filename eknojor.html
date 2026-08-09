@@ -25,7 +25,7 @@
     }
 
     body { 
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #31103f 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       margin: 0; 
       padding: 15px 10px; 
       min-height: 100vh;
@@ -290,7 +290,7 @@
 
     .pr-header-section { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
     .pr-header-left { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    
+
     .pr-progress-badge {
         background-color: #1e5f3b !important; color: #fff !important;
         padding: 8px 12px; font-size: 18px; font-weight: bold; border-radius: 2px; text-align: center; width: 140px;
@@ -305,7 +305,7 @@
     .pr-header-center { text-align: center; flex-grow: 1; padding-top: 10px; }
     .pr-school-name { color: #1c3c78 !important; font-size: 36px; font-weight: bold; margin-bottom: 5px; }
     .pr-school-address { font-size: 16px; font-weight: bold; color: #000; }
-    
+
     .pr-grading-table { border-collapse: collapse; font-size: 12px; text-align: center; border: 1px solid #000; }
     .pr-grading-table th, .pr-grading-table td { border: 1px solid #000; padding: 2px 6px; }
 
@@ -316,26 +316,27 @@
 
     .pr-marks-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; margin-bottom: 20px; border: 1px solid #000;}
     .pr-marks-table th, .pr-marks-table td { border: 1px solid #000 !important; padding: 4px; background-clip: padding-box; }
-    
+
     .pr-bg-yellow { background-color: #e4dd9f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .pr-bg-grey { background-color: #e2e2e2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .pr-bg-blue { background-color: #b8cce4 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    
+
     .pr-text-green { color: #006633 !important; font-weight: bold; text-align: left; padding-left: 10px !important; }
     .pr-text-blue { color: #1c3c78 !important; font-weight: bold; text-align: center; padding-left: 0 !important; }
     .pr-text-red { color: #c00000 !important; font-weight: bold; }
-    
+
     .pr-vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; padding: 10px 5px !important; white-space: nowrap; font-weight: bold;}
     .pr-marks-col { width: 50px; }
 
     .pr-footer-section { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 30px; }
     .pr-attendance-table { border-collapse: collapse; text-align: center; font-size: 13px; font-weight: bold; border: 1px solid #000; }
     .pr-attendance-table th, .pr-attendance-table td { border: 1px solid #000; padding: 5px 10px; }
-    
+
     .pr-signatures { display: flex; gap: 60px; font-weight: bold; font-size: 15px; }
     .pr-sign-box { text-align: center; border-top: 1px solid #000; padding-top: 5px; width: 200px; }
 
     @media print {
+      body { background: #fff !important; }
       body * { visibility: hidden !important; }
       #printArea, #printArea * { visibility: visible !important; }
       #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0;}
@@ -396,7 +397,7 @@
             <th rowspan="2" style="width: 150px;">পিতার নাম</th>
             <th rowspan="2" style="width: 150px;">মাতার নাম</th>
             <th rowspan="2" style="width: 80px;" class="border-right-thick">উপস্থিতি</th>
-            
+
             <th colspan="4" class="border-right-thick">বাংলা-১</th>
             <th colspan="4" class="border-right-thick">বাংলা-২</th>
             <th colspan="4" class="border-right-thick">ইংরেজি-১</th>
@@ -503,7 +504,7 @@
         mname: row.querySelector('.in-mname').value,
         att: row.querySelector('.in-att').value,
       };
-      
+
       subjectsConfig.forEach(sub => {
         student[`${sub.id}et`] = row.querySelector(`.${sub.id}-et`).value;
         student[`${sub.id}tu`] = row.querySelector(`.${sub.id}-tu`).value;
@@ -571,7 +572,7 @@
     });
 
     html += `<td><button onclick="this.closest('tr').remove(); saveDataToCache();" style="background:#ef4444; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>`;
-    
+
     tr.innerHTML = html;
     tbody.appendChild(tr);
 
@@ -597,7 +598,7 @@
     let tuInput = parseFloat(row.querySelector(`.${cls}-tu`).value) || 0;
 
     let et70 = Math.round(etInput * 0.70);
-    
+
     let tuVal = tuInput;
     if (cls === 'ict' || cls === 'agri' || cls === 'b2') {
       tuVal = Math.round(tuInput * 0.50);
@@ -852,7 +853,7 @@
         const row = rows[i];
         const roll = row.querySelector('.in-roll').value || `${i+1}`;
         renderContainer.innerHTML = generateReportHTML(row);
-        
+
         await new Promise(resolve => setTimeout(resolve, 200));
 
         const element = renderContainer.firstElementChild;
@@ -901,7 +902,7 @@
     const examYear = document.getElementById('globalExamYear').value || '2026';
 
     let tableRowsHTML = '';
-    
+
     // যে বিষয়গুলো একনজরে ভিউ থেকে বাদ দেওয়া হবে 
     const excludedFromPoster = ['art', 'spoken', 'moral', 'drill'];
 
@@ -934,10 +935,10 @@
 
       subjectsConfig.forEach(sub => {
         const res = results[sub.id];
-        
+
         // মোট নম্বর হিসেব করার সময় সব বিষয়ের মার্কস যোগ হবে
         grandTotalMarks += res.tot;
-        
+
         // যদি বিষয়টি exclude লিস্টে না থাকে, তবেই কলামগুলো তৈরি হবে
         if (!excludedFromPoster.includes(sub.id)) {
             let gradeColor = res.lg === 'F' ? '#ef4444' : (res.lg === 'A+' ? '#16a34a' : '#1e293b');
