@@ -8,7 +8,7 @@
     <style>
         @page {
             size: A4 landscape;
-            margin: 4mm; /* মার্জিন কিছুটা কমানো হয়েছে বেশি জায়গার জন্য */
+            margin: 5mm; 
         }
 
         body {
@@ -259,19 +259,22 @@
         }
 
         /* =========================================
-           প্রিন্ট করার জন্য নতুন ম্যাজিক সিএসএস
-           (২৪ জনের তালিকা ফুল-পেজ স্ট্রেচিং, ফন্ট বড়)
+           প্রিন্ট করার জন্য স্থায়ী ম্যাজিক সিএসএস (GitHub Bug Fix)
            ========================================= */
         @media print {
             @page {
                 size: A4 landscape;
-                margin: 4mm; 
+                /* মার্জিন 0 করায় ব্রাউজার নিজে থেকে কোনো URL বা Date বসাতে পারবে না */
+                margin: 0 !important; 
             }
 
             html, body {
-                height: 100vh !important; 
+                /* সরাসরি A4 পেজের ফিজিক্যাল ডাইমেনশন সেট করে দেওয়া হলো */
+                width: 297mm !important; 
+                height: 209mm !important; 
                 margin: 0 !important;
-                padding: 0 !important;
+                /* @page এর মার্জিন 0 থাকায়, বডিতে প্যাডিং দিয়ে মার্জিন তৈরি করা হলো */
+                padding: 6mm !important; 
                 background-color: #ffffff;
                 overflow: hidden !important; 
                 box-sizing: border-box !important;
@@ -283,26 +286,24 @@
             }
 
             .printable-area {
-                padding: 0;
                 width: 100%;
-                height: 98vh !important; /* পেজের ৯৮% জায়গা নেবে */
+                height: 100% !important; 
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-between !important;
                 box-sizing: border-box !important;
             }
 
-            /* হেডারের সাইজ কিছুটা কম্প্যাক্ট করা হয়েছে যেন টেবিল বেশি জায়গা পায় */
             .header-container { 
                 flex: 0 0 auto !important; 
                 margin-bottom: 2px !important; 
             }
-            .logo-box img { max-height: 35px !important; }
-            .main-title h2 { font-size: 16px !important; margin-bottom: 0 !important; }
-            .main-title h3 { font-size: 13px !important; margin-bottom: 0 !important; }
-            .exam-time-box { padding: 2px !important; font-size: 10px !important; }
-            .total-duty-box { padding: 2px 10px !important; font-size: 10px !important; }
-            .total-duty-box span { font-size: 16px !important; margin-top: 0 !important; }
+            .logo-box img { max-height: 38px !important; }
+            .main-title h2 { font-size: 17px !important; margin-bottom: 0 !important; }
+            .main-title h3 { font-size: 14px !important; margin-bottom: 0 !important; }
+            .exam-time-box { padding: 3px !important; font-size: 11px !important; }
+            .total-duty-box { padding: 3px 10px !important; font-size: 11px !important; }
+            .total-duty-box span { font-size: 18px !important; margin-top: 0 !important; }
 
             #rosterForm {
                 display: flex !important;
@@ -312,7 +313,7 @@
             }
 
             .table-container {
-                flex: 1 1 auto !important; /* মাঝখানের ফাঁকা জায়গা পুরোটাই টেবিল দখল করবে */
+                flex: 1 1 auto !important; 
                 width: 100%; 
                 border: 2px solid #000;
                 margin-bottom: 0;
@@ -322,45 +323,42 @@
 
             table {
                 width: 100%;
-                height: 100% !important; /* টেবিল স্ট্রেচ হবে */
+                height: 100% !important; /* টেবিল পুরো পেজজুড়ে স্ট্রেচ হবে */
                 table-layout: auto; 
                 min-width: 100%;
                 border-collapse: collapse;
             }
 
             th, td { 
-                font-size: 12.5px !important; /* লেখা বড় ও ক্লিয়ার */
-                padding: 0px 1px !important; /* ভেতরের ফাঁকা জায়গা বাদ দেওয়া হয়েছে */
+                font-size: 13px !important; /* লেখা বড় ও স্পষ্ট থাকবে */
+                padding: 0px 2px !important; 
                 line-height: 1 !important;
-                height: 1% !important; /* ম্যাজিক ট্রিক: এটি দিলে টেবিলের রো-গুলো ওভারফ্লো না হয়ে সমানভাবে জায়গা ভাগ করে নেয় */
             }
 
             .name-col { 
-                font-size: 13.5px !important; /* শিক্ষকদের নাম সবচেয়ে স্পষ্ট থাকবে */
+                font-size: 13.5px !important; 
                 font-weight: bold !important;
                 white-space: nowrap !important; 
                 min-width: 150px !important; 
-                padding-left: 3px !important;
+                padding-left: 4px !important;
             }
 
-            /* চেকবক্স যেন রো-এর হাইট বাড়িয়ে না দেয় */
             input[type="checkbox"] { 
-                width: 11px !important; 
-                height: 11px !important;
-                transform: scale(0.9) !important; 
+                width: 12px !important; 
+                height: 12px !important;
+                transform: scale(1) !important; 
                 margin: 0 !important;
-                padding: 0 !important;
             }
 
             .footer-signatures { 
                 flex: 0 0 auto !important; 
-                margin-top: 3px !important; 
-                font-size: 12px !important; 
+                margin-top: 5px !important; 
+                font-size: 13px !important; 
             }
             .footer-meta { 
                 flex: 0 0 auto !important; 
-                font-size: 9px !important; 
-                margin-top: 1px !important; 
+                font-size: 10px !important; 
+                margin-top: 0 !important; 
             }
         }
     </style>
@@ -436,7 +434,7 @@
         <div class="footer-signatures">
             <div style="border-top: 1px solid #000; width: 150px; padding-top: 5px;">প্রস্তুতকারী</div>
             <div style="border-top: 1px solid #000; width: 150px; padding-top: 5px;">পরীক্ষা নিয়ন্ত্রক</div>
-            <div style="border-top: 1px solid #000; width: 150px; padding-top: 5px;">অধ্যক্ষ</div>
+            <div style="border-top: 1px solid #000; width: 150px; padding-top: 5px;">অধ্য অধ্যক্ষ</div>
         </div>
         <div class="footer-meta">
             <div>H:\MAHBOB\EXAMINATION\EXAMI ROSTER\D. ROSTER 1</div>
@@ -451,7 +449,7 @@
     </div>
 
     <script>
-        // আপনার দেওয়া ২৪ জন শিক্ষকের তালিকা
+        // ২৪ জন শিক্ষকের তালিকা
         const teachers = [
             "জনাব মোঃ মিজানুর রহমান-৩", 
             "মোঃ মিজানুর রহমান-৪", 
