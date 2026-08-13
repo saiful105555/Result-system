@@ -8,7 +8,7 @@
     <style>
         @page {
             size: A4 landscape;
-            margin: 5mm; 
+            margin: 4mm; /* মার্জিন কিছুটা কমানো হয়েছে বেশি জায়গার জন্য */
         }
 
         body {
@@ -259,21 +259,23 @@
         }
 
         /* =========================================
-           প্রিন্ট করার জন্য নতুন ম্যাজিক সিএসএস (Full Page Stretch)
+           প্রিন্ট করার জন্য নতুন ম্যাজিক সিএসএস
+           (২৪ জনের তালিকা ফুল-পেজ স্ট্রেচিং, ফন্ট বড়)
            ========================================= */
         @media print {
             @page {
                 size: A4 landscape;
-                margin: 5mm; 
+                margin: 4mm; 
             }
 
             html, body {
-                height: 100vh !important; /* পেজের সম্পূর্ণ হাইট নেবে */
+                height: 100vh !important; 
                 margin: 0 !important;
                 padding: 0 !important;
                 background-color: #ffffff;
                 overflow: hidden !important; 
-                zoom: 100% !important; /* জুম ডিফল্ট থাকবে, কোনো লেখাই ছোট হবে না */
+                box-sizing: border-box !important;
+                zoom: 100% !important;
             }
 
             .control-panel, .pdf-preview-card { 
@@ -283,23 +285,34 @@
             .printable-area {
                 padding: 0;
                 width: 100%;
-                height: 100vh !important; /* প্রিন্ট এরিয়া পুরো পেজ নেবে */
+                height: 98vh !important; /* পেজের ৯৮% জায়গা নেবে */
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-between !important;
+                box-sizing: border-box !important;
             }
 
+            /* হেডারের সাইজ কিছুটা কম্প্যাক্ট করা হয়েছে যেন টেবিল বেশি জায়গা পায় */
             .header-container { 
                 flex: 0 0 auto !important; 
-                margin-bottom: 3px !important; 
+                margin-bottom: 2px !important; 
             }
+            .logo-box img { max-height: 35px !important; }
+            .main-title h2 { font-size: 16px !important; margin-bottom: 0 !important; }
+            .main-title h3 { font-size: 13px !important; margin-bottom: 0 !important; }
+            .exam-time-box { padding: 2px !important; font-size: 10px !important; }
+            .total-duty-box { padding: 2px 10px !important; font-size: 10px !important; }
+            .total-duty-box span { font-size: 16px !important; margin-top: 0 !important; }
 
             #rosterForm {
-                display: contents; /* টেবিলকে Flexbox এর সরাসরি চাইল্ড করার জন্য */
+                display: flex !important;
+                flex-direction: column !important;
+                flex: 1 1 auto !important; 
+                overflow: hidden !important;
             }
 
             .table-container {
-                flex: 1 1 auto !important; /* টেবিলটি পেজের বাকি সম্পূর্ণ জায়গা নিয়ে স্ট্রেচ করবে */
+                flex: 1 1 auto !important; /* মাঝখানের ফাঁকা জায়গা পুরোটাই টেবিল দখল করবে */
                 width: 100%; 
                 border: 2px solid #000;
                 margin-bottom: 0;
@@ -309,37 +322,45 @@
 
             table {
                 width: 100%;
-                height: 100%; /* রো (Row) গুলোকে সমান ভাগে পুরো পেজে ছড়িয়ে দেবে */
+                height: 100% !important; /* টেবিল স্ট্রেচ হবে */
                 table-layout: auto; 
                 min-width: 100%;
+                border-collapse: collapse;
             }
 
             th, td { 
-                font-size: 12px !important; /* লেখা স্পষ্টভাবে পড়ার জন্য ফন্ট সাইজ বাড়ানো হয়েছে */
-                padding: 2px !important; 
-                height: auto !important; /* হাইট অটো থাকবে যেন টেবিল ব্যালান্স করে নেয় */
+                font-size: 12.5px !important; /* লেখা বড় ও ক্লিয়ার */
+                padding: 0px 1px !important; /* ভেতরের ফাঁকা জায়গা বাদ দেওয়া হয়েছে */
+                line-height: 1 !important;
+                height: 1% !important; /* ম্যাজিক ট্রিক: এটি দিলে টেবিলের রো-গুলো ওভারফ্লো না হয়ে সমানভাবে জায়গা ভাগ করে নেয় */
             }
 
             .name-col { 
-                font-size: 12px !important; 
-                white-space: nowrap !important; /* নামগুলো এক লাইনেই থাকবে, ভাঙবে না */
-                min-width: 140px !important; 
+                font-size: 13.5px !important; /* শিক্ষকদের নাম সবচেয়ে স্পষ্ট থাকবে */
+                font-weight: bold !important;
+                white-space: nowrap !important; 
+                min-width: 150px !important; 
+                padding-left: 3px !important;
             }
 
+            /* চেকবক্স যেন রো-এর হাইট বাড়িয়ে না দেয় */
             input[type="checkbox"] { 
-                transform: scale(1.1) !important; /* চেকবক্স কিছুটা স্পষ্ট করা হয়েছে */
-                margin: 0;
+                width: 11px !important; 
+                height: 11px !important;
+                transform: scale(0.9) !important; 
+                margin: 0 !important;
+                padding: 0 !important;
             }
 
             .footer-signatures { 
                 flex: 0 0 auto !important; 
-                margin-top: 5px !important; 
-                font-size: 13px !important; 
+                margin-top: 3px !important; 
+                font-size: 12px !important; 
             }
             .footer-meta { 
                 flex: 0 0 auto !important; 
-                font-size: 10px !important; 
-                margin-top: 2px !important; 
+                font-size: 9px !important; 
+                margin-top: 1px !important; 
             }
         }
     </style>
@@ -430,7 +451,7 @@
     </div>
 
     <script>
-        // ছবি থেকে নেওয়া ২৪ জন শিক্ষকের তালিকা
+        // আপনার দেওয়া ২৪ জন শিক্ষকের তালিকা
         const teachers = [
             "জনাব মোঃ মিজানুর রহমান-৩", 
             "মোঃ মিজানুর রহমান-৪", 
