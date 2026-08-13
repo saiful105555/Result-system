@@ -429,6 +429,67 @@
             100% { transform: scale(1.12); }
         }
 
+        /* Second Mega Glowing Button */
+        .mega-eknojor-btn-2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            background: linear-gradient(135deg, #ff512f 0%, #f09819 50%, #ff512f 100%);
+            background-size: 250% 250%;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 22px 25px;
+            border-radius: 18px;
+            font-size: 1.45rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(240, 152, 25, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            animation: megaGlowAnim 4s ease infinite, buttonPulse2 2s infinite alternate;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 15px;
+        }
+
+        .mega-eknojor-btn-2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.6s;
+        }
+
+        .mega-eknojor-btn-2:hover::before {
+            left: 100%;
+        }
+
+        .mega-eknojor-btn-2:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 81, 47, 0.6);
+        }
+
+        .mega-eknojor-btn-2 .btn-shine-icon {
+            font-size: 1.8rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            animation: iconBounce 1.5s infinite alternate;
+        }
+
+        @keyframes buttonPulse2 {
+            0% { box-shadow: 0 0 15px rgba(255, 81, 47, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(240, 152, 25, 0.8), 0 0 10px rgba(255, 255, 255, 0.8); }
+        }
+
         /* Principal Message Section */
         .principal-message-card {
             width: 100%;
@@ -1059,6 +1120,7 @@
             .developer-card { padding: 20px 15px; }
             .developers-wrapper { flex-direction: column; align-items: center; gap: 40px; }
             .mega-eknojor-btn { font-size: 1.15rem; padding: 18px 15px; }
+            .mega-eknojor-btn-2 { font-size: 1.15rem; padding: 18px 15px; }
             .image-slider-container { height: 240px; }
             .support-buttons { flex-direction: column; }
             .support-btn { width: 100%; justify-content: center; }
@@ -1152,7 +1214,13 @@
     <div class="mega-eknojor-container">
         <a href="eknojor.html" class="mega-eknojor-btn">
             <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
-            <span>এক সাথে সকলের রেজাল্ট এবং একনজরে রেজাল্ট তৈরী</span>
+            <span>এক নজরে সকলের রেজাল্ট এবং এক নজরে রেজাল্ট তৈরী (৬ষ্ঠ শ্রেণী থেকে অষ্টম শ্রেণী)</span>
+            <div class="btn-shine-icon"><i class="fa-solid fa-angles-right"></i></div>
+        </a>
+        
+        <a href="eknojor-9-10.html" class="mega-eknojor-btn-2">
+            <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <span>এক নজরে সকলের রেজাল্ট এবং এক নজরে রেজাল্ট তৈরী (৯ম শ্রেণী থেকে দশম শ্রেণী)</span>
             <div class="btn-shine-icon"><i class="fa-solid fa-angles-right"></i></div>
         </a>
     </div>
