@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইবনে তাইমিয়া স্কুল এন্ড কলেজ - ডিউটি রোস্টার</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 5mm; 
+        }
+
+        body {
+            font-family: 'Noto Sans Bengali', 'SolaimanLipi', Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            font-size: 11px;
+            color: #000;
+            background-color: #f4f7f6;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+
+        /* কন্ট্রোল বা ইনপুট প্যানেল স্টাইল */
+        .control-panel {
+            background: #ffffff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-width: 1100px;
+            margin: 0 auto 15px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .control-group label {
+            font-weight: 700;
+            font-size: 12px;
+            color: #222;
+        }
+        .control-group input {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .control-group input:focus {
+            border-color: #2b6cb0;
+        }
+
+        /* তারিখ ইনপুটের গ্রিড */
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 8px;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .submit-btn {
+            background-color: #2b6cb0;
+            color: white;
+            padding: 10px 20px;
+            font-size: 13px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 700;
+            transition: background 0.2s;
+            height: fit-content;
+            align-self: flex-end;
+        }
+        .submit-btn:hover {
+            background-color: #1a497c;
+        }
+
+        /* পিডিএফ প্রিভিউ কার্ড */
+        .pdf-preview-card {
+            display: none;
+            background: #ffffff;
+            border: 3px solid #2b6cb0;
+            padding: 15px;
+            border-radius: 8px;
+            width: 95%;
+            max-width: 1100px;
+            margin: 15px auto;
+            text-align: center;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        }
+        .pdf-preview-card h4 {
+            margin: 0 0 8px 0;
+            color: #2b6cb0;
+            font-size: 16px;
+        }
+        .download-action-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .download-action-btn:hover {
+            background-color: #218838;
+        }
+
+        /* প্রিন্ট বা মূল ডকুমেন্ট এরিয়া */
+        .printable-area {
+            background: #ffffff;
+            padding: 0;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+        .exam-time-box {
+            border: 1.5px solid #000;
+            padding: 4px 6px;
+            font-size: 11px;
+            font-weight: 600;
+            width: 180px;
+            background-color: #fcfcfc;
+            line-height: 1.4;
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-grow: 1;
+        }
+        .logo-box img {
+            max-width: 45px;
+            max-height: 45px;
+            object-fit: contain;
+        }
+
+        .main-title {
+            text-align: center;
+            color: #000;
+        }
+        .main-title h2 { margin: 0 0 2px 0; font-size: 18px; font-weight: 700; }
+        .main-title h3 { margin: 0 0 2px 0; font-size: 14px; font-weight: 600; }
+        .main-title h4 { margin: 0; font-size: 12px; font-weight: 600; }
+
+        /* টোটাল ডিউটি সামারি বক্স */
+        .total-duty-wrapper {
+            width: 180px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .total-duty-box {
+            border: 2px solid #000;
+            padding: 4px 15px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+        }
+        .total-duty-box span {
+            font-size: 20px;
+            display: block;
+            margin-top: 2px;
+            color: #000;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto; 
+            border: 2px solid #000;
+            margin-bottom: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            table-layout: auto; 
+            min-width: max-content;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 2px 1px; 
+            font-size: 11px; 
+            font-weight: 500;
+            word-wrap: break-word;
+            line-height: 1.1;
+            height: 22px; 
+        }
+
+        th { background-color: #eef2f5; font-weight: 700; }
+        .day-end { border-right: 2px solid #000 !important; }
+
+        .name-col {
+            text-align: left;
+            padding-left: 4px;
+            white-space: normal; 
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        input[type="checkbox"] {
+            width: 13px;
+            height: 13px;
+            cursor: pointer;
+            margin: 0;
+            accent-color: #000;
+        }
+
+        .total-cell, .col-total {
+            font-weight: bold;
+            background-color: #eaeaea;
+            font-size: 11px;
+        }
+
+        .footer-signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .footer-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            margin-top: 5px;
+            color: #333;
+        }
+
+        /* =========================================
+           প্রিন্ট করার জন্য নতুন ম্যাজিক সিএসএস (Full Page Stretch)
+           ========================================= */
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 5mm; 
+            }
+
+            html, body {
+                height: 100vh !important; /* পেজের সম্পূর্ণ হাইট নেবে */
+                margin: 0 !important;
+                padding: 0 !important;
+                background-color: #ffffff;
+                overflow: hidden !important; 
+                zoom: 100% !important; /* জুম ডিফল্ট থাকবে, কোনো লেখাই ছোট হবে না */
+            }
+
+            .control-panel, .pdf-preview-card { 
+                display: none !important; 
+            }
+
+            .printable-area {
+                padding: 0;
+                width: 100%;
+                height: 100vh !important; /* প্রিন্ট এরিয়া পুরো পেজ নেবে */
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+
+            .header-container { 
+                flex: 0 0 auto !important; 
+                margin-bottom: 3px !important; 
+            }
+
+            #rosterForm {
+                display: contents; /* টেবিলকে Flexbox এর সরাসরি চাইল্ড করার জন্য */
+            }
+
+            .table-container {
+                flex: 1 1 auto !important; /* টেবিলটি পেজের বাকি সম্পূর্ণ জায়গা নিয়ে স্ট্রেচ করবে */
+                width: 100%; 
+                border: 2px solid #000;
+                margin-bottom: 0;
+                display: flex;
+                overflow: hidden;
+            }
+
+            table {
+                width: 100%;
+                height: 100%; /* রো (Row) গুলোকে সমান ভাগে পুরো পেজে ছড়িয়ে দেবে */
+                table-layout: auto; 
+                min-width: 100%;
+            }
+
+            th, td { 
+                font-size: 12px !important; /* লেখা স্পষ্টভাবে পড়ার জন্য ফন্ট সাইজ বাড়ানো হয়েছে */
+                padding: 2px !important; 
+                height: auto !important; /* হাইট অটো থাকবে যেন টেবিল ব্যালান্স করে নেয় */
+            }
+
+            .name-col { 
+                font-size: 12px !important; 
+                white-space: nowrap !important; /* নামগুলো এক লাইনেই থাকবে, ভাঙবে না */
+                min-width: 140px !important; 
+            }
+
+            input[type="checkbox"] { 
+                transform: scale(1.1) !important; /* চেকবক্স কিছুটা স্পষ্ট করা হয়েছে */
+                margin: 0;
+            }
+
+            .footer-signatures { 
+                flex: 0 0 auto !important; 
+                margin-top: 5px !important; 
+                font-size: 13px !important; 
+            }
+            .footer-meta { 
+                flex: 0 0 auto !important; 
+                font-size: 10px !important; 
+                margin-top: 2px !important; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- কন্ট্রোল প্যানেল -->
+    <div class="control-panel" id="inputPanel">
+        <div style="display: flex; flex-direction: column; gap: 15px; flex: 1; min-width: 250px;">
+            <div class="control-group">
+                <label for="examTitleInput">পরীক্ষার নাম</label>
+                <input type="text" id="examTitleInput" value="দ্বিতীয় শ্রেণি অভীক্ষা-২০২৬ খ্রিঃ">
+            </div>
+            <div class="control-group">
+                <label for="examTimeInput">পরীক্ষার সময়সূচি ( | দিয়ে আলাদা করুন)</label>
+                <input type="text" id="examTimeInput" value="সকাল : ৮.০০-১০.০০টা | দুপুর : ১১.০০টা-১.০০টা | বিকাল : ২.৩০-৪.৩০টা">
+            </div>
+        </div>
+
+        <div class="control-group" style="flex: 2; min-width: 400px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label>পরীক্ষার মোট দিন ও তারিখ</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label style="font-size: 11px; color: #d9534f;">মোট দিন (পরিবর্তন করলে রোস্টার রিসেট হবে):</label>
+                    <input type="number" id="numDays" value="6" min="1" max="12" style="width: 60px; padding: 4px;" onchange="updateDayCount()">
+                </div>
+            </div>
+            <!-- ডায়নামিক তারিখের ঘর এখানে আসবে -->
+            <div class="date-grid" id="dynamicDateInputs"></div>
+        </div>
+
+        <button type="button" class="submit-btn" onclick="generatePDFCard()">জেনারেট<br>পিডিএফ</button>
+    </div>
+
+    <!-- প্রিন্ট বা মূল ডকুমেন্ট এরিয়া -->
+    <div class="printable-area">
+        <div class="header-container">
+            <div class="exam-time-box">
+                <div style="text-decoration: underline; margin-bottom: 2px;">পরীক্ষার সময় :-</div>
+                <div id="displayExamTime"></div>
+            </div>
+            <div class="title-wrapper">
+                <div class="logo-box">
+                    <img src="https://lh3.googleusercontent.com/d/15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR" alt="Logo">
+                </div>
+                <div class="main-title">
+                    <h2>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h2>
+                    <h3 id="displayExamTitle">দ্বিতীয় শ্রেণি অভীক্ষা-২০২৬ খ্রিঃ</h3>
+                    <h4>ডিউটি রোস্টার</h4>
+                </div>
+            </div>
+            <div class="total-duty-wrapper">
+                <div class="total-duty-box">
+                    সর্বমোট ডিউটি
+                    <span id="header-grand-total">০</span>
+                </div>
+            </div>
+        </div>
+
+        <form id="rosterForm">
+        <div class="table-container">
+            <table id="rosterTable">
+                <thead>
+                    <!-- জাভাস্ক্রিপ্ট দ্বারা হেডার তৈরি হবে -->
+                </thead>
+                <tbody>
+                    <!-- জাভাস্ক্রিপ্ট দ্বারা বডি তৈরি হবে -->
+                </tbody>
+            </table>
+        </div>
+        </form>
+
+        <div class="footer-signatures">
+            <div style="border-top: 1px solid #000; width: 150px; padding-top: 5px;">প্রস্তুতকারী</div>
+            <div style="border-top: 1px solid #000; width: 150px; padding-top: 5px;">পরীক্ষা নিয়ন্ত্রক</div>
+            <div style="border-top: 1px solid #000; width: 150px; padding-top: 5px;">অধ্যক্ষ</div>
+        </div>
+        <div class="footer-meta">
+            <div>H:\MAHBOB\EXAMINATION\EXAMI ROSTER\D. ROSTER 1</div>
+            <div>4-Aug-26</div>
+        </div>
+    </div>
+
+    <div class="pdf-preview-card" id="pdfCard">
+        <h4>📄 আপনার ডিউটি রোস্টার সম্পূর্ণ প্রস্তুত!</h4>
+        <p style="font-size: 13px; color: #555; margin: 4px 0 12px 0;">নিচের বাটনে ক্লিক করে সরাসরি প্রিন্ট বা পিডিএফ ডাউনলোড করুন।</p>
+        <button class="download-action-btn" onclick="window.print()">📥 প্রিন্ট / পিডিএফ ডাউনলোড করুন</button>
+    </div>
+
+    <script>
+        // ছবি থেকে নেওয়া ২৪ জন শিক্ষকের তালিকা
+        const teachers = [
+            "জনাব মোঃ মিজানুর রহমান-৩", 
+            "মোঃ মিজানুর রহমান-৪", 
+            "মোঃ আবুল হোসেন ফারুক", 
+            "মোঃ সাইফুল ইসলাম-১", 
+            "মোঃ নিজাম উদ্দীন মজুমদার", 
+            "মোহাম্মদ আব্দুর রহমান", 
+            "মোস্তফা কামাল", 
+            "মোঃ জহিরুল ইসলাম", 
+            "ফরহাদ আল ফয়সাল", 
+            "সিরাজুস সালেহীন", 
+            "মোহাম্মদ মহসিন-২", 
+            "সাইফুল ইসলাম মিয়াজী", 
+            "হাব. মহিউদ্দিন", 
+            "মোঃ স্বপন মজুমদার", 
+            "মোঃ সিফাতুল মোস্তফা", 
+            "কাউছার আহমেদ", 
+            "মো: ইউসুফ আলী", 
+            "মোহাম্মদ হোসাইন", 
+            "বিল্লাল হোসেন", 
+            "এমরান হোসেন", 
+            "আবু মু. সজিব", 
+            "মাসুদ আলম", 
+            "বায়জীদুল ইসলাম মজুম.", 
+            "কাউছার হামিদ জীবন"
+        ];
+
+        const bnDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+        function toBn(n) {
+            return n.toString().split('').map(d => bnDigits[d] !== undefined ? bnDigits[d] : d).join('');
+        }
+
+        // দিন কমালে বা বাড়ালে ইনপুট গ্রিড তৈরি করবে
+        function updateDayCount() {
+            let days = parseInt(document.getElementById('numDays').value);
+            if(days < 1) days = 1;
+
+            let container = document.getElementById('dynamicDateInputs');
+
+            // পূর্বের ভ্যালু সেভ রাখা
+            let oldValues = [];
+            for(let i=1; i<=container.children.length; i++) {
+                let input = document.getElementById(`date${i}`);
+                if(input) oldValues.push(input.value);
+            }
+
+            container.innerHTML = "";
+            for(let i=1; i<=days; i++) {
+                let val = oldValues[i-1] || `দিন-${toBn(i)}`;
+                container.innerHTML += `<input type="text" id="date${i}" value="${val}" placeholder="${toBn(i)} তম দিন">`;
+            }
+            buildTable(days);
+        }
+
+        // টেবিল স্বয়ংক্রিয়ভাবে তৈরি করার ফাংশন
+        function buildTable(days) {
+            const thead = document.querySelector('#rosterTable thead');
+            const tbody = document.querySelector('#rosterTable tbody');
+
+            // 1. 헤ডার তৈরি (Header Build)
+            let headRow1 = `<tr>
+                <th rowspan="2" style="width: 35px;">ক্রঃ নং</th>
+                <th rowspan="2" style="width: 140px;">পর্যবেক্ষকদের নাম</th>`;
+            for(let i=1; i<=days; i++) {
+                headRow1 += `<th colspan="3" class="day-end" id="th-date${i}">দিন ${toBn(i)}</th>`;
+            }
+            headRow1 += `<th rowspan="2" style="width: 35px;">মোট</th></tr>`;
+
+            let headRow2 = `<tr>`;
+            for(let i=1; i<=days; i++) {
+                headRow2 += `<th>১ম</th><th>২য়</th><th class="day-end">৩য়</th>`;
+            }
+            headRow2 += `</tr>`;
+            thead.innerHTML = headRow1 + headRow2;
+
+            // 2. বডি তৈরি (Body Build)
+            let tbodyHTML = "";
+            teachers.forEach((name, i) => {
+                tbodyHTML += `<tr>
+                    <td>${toBn(i + 1)}.</td>
+                    <td class="name-col">${name}</td>`;
+                for (let j = 0; j < days * 3; j++) {
+                    let isDayEndClass = ((j + 1) % 3 === 0) ? 'day-end' : '';
+                    tbodyHTML += `<td class="${isDayEndClass}"><input type="checkbox" class="duty-checkbox" onchange="calculateTotals()"></td>`;
+                }
+                tbodyHTML += `<td class="total-cell" id="row-total-${i}">০</td></tr>`;
+            });
+
+            // 3. ফুটার বা শেষের টোটাল রো তৈরি (Footer Build)
+            tbodyHTML += `<tr>
+                <td colspan="2" style="font-weight: bold; text-align: right; border-top: 2px solid #000; padding-right: 10px;">মোট =</td>`;
+            for (let j = 0; j < days * 3; j++) {
+                let isDayEndClass = ((j + 1) % 3 === 0) ? 'day-end' : '';
+                tbodyHTML += `<td class="col-total ${isDayEndClass}" id="col-total-${j}" style="border-top: 2px solid #000;">০</td>`;
+            }
+            tbodyHTML += `<td class="total-cell" id="grand-total" style="background-color: #d1d8e0; border-top: 2px solid #000;">০</td></tr>`;
+
+            tbody.innerHTML = tbodyHTML;
+            calculateTotals();
+        }
+
+        // টোটাল ডিউটি গণনা
+        function calculateTotals() {
+            let days = parseInt(document.getElementById('numDays').value);
+            let totalCols = days * 3;
+            const tbodyRows = document.querySelectorAll("#rosterTable tbody tr");
+            let grandTotalCount = 0;
+            let colSums = new Array(totalCols).fill(0);
+
+            const teacherRowsCount = tbodyRows.length - 1; // শেষের রোটি বাদ
+
+            for (let i = 0; i < teacherRowsCount; i++) {
+                const checkboxes = tbodyRows[i].querySelectorAll(".duty-checkbox");
+                let rowCount = 0;
+                checkboxes.forEach((cb, j) => {
+                    if (cb.checked) {
+                        rowCount++;
+                        colSums[j]++;
+                    }
+                });
+                const totalCell = document.getElementById(`row-total-${i}`);
+                if (totalCell) totalCell.innerText = toBn(rowCount);
+                grandTotalCount += rowCount;
+            }
+
+            for (let j = 0; j < totalCols; j++) {
+                const colTotalCell = document.getElementById(`col-total-${j}`);
+                if (colTotalCell) colTotalCell.innerText = toBn(colSums[j]);
+            }
+
+            const grandTotalCell = document.getElementById("grand-total");
+            if (grandTotalCell) grandTotalCell.innerText = toBn(grandTotalCount);
+
+            const headerGrandTotalCell = document.getElementById("header-grand-total");
+            if (headerGrandTotalCell) headerGrandTotalCell.innerText = toBn(grandTotalCount);
+        }
+
+        // পিডিএফ জেনারেট এবং শিরোনাম আপডেট
+        function generatePDFCard() {
+            const exam = document.getElementById("examTitleInput").value;
+            const timeText = document.getElementById("examTimeInput").value;
+            let days = parseInt(document.getElementById('numDays').value);
+
+            document.getElementById("displayExamTitle").innerText = exam;
+            const timeLines = timeText.split('|').map(line => `<div>${line.trim()}</div>`).join('');
+            document.getElementById("displayExamTime").innerHTML = timeLines;
+
+            // টেবিলের হেডারে ডাইনামিক তারিখ বসানো
+            for (let i = 1; i <= days; i++) {
+                let val = document.getElementById(`date${i}`).value.trim();
+                let parts = val.split(' ');
+                let formattedStr = val;
+
+                if (parts.length > 1) {
+                    let day = parts.pop();
+                    let date = parts.join(' ');
+                    formattedStr = `${date}<br>${day}`;
+                }
+                const th = document.getElementById(`th-date${i}`);
+                if(th) th.innerHTML = formattedStr;
+            }
+
+            calculateTotals();
+
+            const pdfCard = document.getElementById("pdfCard");
+            pdfCard.style.display = "block";
+            pdfCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // পেজ লোড হলে ডিফল্ট ৬ দিনের জন্য সিস্টেম রেডি করবে
+        window.onload = () => {
+            // ডিফল্ট ৬ দিনের ভ্যালু সেট করে দেওয়া হচ্ছে
+            const defaultDates = [
+                "০৯/০৮/২০২৬ রবিবার", "১০/০৮/২০২৬ সোমবার", "১১/০৮/২০২৬ মঙ্গলবার",
+                "১৩/০৮/২০২৬ বৃহস্পতিবার", "১৬/০৮/২০২৬ রবিবার", "১৭/০৮/২০২৬ সোমবার"
+            ];
+            updateDayCount();
+            for(let i=1; i<=6; i++) {
+                document.getElementById(`date${i}`).value = defaultDates[i-1];
+            }
+        };
+    </script>
+</body>
+</html>
