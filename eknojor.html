@@ -151,6 +151,38 @@
       align-items: center;
       gap: 8px;
     }
+    
+    /* =======================================================
+       CUSTOM ALERT NOTICE CSS 
+       ======================================================= */
+    .alert-notice {
+      background: #fef2f2;
+      border: 2px solid #fca5a5;
+      border-left: 8px solid #ef4444;
+      padding: 12px 18px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
+      animation: pulseWarning 2s infinite;
+    }
+    .alert-notice i {
+      font-size: 26px;
+      color: #ef4444;
+    }
+    .alert-notice span {
+      font-size: 16px;
+      font-weight: 700;
+      color: #991b1b;
+      line-height: 1.4;
+    }
+    @keyframes pulseWarning {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
 
     .multi-table-container {
       width: 100%;
@@ -388,12 +420,18 @@
       নিচের টেবিলে প্রতিটি শিক্ষার্থীর তথ্য এবং প্রতিটি বিষয়ের ই.টি. (ET) ও টিউটোরিয়াল (Tu) নম্বর খালি ঘরে বসান। (অটোমেটিক ক্যালকুলেট হবে)
     </p>
 
+    <!-- CUSTOM INSTRUCTION NOTICE ADDED HERE -->
+    <div class="alert-notice">
+      <i class="fa-solid fa-triangle-exclamation fa-beat-fade"></i>
+      <span><strong>বিশেষ নির্দেশনা:</strong> "আইসিটি" (ICT) বিষয়ের টিউটোরিয়াল নাম্বার ইনপুট দেয়ার সময় ৫০% করে ইনপুট দিতে হবে।</span>
+    </div>
+
     <div class="multi-table-container">
       <table class="multi-input-table" id="mainInputTable">
         <thead>
           <tr>
             <th rowspan="2" style="width: 70px;">রোল</th>
-            <th rowspan="2" style="width: 170px;">শিক্ষার্থীর নাম</th>
+            <th rowspan="2" style="width: 170px;">শিক্ষ শিক্ষার্থীর নাম</th>
             <th rowspan="2" style="width: 150px;">পিতার নাম</th>
             <th rowspan="2" style="width: 150px;">মাতার নাম</th>
             <th rowspan="2" style="width: 80px;" class="border-right-thick">উপস্থিতি</th>
@@ -1037,7 +1075,7 @@
               <tr>
                 <th rowspan="2">ক্রঃ</th>
                 <th rowspan="2">রোল</th>
-                <th rowspan="2">শিক্ষার্থীর নাম</th>
+                <th rowspan="2">শিক্ষ শিক্ষার্থীর নাম</th>
                 <th rowspan="2" class="subject-divider">পিতার নাম</th>
                 
                 <th colspan="4" class="subject-divider">বাংলা-১</th>
