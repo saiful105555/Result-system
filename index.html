@@ -228,7 +228,7 @@
             border: 1px solid rgba(255, 183, 3, 0.3);
         }
 
-        /* Notice Board Section with CSS Animation */
+        /* Notice Board Section */
         .notice-board {
             width: 100%;
             max-width: 850px;
@@ -568,6 +568,7 @@
             position: relative;
             overflow: hidden;
             border-left: 6px solid #0077b6;
+            cursor: pointer;
         }
 
         .nav-btn::before {
@@ -923,13 +924,131 @@
             margin-top: 10px;
         }
 
+        /* =========================================
+           Roster Modal (Popup) Styles
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 420px;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] .modal-header {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            color: var(--heading-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--sub-text);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #ef4444;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .shift-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shift-btn::after {
+            content: '\f105'; /* FontAwesome right arrow */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            opacity: 0.7;
+            transition: right 0.2s;
+        }
+
+        .shift-btn:hover::after {
+            right: 12px;
+        }
+
+        .shift-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            color: #ffffff;
+        }
+
+        /* Shift Distinct Colors */
+        .shift-jaba { background: linear-gradient(135deg, #e63946, #c1121f); }
+        .shift-beli { background: linear-gradient(135deg, #0077b6, #023e8a); }
+        .shift-shapla { background: linear-gradient(135deg, #059669, #047857); }
+        .shift-bokul { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
-            .top-header-wrapper {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
+            .top-header-wrapper { flex-direction: column; text-align: center; gap: 15px; }
             .header { text-align: center; }
             .header h1 { font-size: 1.5rem; }
             .header p.address { font-size: 0.9rem; }
@@ -943,6 +1062,7 @@
             .image-slider-container { height: 240px; }
             .support-buttons { flex-direction: column; }
             .support-btn { width: 100%; justify-content: center; }
+            .shift-btn { font-size: 1rem; padding: 12px 15px; }
         }
     </style>
 </head>
@@ -1071,8 +1191,8 @@
             </div>
         </a>
 
-        <!-- ডিউটি রোস্টার জেনারেটর নতুন বাটন -->
-        <a href="roster.html" class="nav-btn btn-5">
+        <!-- ডিউটি রোস্টার জেনারেটর বাটন (ক্লিক করলে পপ-আপ আসবে) -->
+        <a href="#" onclick="openRosterModal(event)" class="nav-btn btn-5">
             <div class="btn-icon"><i class="fa-solid fa-calendar-check"></i></div>
             <div class="btn-text">
                 <h3>ডিউটি রোস্টার জেনারেটর</h3>
@@ -1159,6 +1279,42 @@
     <div class="copyright-footer">
         &copy; ২০২৪ - ২০২৬ ইবনে তাইমিয়া স্কুল এন্ড কলেজ। সর্বস্বত্ব সংরক্ষিত। | Developed by IT Department.
     </div>
+
+
+    <!-- =========================================
+         Roster Selection Modal (Popup)
+         ========================================= -->
+    <div id="rosterModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-layer-group" style="color: #0077b6;"></i> শিফট নির্বাচন করুন</h3>
+                <button class="close-btn" onclick="closeRosterModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- জবা শিফট (roster.html এর সাথে লিংক করা) -->
+                <a href="roster.html" class="shift-btn shift-jaba">
+                    <i class="fa-solid fa-fan"></i> জবা শিফট ডিউটি রোস্টার
+                </a>
+                
+                <!-- বেলী শিফট -->
+                <a href="#" class="shift-btn shift-beli">
+                    <i class="fa-solid fa-fan"></i> বেলী শিফট ডিউটি রোস্টার
+                </a>
+                
+                <!-- শাপলা শিফট -->
+                <a href="#" class="shift-btn shift-shapla">
+                    <i class="fa-solid fa-fan"></i> শাপলা শিফট ডিউটি রোস্টার
+                </a>
+                
+                <!-- বকুল শিফট -->
+                <a href="#" class="shift-btn shift-bokul">
+                    <i class="fa-solid fa-fan"></i> বকুল শিফট ডিউটি রোস্টার
+                </a>
+            </div>
+        </div>
+    </div>
+
 
     <!-- JavaScript Logic -->
     <script>
@@ -1320,6 +1476,27 @@
                 alert('সংযোগে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
             });
         }
+
+        // =========================================
+        // Roster Modal Logic
+        // =========================================
+        function openRosterModal(event) {
+            event.preventDefault(); // বাটনের ডিফল্ট ক্লিক বন্ধ করবে
+            document.getElementById('rosterModal').classList.add('active'); // পপ-আপ দেখাবে
+        }
+
+        function closeRosterModal() {
+            document.getElementById('rosterModal').classList.remove('active'); // পপ-আপ লুকিয়ে ফেলবে
+        }
+
+        // পপ-আপের বাইরের অংশে ক্লিক করলে যেন তা বন্ধ হয়ে যায়
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('rosterModal');
+            if (event.target === modal) {
+                closeRosterModal();
+            }
+        });
+
     </script>
 
 </body>
