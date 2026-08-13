@@ -259,23 +259,24 @@
         }
 
         /* =========================================
-           প্রিন্ট করার জন্য ফিক্স করা ম্যাজিক সিএসএস
-           ১. ফন্ট সাইজ ক্লিয়ার থাকবে
-           ২. পুরো ২৫ জন এক পেজে আসবে
+           স্থায়ী সমাধান (GitHub Page / Live Server Bug Fix)
+           মার্জিন 0 করে ফিজিক্যাল A4 সাইজ ফিক্স করা হয়েছে।
            ========================================= */
         @media print {
             @page {
                 size: A4 landscape;
-                margin: 5mm; 
+                margin: 0 !important; /* ব্রাউজারের ডিফল্ট হেডার/ফুটার (URL/Date) বন্ধ করার জন্য */
             }
 
             html, body {
+                width: 297mm !important; /* A4 পেজের সঠিক প্রস্থ */
+                height: 209mm !important; /* A4 পেজের সঠিক উচ্চতা */
                 margin: 0 !important;
                 padding: 0 !important;
                 background-color: #ffffff;
-                /* ২য় পেজে যাওয়া বন্ধ করার জন্য */
-                height: 100vh !important; 
                 overflow: hidden !important; 
+                box-sizing: border-box !important;
+                zoom: 100% !important;
             }
 
             .control-panel, .pdf-preview-card { 
@@ -283,26 +284,36 @@
             }
 
             .printable-area {
-                padding: 0;
-                width: 100%;
-                /* পেজের ৯৬% হাইট নেবে যেন মার্জিনের কারণে ওভারফ্লো না হয় */
-                height: 96vh !important; 
+                width: 297mm !important;
+                height: 209mm !important;
+                padding: 8mm !important; /* @page margin 0 করায়, কন্টেন্ট যেন বর্ডারে না লাগে তাই প্যাডিং */
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-between !important;
+                box-sizing: border-box !important;
             }
 
+            /* হেডারের সাইজ কিছুটা কম্প্যাক্ট করা হয়েছে যেন টেবিল বেশি জায়গা পায় */
             .header-container { 
                 flex: 0 0 auto !important; 
                 margin-bottom: 2px !important; 
             }
+            .logo-box img { max-height: 38px !important; }
+            .main-title h2 { font-size: 17px !important; margin-bottom: 0 !important; }
+            .main-title h3 { font-size: 14px !important; margin-bottom: 0 !important; }
+            .exam-time-box { padding: 3px !important; font-size: 11px !important; }
+            .total-duty-box { padding: 3px 10px !important; font-size: 11px !important; }
+            .total-duty-box span { font-size: 18px !important; margin-top: 0 !important; }
 
             #rosterForm {
-                display: contents; 
+                display: flex !important;
+                flex-direction: column !important;
+                flex: 1 1 auto !important; 
+                overflow: hidden !important;
             }
 
             .table-container {
-                flex: 1 1 auto !important; 
+                flex: 1 1 auto !important; /* মাঝখানের ফাঁকা জায়গা পুরোটাই টেবিল দখল করবে */
                 width: 100%; 
                 border: 2px solid #000;
                 margin-bottom: 0;
@@ -312,43 +323,43 @@
 
             table {
                 width: 100%;
-                /* টেবিলটিকে ১০০% হাইট দিয়ে রো গুলোকে সমানভাবে স্ট্রেচ করা হয়েছে */
-                height: 100%; 
+                height: 100% !important; /* টেবিল পুরো পেজজুড়ে স্ট্রেচ হবে */
                 table-layout: auto; 
                 min-width: 100%;
+                border-collapse: collapse;
             }
 
             th, td { 
-                /* ফন্ট সাইজ ১৩ করে দেওয়া হয়েছে যেন স্পষ্ট দেখা যায় */
-                font-size: 13px !important; 
-                /* উপর-নিচের স্পেস বা প্যাডিং একদম 0 করা হয়েছে যেন ২৫ জন সহজেই ধরে যায় */
+                font-size: 13px !important; /* লেখা বড় ও স্পষ্ট থাকবে */
                 padding: 0px 2px !important; 
                 line-height: 1.1 !important;
-                height: auto !important; 
+                height: 1% !important; /* ম্যাজিক ট্রিক: টেবিলের রো-গুলো সমানভাবে জায়গা ভাগ করে নেবে */
             }
 
             .name-col { 
-                /* শিক্ষকদের নাম আরো একটু বড় এবং বোল্ড */
-                font-size: 14px !important; 
+                font-size: 13.5px !important; 
                 font-weight: bold !important;
                 white-space: nowrap !important; 
-                min-width: 160px !important; 
+                min-width: 150px !important; 
+                padding-left: 4px !important;
             }
 
             input[type="checkbox"] { 
-                transform: scale(1.1) !important; 
-                margin: 0;
+                width: 12px !important; 
+                height: 12px !important;
+                transform: scale(1) !important; 
+                margin: 0 !important;
             }
 
             .footer-signatures { 
                 flex: 0 0 auto !important; 
                 margin-top: 5px !important; 
-                font-size: 14px !important; 
+                font-size: 13px !important; 
             }
             .footer-meta { 
                 flex: 0 0 auto !important; 
                 font-size: 10px !important; 
-                margin-top: 2px !important; 
+                margin-top: 0 !important; 
             }
         }
     </style>
@@ -439,15 +450,32 @@
     </div>
 
     <script>
+        // ২৪ জন শিক্ষকের তালিকা
         const teachers = [
-            "জনাব এ.এম.আখতার হোসেন", "মোঃ সিরাজুল ইসলাম খান", "মোঃ গোলাম আযম", 
-            "কবির আহমেদ", "মুঃ নূর নবী", "হেদায়েত উল্লাহ সবুজ", 
-            "আবুল বাশার চৌধুরী", "মাও. কামাল উদ্দিন", "মোঃ শাহাদাত হোসাইন", 
-            "আলমগীর হোসেন", "মহসিন আল মামুন", "মোঃ হোসাইন", 
-            "মোঃ কাউছার হাবিব", "তোফায়েল আহমেদ খন্দ", "মোঃ শাহিন আলম", 
-            "মমিনুর রহমান", "জাকারিয়া হাবীব", "সাইফুল ইসলাম", 
-            "সাইফুল ইসলাম", "মোঃ ইকবাল তনিম", "মোস্তাফিজুর রহমান", 
-            "নাছির উদ্দিন", "মোঃ মাহমুদুল হাসান", "মোঃ মনির হোসেন", "ফয়সাল বিন সাইদ"
+            "জনাব মোঃ মিজানুর রহমান-৩", 
+            "মোঃ মিজানুর রহমান-৪", 
+            "মোঃ আবুল হোসেন ফারুক", 
+            "মোঃ সাইফুল ইসলাম-১", 
+            "মোঃ নিজাম উদ্দীন মজুমদার", 
+            "মোহাম্মদ আব্দুর রহমান", 
+            "মোস্তফা কামাল", 
+            "মোঃ জহিরুল ইসলাম", 
+            "ফরহাদ আল ফয়সাল", 
+            "সিরাজুস সালেহীন", 
+            "মোহাম্মদ মহসিন-২", 
+            "সাইফুল ইসলাম মিয়াজী", 
+            "হাব. মহিউদ্দিন", 
+            "মোঃ স্বপন মজুমদার", 
+            "মোঃ সিফাতুল মোস্তফা", 
+            "কাউছার আহমেদ", 
+            "মো: ইউসুফ আলী", 
+            "মোহাম্মদ হোসাইন", 
+            "বিল্লাল হোসেন", 
+            "এমরান হোসেন", 
+            "আবু মু. সজিব", 
+            "মাসুদ আলম", 
+            "বায়জীদুল ইসলাম মজুম.", 
+            "কাউছার হামিদ জীবন"
         ];
 
         const bnDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
@@ -482,7 +510,7 @@
             const thead = document.querySelector('#rosterTable thead');
             const tbody = document.querySelector('#rosterTable tbody');
 
-            // 1. 헤ডার তৈরি
+            // 1. 헤ডার তৈরি (Header Build)
             let headRow1 = `<tr>
                 <th rowspan="2" style="width: 35px;">ক্রঃ নং</th>
                 <th rowspan="2" style="width: 140px;">পর্যবেক্ষকদের নাম</th>`;
@@ -498,7 +526,7 @@
             headRow2 += `</tr>`;
             thead.innerHTML = headRow1 + headRow2;
 
-            // 2. বডি তৈরি
+            // 2. বডি তৈরি (Body Build)
             let tbodyHTML = "";
             teachers.forEach((name, i) => {
                 tbodyHTML += `<tr>
@@ -511,7 +539,7 @@
                 tbodyHTML += `<td class="total-cell" id="row-total-${i}">০</td></tr>`;
             });
 
-            // 3. ফুটার বা শেষের টোটাল রো তৈরি
+            // 3. ফুটার বা শেষের টোটাল রো তৈরি (Footer Build)
             tbodyHTML += `<tr>
                 <td colspan="2" style="font-weight: bold; text-align: right; border-top: 2px solid #000; padding-right: 10px;">মোট =</td>`;
             for (let j = 0; j < days * 3; j++) {
