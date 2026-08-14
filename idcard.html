@@ -7,7 +7,7 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Image Download Library (html2canvas) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -36,9 +36,9 @@
         .btn:hover { background-color: #0b3617; transform: translateY(-2px); }
         .btn-download { background-color: #1d70b8; box-shadow: 0 4px 10px rgba(29, 112, 184, 0.4); margin-top: 20px; }
         .btn-download:hover { background-color: #15558c; }
-        
+
         .preview-section { display: flex; flex-direction: column; align-items: center; }
-        
+
         /* EXACT ID CARD DIMENSIONS & STYLING */
         .id-card-wrapper {
             width: 540px; 
@@ -82,7 +82,7 @@
             line-height: 1.2;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
+
         .school-name-en {
             color: #E8D399; /* Soft Gold */
             font-family: 'Arial', sans-serif;
@@ -116,7 +116,7 @@
         }
         .title-area h1 { font-size: 32px; color: #111; margin-bottom: 5px; font-weight: 700; }
         .title-area h2 { font-size: 20px; color: #1a7837; font-weight: 600; }
-        
+
         .divider {
             width: 50%;
             height: 2px;
@@ -154,15 +154,16 @@
         /* Large & Visible Signature */
         .signature-area {
             text-align: center;
-            width: 190px;
+            width: 260px;
         }
         .signature-area img {
-            width: 170px;
-            height: 75px;
+            width: 250px; 
+            height: 110px; 
             object-fit: contain;
-            margin: 0 auto 5px auto;
+            margin: 0 auto -20px auto; /* <--- নেগেটিভ মার্জিন দিয়ে স্বাক্ষর দাগের একদম কাছে আনা হয়েছে */
             display: block;
-            filter: contrast(1.6) brightness(0.85); /* Makes the faint signature much bolder and darker */
+            mix-blend-mode: multiply; 
+            filter: grayscale(100%) contrast(5) brightness(0.3); 
         }
         .signature-line {
             width: 100%;
@@ -232,7 +233,7 @@
     <!-- Preview & Download Section -->
     <div class="preview-section">
         <div class="id-card-wrapper" id="idCard">
-            
+
             <!-- Modern Header -->
             <div class="card-header">
                 <img class="header-logo" src="https://lh3.googleusercontent.com/d/1m5vaCV-l0bkI_P8i3Oq0XgvbgMUBKcR5" onerror="this.src='https://drive.google.com/uc?export=view&id=1m5vaCV-l0bkI_P8i3Oq0XgvbgMUBKcR5';" crossorigin="anonymous" alt="Logo">
@@ -250,7 +251,7 @@
                 <h1 id="outName">সাইফুল ইসলাম</h1>
                 <h2 id="outDesig">সহকারী শিক্ষক</h2>
             </div>
-            
+
             <div class="divider"></div>
 
             <!-- Details Grid -->
@@ -263,21 +264,21 @@
 
             <!-- Footer Section -->
             <div class="card-footer">
-                <!-- Signature Area (Left Side Now) -->
+                <!-- Signature Area -->
                 <div class="signature-area">
-                    <img src="https://lh3.googleusercontent.com/d/10XBoEnuSbJYfDT6xy2J-LA4IgcpNrVQl" onerror="this.src='https://drive.google.com/uc?export=view&id=10XBoEnuSbJYfDT6xy2J-LA4IgcpNrVQl';" crossorigin="anonymous" alt="Signature">
+                    <img src="https://lh3.googleusercontent.com/d/1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c" onerror="this.src='https://drive.google.com/uc?export=view&id=1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c';" crossorigin="anonymous" alt="Signature">
                     <div class="signature-line"></div>
                     <p>অধ্যক্ষ</p>
                 </div>
 
-                <!-- QR Code (Right Side Now) -->
+                <!-- QR Code -->
                 <div class="qr-area">
                     <img id="qrCodeImg" src="" alt="QR Code" crossorigin="anonymous">
                 </div>
             </div>
-            
+
         </div>
-        
+
         <button type="button" class="btn btn-download" onclick="downloadImage()">HD ছবি ডাউনলোড করুন</button>
     </div>
 
@@ -320,10 +321,10 @@
         // Download High-Quality HD Image (PNG)
         function downloadImage() {
             const element = document.getElementById('idCard');
-            
+
             // Temporary scale reset for perfect high-quality capture
             element.style.transform = 'scale(1)'; 
-            
+
             html2canvas(element, {
                 scale: 4, // 4x scale for super HD quality
                 useCORS: true,
@@ -335,7 +336,7 @@
                 link.download = 'Teacher_ID_Card.png';
                 link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
-                
+
                 // Revert scale back for web preview based on screen size
                 element.style.transform = window.innerWidth <= 900 ? 'scale(0.6)' : 'scale(0.7)';
             });
