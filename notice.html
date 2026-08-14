@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পেইজের কাজ চলমান</title>
+    
+    <!-- গুগল ফন্ট যুক্ত করা হয়েছে (বাংলা সুন্দরভাবে দেখানোর জন্য) -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* সম্পূর্ণ পেইজের স্টাইল */
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* একটি সুন্দর গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড */
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        /* নোটিশ কার্ডের স্টাইল */
+        .notice-card {
+            background: #ffffff;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            transition: transform 0.3s ease;
+        }
+
+        .notice-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* আইকনের স্টাইল এবং এনিমেশন */
+        .icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        /* শিরোনামের স্টাইল */
+        h1 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        /* সাধারণ লেখার স্টাইল */
+        p {
+            color: #555555;
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0 0 10px 0;
+            font-weight: 400;
+        }
+
+        /* হাইলাইট করা লেখার স্টাইল */
+        .highlight {
+            color: #4a90e2;
+            font-weight: 600;
+            font-size: 20px;
+            display: block;
+            margin-top: 15px;
+        }
+
+        /* আইকন বাউন্স এনিমেশন */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* মোবাইল ডিভাইসের জন্য রেসপন্সিভ ডিজাইন */
+        @media (max-width: 480px) {
+            h1 { font-size: 26px; }
+            p { font-size: 16px; }
+            .notice-card { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notice-card">
+        <div class="icon">🛠️</div>
+        <h1>কাজ চলমান রয়েছে</h1>
+        <p>আমাদের এই পেইজটির কাজ বর্তমানে চলমান রয়েছে।</p>
+        <p>খুব শীঘ্রই নতুন ফিচারটি সবার জন্য উন্মুক্ত হবে।</p>
+        <span class="highlight">আপনার অপেক্ষার জন্য ধন্যবাদ! ❤️</span>
+    </div>
+
+</body>
+</html>
