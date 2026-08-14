@@ -7,6 +7,8 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Image Download Library (html2canvas) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -31,11 +33,11 @@
         .input-group { margin-bottom: 16px; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 15px; }
         .input-group input { width: 100%; padding: 12px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 15px; font-family: 'Noto Sans Bengali', sans-serif; transition: 0.3s; }
-        .input-group input:focus { border-color: #114B21; outline: none; }
+        .input-group input:focus { border-color: #114B21; outline: none; box-shadow: 0 0 8px rgba(17, 75, 33, 0.2); }
         .btn { width: 100%; padding: 14px; background-color: #114B21; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; box-shadow: 0 4px 10px rgba(17, 75, 33, 0.3); }
-        .btn:hover { background-color: #0b3617; transform: translateY(-2px); }
+        .btn:hover { background-color: #0b3617; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(17, 75, 33, 0.4); }
         .btn-download { background-color: #1d70b8; box-shadow: 0 4px 10px rgba(29, 112, 184, 0.4); margin-top: 20px; }
-        .btn-download:hover { background-color: #15558c; }
+        .btn-download:hover { background-color: #15558c; box-shadow: 0 6px 15px rgba(29, 112, 184, 0.5); }
 
         .preview-section { display: flex; flex-direction: column; align-items: center; }
 
@@ -43,35 +45,55 @@
         .id-card-wrapper {
             width: 540px; 
             height: 860px; 
-            background: linear-gradient(135deg, #ffffff 0%, #f4f7f5 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f4f7f5 80%, #e8f0eb 100%);
             position: relative; 
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
             transform: scale(0.7); 
             transform-origin: top center;
-            border-radius: 12px;
+            border-radius: 16px;
+            border: 1px solid #dcdcdc;
+        }
+
+        /* Background Watermark */
+        .id-card-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            background-image: url('https://lh3.googleusercontent.com/d/1m5vaCV-l0bkI_P8i3Oq0XgvbgMUBKcR5');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.05; /* Faint watermark */
+            z-index: 1;
         }
 
         /* Curved Header */
         .card-header {
-            background: linear-gradient(135deg, #0f4a21 0%, #1a7837 100%);
+            background: linear-gradient(135deg, #0a3d19 0%, #176a2f 100%);
             height: 250px;
             border-bottom-left-radius: 50% 25px;
             border-bottom-right-radius: 50% 25px;
             text-align: center;
             padding-top: 25px;
             position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            border-bottom: 6px solid #c5a059; /* Elegant Gold Border */
+            z-index: 2;
         }
 
         .header-logo {
-            width: 80px;
-            height: 80px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             background: #fff;
             padding: 4px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid #c5a059;
         }
 
         .school-name-bn {
@@ -80,16 +102,17 @@
             font-size: 36px;
             font-weight: bold;
             line-height: 1.2;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
         }
 
         .school-name-en {
             color: #E8D399; /* Soft Gold */
             font-family: 'Arial', sans-serif;
-            font-size: 15px;
+            font-size: 14.5px;
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-top: 6px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         /* Photo Box */
@@ -98,12 +121,13 @@
             height: 230px;
             margin: -50px auto 0;
             border: 5px solid #ffffff;
+            outline: 3px solid #c5a059; /* Double border effect */
             border-radius: 12px;
             overflow: hidden;
             background-color: #fff;
             position: relative;
-            z-index: 2;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            z-index: 3;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .photo-area img { width: 100%; height: 100%; object-fit: cover; }
@@ -111,33 +135,58 @@
         /* Name and Title */
         .title-area {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px;
             padding: 0 20px;
+            position: relative;
+            z-index: 2;
         }
-        .title-area h1 { font-size: 32px; color: #111; margin-bottom: 5px; font-weight: 700; }
-        .title-area h2 { font-size: 20px; color: #1a7837; font-weight: 600; }
+        .title-area h1 { 
+            font-size: 32px; 
+            color: #0a3d19; 
+            margin-bottom: 8px; 
+            font-weight: 700; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        /* Modern Designation Badge */
+        .title-area h2 { 
+            display: inline-block;
+            font-size: 19px; 
+            color: #fff; 
+            font-weight: 600; 
+            background: linear-gradient(135deg, #c5a059 0%, #a47c32 100%);
+            padding: 6px 25px;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.4);
+            letter-spacing: 0.5px;
+        }
 
         .divider {
-            width: 50%;
+            width: 70%;
             height: 2px;
-            background: linear-gradient(90deg, transparent, #C69C6D, transparent);
-            margin: 12px auto 20px;
+            background: linear-gradient(90deg, transparent, #c5a059, transparent);
+            margin: 20px auto 25px;
+            opacity: 0.7;
         }
 
-        /* Clean Aligned Details */
+        /* Clean Aligned Details with Icons */
         .details-grid {
             display: grid;
-            grid-template-columns: 130px 15px 1fr;
-            gap: 12px 5px;
-            margin: 0 50px;
-            font-size: 21px;
+            grid-template-columns: 30px 120px 15px 1fr;
+            gap: 15px 5px;
+            margin: 0 45px;
+            font-size: 20px;
             font-weight: 600;
-            color: #222;
+            color: #333;
+            position: relative;
+            z-index: 2;
+            align-items: center;
         }
+        .details-grid i { color: #176a2f; font-size: 18px; text-align: center; } /* Icons Color */
         .details-grid .label { color: #555; }
         .details-grid .colon { text-align: center; color: #777; }
-        .details-grid .value { color: #000; font-weight: 700; }
-        .blood-highlight { color: #d32f2f !important; }
+        .details-grid .value { color: #111; font-weight: 700; }
+        .blood-highlight { color: #d32f2f !important; font-weight: 700; }
 
         /* Footer (QR on Right, Signature on Left) */
         .card-footer {
@@ -149,6 +198,7 @@
             justify-content: space-between;
             align-items: flex-end;
             padding: 0 45px;
+            z-index: 2;
         }
 
         /* Large & Visible Signature */
@@ -160,7 +210,7 @@
             width: 250px; 
             height: 110px; 
             object-fit: contain;
-            margin: 0 auto -20px auto; /* <--- নেগেটিভ মার্জিন দিয়ে স্বাক্ষর দাগের একদম কাছে আনা হয়েছে */
+            margin: 0 auto -20px auto; /* নেগেটিভ মার্জিন */
             display: block;
             mix-blend-mode: multiply; 
             filter: grayscale(100%) contrast(5) brightness(0.3); 
@@ -168,24 +218,25 @@
         .signature-line {
             width: 100%;
             height: 2px;
-            background-color: #222;
-            margin: 0 auto 8px auto;
+            background: linear-gradient(90deg, transparent, #222, #222, transparent);
+            margin: 0 auto 5px auto;
         }
         .signature-area p {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            color: #222;
+            color: #333;
+            letter-spacing: 1px;
         }
 
         /* Right Side QR */
         .qr-area {
-            width: 115px;
-            height: 115px;
+            width: 110px;
+            height: 110px;
             background: #fff;
-            padding: 5px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            border: 1px solid #ddd;
+            padding: 6px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            border: 2px solid #e0e0e0;
         }
         .qr-area img { width: 100%; height: 100%; object-fit: contain; }
 
@@ -254,11 +305,18 @@
 
             <div class="divider"></div>
 
-            <!-- Details Grid -->
+            <!-- Details Grid with Icons -->
             <div class="details-grid">
+                <i class="fa-solid fa-building-user"></i>
                 <div class="label">ডিপার্টমেন্ট</div><div class="colon">:</div><div class="value" id="outDept">আইসিটি</div>
+                
+                <i class="fa-solid fa-clock"></i>
                 <div class="label">শিফট</div><div class="colon">:</div><div class="value" id="outShift">জবা</div>
+                
+                <i class="fa-solid fa-phone"></i>
                 <div class="label">ফোন</div><div class="colon">:</div><div class="value" id="outPhone">০১৬২২১৮৬৮১২</div>
+                
+                <i class="fa-solid fa-droplet" style="color: #d32f2f;"></i>
                 <div class="label">রক্তের গ্রুপ</div><div class="colon">:</div><div class="value blood-highlight" id="outBlood">এ পজেটিভ</div>
             </div>
 
