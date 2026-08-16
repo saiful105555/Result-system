@@ -166,11 +166,10 @@
             width: 100%;
             border: 2px solid #000;
             margin-bottom: 5px;
-            overflow-x: auto; /* স্ক্রিনে স্ক্রলবার চালু */
+            overflow-x: auto; 
             background-color: #fff;
         }
-        
-        /* কাস্টম স্ক্রলবার ডিজাইন */
+
         .table-container::-webkit-scrollbar { height: 12px; }
         .table-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .table-container::-webkit-scrollbar-thumb { background: #2b6cb0; border-radius: 4px; }
@@ -178,7 +177,7 @@
 
         table {
             width: 100%;
-            min-width: max-content; /* স্ক্রিনে কলামগুলো পর্যাপ্ত জায়গা নিবে */
+            min-width: max-content; 
             border-collapse: collapse;
             text-align: center;
         }
@@ -190,6 +189,7 @@
             font-weight: 500;
             white-space: nowrap;
             height: 24px; 
+            overflow: hidden; /* স্ক্রিনে ওভারল্যাপ বন্ধ করার জন্য */
         }
 
         th { background-color: #eef2f5; font-weight: 700; font-size: 11px; }
@@ -201,6 +201,10 @@
             padding-left: 6px;
             font-weight: 600;
             min-width: 160px;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden; 
+            text-overflow: ellipsis; /* বড় নাম হলে ডট দেখাবে */
         }
         .total-col { min-width: 40px; }
 
@@ -278,7 +282,6 @@
                 overflow: hidden !important;
             }
 
-            /* প্রিন্টে স্ক্রলবার বন্ধ এবং ফুল ফিট */
             .table-container {
                 flex: 1 1 auto !important; 
                 width: 100% !important; 
@@ -304,24 +307,33 @@
                 padding: 0 !important; 
                 line-height: 1.1 !important;
                 height: 16px !important; 
+                overflow: hidden !important; 
             }
 
             th { font-size: 8.5px !important; }
 
-            .sl-col { width: 20px !important; min-width: 0 !important; }
+            .sl-col { 
+                width: 22px !important; 
+                max-width: 22px !important; 
+            }
             .name-col { 
-                width: 105px !important; 
-                min-width: 0 !important; 
-                font-size: 11px !important; 
+                width: 115px !important; 
+                max-width: 115px !important; 
+                font-size: 9.5px !important; /* ১৫ দিনে কলাম সংকুচিত হওয়ায় ফন্ট সাইজ সামান্য ছোট */
                 font-weight: bold !important;
                 padding-left: 3px !important;
                 white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important; /* বড় নাম হলে ডট দেখাবে */
             }
-            .total-col { width: 22px !important; min-width: 0 !important; }
+            .total-col { 
+                width: 24px !important; 
+                max-width: 24px !important; 
+            }
 
             input[type="checkbox"] { 
-                width: 8.5px !important; 
-                height: 8.5px !important;
+                width: 8px !important; 
+                height: 8px !important;
                 margin: 0 auto !important;
             }
 
@@ -424,7 +436,7 @@
     </div>
 
     <script>
-        // ২৫ জন শিক্ষকের তালিকা (ছবি অনুযায়ী আপডেট করা হয়েছে)
+        // ২৫ জন শিক্ষকের তালিকা
         const teachers = [
             "জনাব এ.এম. আখতার হোসেন", 
             '" মোঃ সিরাজুল ইসলাম খান (C.T)', 
@@ -483,7 +495,7 @@
             const thead = document.querySelector('#rosterTable thead');
             const tbody = document.querySelector('#rosterTable tbody');
 
-            // Header Build (ক্লাস ব্যবহার করে সিএসএস দ্বারা রেস্পন্সিভ করা হয়েছে)
+            // Header Build 
             let headRow1 = `<tr>
                 <th rowspan="2" class="sl-col">ক্রঃ নং</th>
                 <th rowspan="2" class="name-col">পর্যবেক্ষকদের নাম</th>`;
@@ -502,9 +514,12 @@
             // Body Build
             let tbodyHTML = "";
             teachers.forEach((name, i) => {
+                // নামের ভেতর ডাবল কোটেশন থাকলে তা title অ্যাট্রিবিউট ভেঙে দেয়, তাই সেফ-রিপ্লেস করা হয়েছে
+                let safeName = name.replace(/"/g, '&quot;'); 
+                
                 tbodyHTML += `<tr>
                     <td>${toBn(i + 1)}.</td>
-                    <td class="name-col">${name}</td>`;
+                    <td class="name-col" title="${safeName}">${name}</td>`;
                 for (let j = 0; j < days * 3; j++) {
                     let isDayEndClass = ((j + 1) % 3 === 0) ? 'day-end' : '';
                     tbodyHTML += `<td class="${isDayEndClass}"><input type="checkbox" class="duty-checkbox" onchange="calculateTotals()"></td>`;
