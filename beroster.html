@@ -8,7 +8,7 @@
     <style>
         @page {
             size: A4 landscape;
-            margin: 0 !important; /* ব্রাউজারের ডিফল্ট মার্জিন জিরো */
+            margin: 0 !important;
         }
 
         body {
@@ -59,7 +59,6 @@
             box-sizing: border-box;
         }
 
-        /* তারিখ ইনপুটের গ্রিড */
         .date-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -81,7 +80,6 @@
             align-self: flex-end;
         }
 
-        /* পিডিএফ প্রিভিউ কার্ড */
         .pdf-preview-card {
             display: none;
             background: #ffffff;
@@ -137,7 +135,6 @@
         .main-title h3 { margin: 0 0 1px 0; font-size: 13px; font-weight: 600; }
         .main-title h4 { margin: 0; font-size: 11.5px; font-weight: 600; }
 
-        /* টোটাল ডিউটি সামারি বক্স */
         .total-duty-wrapper { width: 170px; display: flex; justify-content: flex-end; }
         .total-duty-box {
             border: 2px solid #000;
@@ -150,73 +147,100 @@
         }
         .total-duty-box span { font-size: 18px; display: block; margin-top: 1px; color: #000; }
 
+        /* =========================================
+           স্ক্রিন ভিউ (ওয়েব প্যানেল) এর জন্য রিল্যাক্সড ডিজাইন
+           ========================================= */
         .table-container {
             width: 100%;
             border: 2px solid #000;
             margin-bottom: 2px;
+            overflow-x: auto; /* স্ক্রিনে স্ক্রলবার চালু */
+            background-color: #fff;
+        }
+        
+        /* কাস্টম স্ক্রলবার ডিজাইন */
+        .table-container::-webkit-scrollbar {
+            height: 12px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: #2b6cb0; 
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #1a4971; 
         }
 
         table {
             width: 100%;
+            min-width: max-content; /* স্ক্রিনে কলামগুলো পর্যাপ্ত জায়গা নিবে */
             border-collapse: collapse;
             text-align: center;
-            table-layout: auto; /* অটো-ফিট করার জন্য */
         }
 
+        /* স্ক্রিনে কাজ করার সুবিধার্থে ঘরগুলো বড় রাখা হয়েছে */
         th, td {
             border: 1px solid #000;
-            padding: 0; /* প্যাডিং জিরো করে দেওয়া হলো যাতে জায়গা বাঁচে */
-            font-size: 11px; 
+            padding: 4px 6px; 
+            font-size: 12px; 
             font-weight: 500;
-            white-space: nowrap; /* নাম বা টেক্সট যেন নিচে না নামে */
-            overflow: hidden;
-            line-height: 1.1;
-            height: 18px; /* রো-এর নির্দিষ্ট উচ্চতা */
+            white-space: nowrap;
+            height: 24px; 
         }
 
-        th { background-color: #eef2f5; font-weight: 700; }
+        th { 
+            background-color: #eef2f5; 
+            font-weight: 700; 
+            font-size: 11px;
+        }
+        
         .day-end { border-right: 2px solid #000 !important; }
 
+        .sl-col { min-width: 40px; }
         .name-col {
             text-align: left;
-            padding-left: 4px;
+            padding-left: 6px;
             font-weight: 600;
-            white-space: nowrap;
-            max-width: 140px; 
+            min-width: 160px;
         }
+        .total-col { min-width: 40px; }
 
+        /* স্ক্রিনে চেকবক্সগুলো একটু বড় দেখাবে */
         input[type="checkbox"] {
-            width: 11px;
-            height: 11px;
+            width: 14px;
+            height: 14px;
             cursor: pointer;
-            margin: 0;
+            margin: 0 auto;
+            display: block;
             accent-color: #000;
         }
 
         .total-cell, .col-total {
             font-weight: bold;
             background-color: #eaeaea;
-            font-size: 11px;
         }
 
         .footer-signatures {
             display: flex;
             justify-content: space-between;
-            margin-top: 8px;
+            margin-top: 15px;
             text-align: center;
-            font-size: 11.5px;
+            font-size: 12px;
             font-weight: 600;
         }
         .footer-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 9px;
-            margin-top: 2px;
+            font-size: 10px;
+            margin-top: 5px;
             color: #333;
         }
 
         /* =========================================
-           প্রিন্ট করার জন্য স্থায়ী ম্যাজিক সিএসএস (GitHub Live ও Print-এর জন্য)
+           প্রিন্ট করার জন্য স্থায়ী ম্যাজিক সিএসএস (পিডিএফ ভিউ)
            ========================================= */
         @media print {
             @page {
@@ -228,7 +252,7 @@
                 width: 297mm !important; 
                 height: 209mm !important; 
                 margin: 0 !important;
-                padding: 4mm !important; /* মার্জিন কমানো হলো */
+                padding: 3mm !important; 
                 background-color: #ffffff;
                 overflow: hidden !important; 
                 box-sizing: border-box !important;
@@ -261,47 +285,53 @@
                 overflow: hidden !important;
             }
 
+            /* প্রিন্টে স্ক্রলবার বন্ধ এবং ফুল ফিট */
             .table-container {
                 flex: 1 1 auto !important; 
-                width: 100%; 
-                border: 2px solid #000;
-                margin-bottom: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                overflow: hidden;
+                width: 100% !important; 
+                border: 2px solid #000 !important;
+                margin-bottom: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                overflow: hidden !important; 
+                overflow-x: hidden !important;
             }
 
             table {
-                width: 100%;
+                width: 100% !important;
+                min-width: 0 !important; /* প্রিন্টে অটো-এক্সপান্ড বন্ধ */
                 height: 100% !important; 
-                table-layout: auto !important; 
-                border-collapse: collapse;
+                table-layout: fixed !important; /* প্রিন্টের জন্য ফিক্সড অত্যাবশ্যক */
+                border-collapse: collapse !important;
             }
 
-            /* 27 জন আটানোর জন্য ফন্ট ও উচ্চতা স্ট্রিক্টলি লক করা হলো */
+            /* প্রিন্টে ঘরগুলো ছোট হবে যাতে ১৫ দিন আঁটে */
             th, td { 
-                font-size: 11px !important; 
+                font-size: 9px !important; 
                 padding: 0 !important; 
-                line-height: 1 !important;
-                white-space: nowrap !important; /* দুই লাইনে হওয়া বন্ধ */
-                height: auto !important; /* ফ্লেক্স-বক্স অনুযায়ী অটো ফিট হবে */
+                line-height: 1.1 !important;
+                height: 15px !important; 
             }
 
+            th { font-size: 8.5px !important; }
+
+            /* প্রিন্টের জন্য নির্দিষ্ট মাপ */
+            .sl-col { width: 20px !important; min-width: 0 !important; }
             .name-col { 
-                font-size: 11.5px !important; 
+                width: 105px !important; 
+                min-width: 0 !important; 
+                font-size: 10px !important; 
                 font-weight: bold !important;
-                white-space: nowrap !important; 
-                min-width: 120px !important; 
-                max-width: 160px !important;
-                padding-left: 4px !important;
-                overflow: hidden !important;
+                padding-left: 3px !important;
             }
+            .total-col { width: 22px !important; min-width: 0 !important; }
 
+            /* প্রিন্টে চেকবক্স ছোট হয়ে যাবে */
             input[type="checkbox"] { 
-                width: 10px !important; 
-                height: 10px !important;
-                margin: 0 !important;
+                width: 8.5px !important; 
+                height: 8.5px !important;
+                margin: 0 auto !important;
             }
 
             .footer-signatures { 
@@ -336,11 +366,10 @@
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <label>পরীক্ষার মোট দিন ও তারিখ</label>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <label style="font-size: 11px; color: #d9534f;">মোট দিন (চেঞ্জ করলে রোস্টার রিসেট হবে):</label>
+                    <label style="font-size: 11px; color: #d9534f;">মোট দিন (সর্বোচ্চ ১৫ দিন):</label>
                     <input type="number" id="numDays" value="6" min="1" max="15" style="width: 50px; padding: 4px;" onchange="updateDayCount()">
                 </div>
             </div>
-            <!-- ডায়নামিক তারিখের ঘর -->
             <div class="date-grid" id="dynamicDateInputs"></div>
         </div>
 
@@ -403,7 +432,6 @@
     </div>
 
     <script>
-        // ২৭ জন শিক্ষকের তালিকা
         const teachers = [
             "জনাব শেখ রেজাউল হোসেন", 
             "\" মোঃ জাফর হাসান", 
@@ -442,6 +470,7 @@
         function updateDayCount() {
             let days = parseInt(document.getElementById('numDays').value);
             if(days < 1) days = 1;
+            if(days > 15) days = 15;
 
             let container = document.getElementById('dynamicDateInputs');
             let oldValues = [];
@@ -462,14 +491,14 @@
             const thead = document.querySelector('#rosterTable thead');
             const tbody = document.querySelector('#rosterTable tbody');
 
-            // Header Build
+            // Header Build (ক্লাস ব্যবহার করা হয়েছে, স্টাইল সিএসএস হ্যান্ডেল করবে)
             let headRow1 = `<tr>
-                <th rowspan="2" style="width: 25px;">ক্রঃ নং</th>
-                <th rowspan="2" class="name-col" style="min-width: 120px;">পর্যবেক্ষকদের নাম</th>`;
+                <th rowspan="2" class="sl-col">ক্রঃ নং</th>
+                <th rowspan="2" class="name-col">পর্যবেক্ষকদের নাম</th>`;
             for(let i=1; i<=days; i++) {
                 headRow1 += `<th colspan="3" class="day-end" id="th-date${i}">দিন ${toBn(i)}</th>`;
             }
-            headRow1 += `<th rowspan="2" style="width: 25px;">মোট</th></tr>`;
+            headRow1 += `<th rowspan="2" class="total-col total-cell">মোট</th></tr>`;
 
             let headRow2 = `<tr>`;
             for(let i=1; i<=days; i++) {
