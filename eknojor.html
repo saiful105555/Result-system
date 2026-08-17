@@ -151,38 +151,6 @@
       align-items: center;
       gap: 8px;
     }
-    
-    /* =======================================================
-       CUSTOM ALERT NOTICE CSS 
-       ======================================================= */
-    .alert-notice {
-      background: #fef2f2;
-      border: 2px solid #fca5a5;
-      border-left: 8px solid #ef4444;
-      padding: 12px 18px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.15);
-      animation: pulseWarning 2s infinite;
-    }
-    .alert-notice i {
-      font-size: 26px;
-      color: #ef4444;
-    }
-    .alert-notice span {
-      font-size: 16px;
-      font-weight: 700;
-      color: #991b1b;
-      line-height: 1.4;
-    }
-    @keyframes pulseWarning {
-      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-    }
 
     .multi-table-container {
       width: 100%;
@@ -412,6 +380,15 @@
       <label for="globalExamYear">পরীক্ষার সাল:</label>
       <input type="text" id="globalExamYear" value="2026" oninput="saveDataToCache()">
     </div>
+    <!-- নতুন যোগ করা ইনপুট ফিল্ড -->
+    <div>
+      <label for="globalWorkingDays">মোট কর্মদিবস (Working Days):</label>
+      <input type="text" id="globalWorkingDays" value="" placeholder="যেমন: ২১০" oninput="saveDataToCache()">
+    </div>
+    <div>
+      <label for="globalHighestAtt">সর্বোচ্চ উপস্থিতি (Highest Att.):</label>
+      <input type="text" id="globalHighestAtt" value="" placeholder="যেমন: ২০৫" oninput="saveDataToCache()">
+    </div>
   </div>
 
   <div class="section-card">
@@ -419,12 +396,6 @@
     <p style="font-size: 13px; color: #475569; margin-bottom: 12px;">
       নিচের টেবিলে প্রতিটি শিক্ষার্থীর তথ্য এবং প্রতিটি বিষয়ের ই.টি. (ET) ও টিউটোরিয়াল (Tu) নম্বর খালি ঘরে বসান। (অটোমেটিক ক্যালকুলেট হবে)
     </p>
-
-    <!-- CUSTOM INSTRUCTION NOTICE ADDED HERE -->
-    <div class="alert-notice">
-      <i class="fa-solid fa-triangle-exclamation fa-beat-fade"></i>
-      <span><strong>বিশেষ নির্দেশনা:</strong> "আইসিটি" (ICT) বিষয়ের টিউটোরিয়াল নাম্বার ইনপুট দেয়ার সময় ৫০% করে ইনপুট দিতে হবে।</span>
-    </div>
 
     <div class="multi-table-container">
       <table class="multi-input-table" id="mainInputTable">
@@ -528,7 +499,9 @@
       cls: document.getElementById('globalClass').value,
       sec: document.getElementById('globalSection').value,
       shift: document.getElementById('globalShift').value,
-      year: document.getElementById('globalExamYear').value
+      year: document.getElementById('globalExamYear').value,
+      workingDays: document.getElementById('globalWorkingDays').value, // NEW
+      highestAtt: document.getElementById('globalHighestAtt').value    // NEW
     };
 
     const rows = document.querySelectorAll('#mainTableBody tr');
@@ -551,21 +524,23 @@
       studentsData.push(student);
     });
 
-    localStorage.setItem('itsc_global_info_v4', JSON.stringify(globalData));
-    localStorage.setItem('itsc_students_data_v4', JSON.stringify(studentsData));
+    localStorage.setItem('itsc_global_info_v5', JSON.stringify(globalData));
+    localStorage.setItem('itsc_students_data_v5', JSON.stringify(studentsData));
   }
 
   function loadDataFromCache() {
-    const savedGlobal = localStorage.getItem('itsc_global_info_v4');
+    const savedGlobal = localStorage.getItem('itsc_global_info_v5');
     if (savedGlobal) {
       const gData = JSON.parse(savedGlobal);
       document.getElementById('globalClass').value = gData.cls || '';
       document.getElementById('globalSection').value = gData.sec || '';
       document.getElementById('globalShift').value = gData.shift || '';
       document.getElementById('globalExamYear').value = gData.year || '2026';
+      document.getElementById('globalWorkingDays').value = gData.workingDays || ''; // NEW
+      document.getElementById('globalHighestAtt').value = gData.highestAtt || '';   // NEW
     }
 
-    const savedStudents = localStorage.getItem('itsc_students_data_v4');
+    const savedStudents = localStorage.getItem('itsc_students_data_v5');
     if (savedStudents) {
       const sData = JSON.parse(savedStudents);
       if (sData.length > 0) {
@@ -578,8 +553,8 @@
 
   function clearCacheData() {
     if(confirm('ক্যাশ মেমোরি থেকে সব ডেটা মুছে ফেলতে চান?')) {
-      localStorage.removeItem('itsc_global_info_v4');
-      localStorage.removeItem('itsc_students_data_v4');
+      localStorage.removeItem('itsc_global_info_v5');
+      localStorage.removeItem('itsc_students_data_v5');
       document.getElementById('mainTableBody').innerHTML = '';
       addMultipleRows(3);
     }
@@ -674,6 +649,10 @@
     const shift = document.getElementById('globalShift').value || '';
     const examYear = document.getElementById('globalExamYear').value || '';
     const att = row.querySelector('.in-att').value || '';
+
+    // নতুন ইনপুট থেকে ডাটা গ্রহণ
+    const totalWorkingDays = document.getElementById('globalWorkingDays').value || '';
+    const highestAttendance = document.getElementById('globalHighestAtt').value || '';
 
     let results = {};
     subjectsConfig.forEach(sub => {
@@ -853,9 +832,10 @@
                   </tr>
                   <tr>
                       <td class="pr-bg-yellow">Annual</td>
-                      <td></td>
+                      <!-- নতুন ইনপুটের ডাটা এখানে শো করবে -->
+                      <td>${totalWorkingDays}</td> 
                       <td>${att}</td>
-                      <td></td>
+                      <td>${highestAttendance}</td>
                   </tr>
               </table>
               <div class="pr-signatures">
@@ -981,9 +961,10 @@
         if (!excludedFromPoster.includes(sub.id)) {
             let gradeColor = res.lg === 'F' ? '#ef4444' : (res.lg === 'A+' ? '#16a34a' : '#1e293b');
 
+            // ET এর 70% এবং Tutorial এর calculated (50% for ICT) প্রিন্ট করা হচ্ছে
             subCellsHTML += `
-              <td>${res.etInput}</td>
-              <td>${res.tuInput}</td>
+              <td>${res.et70}</td>
+              <td>${res.tu}</td>
               <td><b>${res.tot}</b></td>
               <td class="subject-divider"><b style="color:${gradeColor};">${res.lg}</b></td>
             `;
@@ -1098,19 +1079,19 @@
                 <th rowspan="2" style="background:#ea580c;">GPA</th>
               </tr>
               <tr>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                <th>ET</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
+                <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
               </tr>
             </thead>
             <tbody>
