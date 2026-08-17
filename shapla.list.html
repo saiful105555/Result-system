@@ -1,186 +1,284 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>পাশাপাশি শিক্ষক তালিকা - ইবনে তাইমিয়া</title>
+    <title>শাপলা শিফট শিক্ষক তালিকা - ইবনে তাইমিয়া</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        body {
-            font-family: 'Hind Siliguri', sans-serif;
-            background: #f4f7f6;
+        /* Theme Variables from Home Page */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0d3b66 0%, #0077b6 50%, #00b4d8 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #2b2d42;
+            --sub-text: #64748b;
+            --heading-color: #0f172a;
+            --nav-bg: #ffffff;
+            --table-border: #e0e6ed;
+            --table-header: #0077b6;
+            --zebra-bg: #f8fafc;
+            --hover-bg: #ebf5fb;
+        }
+
+        [data-theme="dark"] {
+            --primary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            --card-bg: rgba(30, 41, 59, 0.95);
+            --text-color: #f1f5f9;
+            --sub-text: #94a3b8;
+            --heading-color: #ffffff;
+            --nav-bg: #1e293b;
+            --table-border: #334155;
+            --table-header: #0f172a;
+            --zebra-bg: rgba(255, 255, 255, 0.03);
+            --hover-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            padding: 20px 10px;
-            color: #333;
+            padding: 0;
+            font-family: 'Hind Siliguri', sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        .container {
-            max-width: 1400px; 
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .header-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .header-section h1 {
-            color: #1a5276;
-            font-size: 32px;
-            margin: 0 0 5px 0;
-            font-weight: 700;
-        }
-
-        .header-section p {
-            color: #555;
-            font-size: 18px;
-            margin: 5px 0;
-            font-weight: 600;
-        }
-
-        .search-container {
+        body {
+            background: var(--primary-gradient);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 25px;
+            color: var(--text-color);
+            padding: 20px 15px;
+            position: relative;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0d3b66;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #ffb703;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        /* Header UI from Home Page */
+        .top-header-wrapper {
+            width: 100%;
+            max-width: 1350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 35px;
+            margin-bottom: 15px;
             padding: 0 10px;
         }
+        .top-left-logo-container {
+            flex-shrink: 0;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(45deg, #ffb703, #e63946, #00b4d8, #ffffff);
+            background-size: 300% 300%;
+            animation: gradientBorder 4s ease infinite, pulseGlow 2s infinite alternate;
+        }
+        .top-left-logo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #ffffff; }
+        
+        .header { text-align: left; color: #ffffff; }
+        .header h1 { font-size: 2.1rem; font-weight: 700; margin-bottom: 4px; color: #ffffff; }
+        .header p.address { font-size: 1.05rem; margin-bottom: 8px; color: #e0f2fe; }
+        .header .subtitle {
+            display: inline-block; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px);
+            padding: 5px 16px; border-radius: 30px; font-size: 1.1rem; font-weight: 600; color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(255, 183, 3, 0.5); } 100% { box-shadow: 0 0 20px rgba(255, 183, 3, 0.9); } }
+        @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
+        /* Clock Bar */
+        .clock-bar {
+            width: 100%; max-width: 1350px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
+            backdrop-filter: blur(12px); border: 1px solid rgba(255, 183, 3, 0.4); padding: 10px 22px;
+            border-radius: 16px; color: #ffffff; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.95rem; font-weight: 600; margin-bottom: 25px; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .clock-bar .date-box { color: #38bdf8; }
+        .clock-bar .time-box { color: #ffb703; background: rgba(255, 183, 3, 0.1); padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(255, 183, 3, 0.3); }
+
+        /* ====================================
+           Table & Search Section
+           ==================================== */
+        .table-main-container {
+            width: 100%;
+            max-width: 1350px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 25px;
+        }
+
+        .list-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .list-title h2 { color: var(--heading-color); font-size: 26px; }
+        .list-title p { color: var(--sub-text); font-size: 16px; }
+
+        .search-container {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 25px; flex-wrap: wrap; gap: 15px;
+        }
         .search-box input {
-            width: 350px;
-            padding: 10px 15px;
-            font-size: 15px;
+            width: 350px; padding: 12px 18px; font-size: 15px;
             font-family: 'Hind Siliguri', sans-serif;
-            border: 2px solid #bdc3c7;
-            border-radius: 25px;
-            outline: none;
+            border: 2px solid var(--table-border); border-radius: 30px;
+            outline: none; background: var(--nav-bg); color: var(--text-color);
             transition: 0.3s;
         }
-
-        .search-box input:focus {
-            border-color: #2980b9;
-        }
-
+        .search-box input:focus { border-color: #0077b6; }
+        
         .total-teachers {
-            background: #eaf2f8;
-            color: #2980b9;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
+            background: rgba(0, 119, 182, 0.1); color: #0077b6;
+            padding: 10px 18px; border-radius: 20px; font-weight: bold;
         }
+        [data-theme="dark"] .total-teachers { color: #38bdf8; }
 
-        /* পাশাপাশি টেবিলের জন্য গ্রিড লেআউট */
         .tables-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* দুটি সমান কলাম */
-            gap: 20px; 
-            align-items: start;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;
         }
-
         table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 15px;
-            background-color: #fff;
-            border: 1px solid #e0e6ed;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            width: 100%; border-collapse: collapse; font-size: 15px;
+            background-color: var(--nav-bg); border: 1px solid var(--table-border);
         }
-
         th, td {
-            padding: 10px 12px;
-            border: 1px solid #edf2f7;
-            text-align: left;
+            padding: 12px 10px; border: 1px solid var(--table-border);
+            text-align: left; color: var(--text-color);
         }
-
         th {
-            background-color: #2980b9;
-            color: #ffffff;
-            text-align: center;
-            font-weight: 600;
-            white-space: nowrap;
+            background-color: var(--table-header); color: #ffffff;
+            text-align: center; font-weight: 600; white-space: nowrap;
         }
-
-        /* সেন্টার এলাইনমেন্ট */
-        td:nth-child(1), td:nth-child(5), td:nth-child(6), td:nth-child(7) {
-            text-align: center;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        tbody tr:hover {
-            background-color: #ebf5fb;
-        }
-
-        .mobile-num {
-            display: block;
-            line-height: 1.4;
-            color: #2c3e50;
-        }
-
+        td:nth-child(1), td:nth-child(5), td:nth-child(6), td:nth-child(7) { text-align: center; }
+        tbody tr:nth-child(even) { background-color: var(--zebra-bg); }
+        tbody tr:hover { background-color: var(--hover-bg); }
+        
+        .mobile-num { display: block; line-height: 1.4; color: var(--text-color); }
+        
         .no-data {
-            text-align: center;
-            padding: 20px;
-            color: red;
-            font-weight: bold;
-            display: none;
-            grid-column: span 2;
+            text-align: center; padding: 20px; color: #ef4444; font-weight: bold;
+            display: none; grid-column: span 2;
         }
 
-        /* ডেস্কটপ ভিউতে প্রথম টেবিলের হেডারের সাথে দ্বিতীয় টেবিলের লাইন সোজা রাখার জন্য */
+        /* Desktop specific alignment */
         @media screen and (min-width: 993px) {
-            #table-2 {
-                margin-top: 44px; /* হেডারের সমান জায়গা */
-            }
+            #table-2 { margin-top: 48px; } /* Aligns rows by matching Header height */
         }
+        
+        /* Footer styling */
+        .copyright-footer { width: 100%; text-align: center; padding: 15px; color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; }
+        .home-back-btn { background: #0077b6; color: white; text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
 
-        /* মোবাইল ও ট্যাবের জন্য রেস্পন্সিভ ডিজাইন */
+        /* Mobile Adjustments */
         @media screen and (max-width: 992px) {
-            .tables-wrapper {
-                grid-template-columns: 1fr; /* মোবাইলে টেবিল দুটি উপর-নিচ হয়ে যাবে */
-                gap: 0;
-            }
-            #table-2 {
-                border-top: none; /* মোবাইলে একসাথে জোড়া লাগার জন্য */
-            }
-            .search-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .search-box input {
-                width: 100%;
-            }
+            .tables-wrapper { grid-template-columns: 1fr; gap: 0; }
+            #table-2 { border-top: none; }
+            .search-box input { width: 100%; }
         }
-
-        @media screen and (max-width: 600px) {
-            .container {
-                padding: 15px 5px;
-            }
-            table {
-                font-size: 11px; /* মোবাইলে স্ক্রলবার না আসার জন্য ফন্ট ছোট করা হয়েছে */
-            }
-            th, td {
-                padding: 6px 3px; 
-            }
-            .header-section h1 {
-                font-size: 24px;
-            }
+        @media (max-width: 768px) {
+            .top-header-wrapper { flex-direction: column; text-align: center; gap: 15px; }
+            .header { text-align: center; }
+            .header h1 { font-size: 1.5rem; }
+            .clock-bar { flex-direction: column; gap: 8px; text-align: center; }
+            table { font-size: 11px; }
+            th, td { padding: 6px 4px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header-section">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="spinner"></div>
+        <h3>লোড হচ্ছে...</h3>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="ডার্ক/লাইট মোড">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+    </button>
+
+    <!-- Header Section (From Home Page) -->
+    <div class="top-header-wrapper">
+        <div class="top-left-logo-container">
+            <img src="https://lh3.googleusercontent.com/d/15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR" alt="School Logo" class="top-left-logo">
+        </div>
+        <header class="header">
             <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
-            <p>শিক্ষক তালিকা - ২০২৫ | শিফটঃ শাপলা</p>
+            <p class="address"><i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</p>
+            <div class="subtitle"><i class="fa-solid fa-users"></i> শিক্ষক ও কর্মকর্তা ব্যবস্থাপনা</div>
+        </header>
+    </div>
+
+    <!-- Clock Bar -->
+    <div class="clock-bar">
+        <div class="date-box"><i class="fa-solid fa-calendar-days"></i> <span id="currentDate">লোড হচ্ছে...</span></div>
+        <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="currentTime">00:00:00</span></div>
+    </div>
+
+    <a href="index.html" class="home-back-btn"><i class="fa-solid fa-arrow-left"></i> হোম পেজে ফিরে যান</a>
+
+    <!-- Teacher Table Section -->
+    <div class="table-main-container">
+        <div class="list-title">
+            <h2>শিক্ষক তালিকা - ২০২৫</h2>
+            <p>শিফটঃ শাপলা</p>
         </div>
 
         <div class="search-container">
@@ -191,7 +289,7 @@
         </div>
 
         <div class="tables-wrapper">
-            <!-- প্রথম টেবিল (ক্রম ১ থেকে ১৪) - শুধুমাত্র এখানেই হেডিং থাকবে -->
+            <!-- Table 1 (Serial 1-14) -->
             <table class="teacher-table">
                 <thead>
                     <tr>
@@ -216,7 +314,7 @@
                 </tbody>
             </table>
 
-            <!-- দ্বিতীয় টেবিল (ক্রম ১৫ থেকে ২৭) - হেডিং মুছে ফেলা হয়েছে -->
+            <!-- Table 2 (Serial 15-27) -->
             <table class="teacher-table" id="table-2">
                 <tbody>
                     <tr><td>১৫.</td><td>সাখাওয়াত হোসাইন</td><td>প্রভাষক</td><td>রসায়ন</td><td>০১৮১৩-৬৫৯৩১৩</td><td>B+</td><td>-</td></tr>
@@ -234,13 +332,53 @@
                     <tr><td>২৭.</td><td>আরমান হোসেন</td><td>সহকারী শিক্ষক</td><td>পদার্থ</td><td>০১৮১২-৫৬৩৭৮৭</td><td>-</td><td>-</td></tr>
                 </tbody>
             </table>
-
             <div id="noData" class="no-data">কোনো তথ্য পাওয়া যায়নি!</div>
         </div>
     </div>
 
-    <!-- লাইভ সার্চ (দুটি টেবিলের জন্যই কাজ করবে) -->
+    <!-- Copyright Footer -->
+    <div class="copyright-footer">
+        &copy; ২০২৪ - ২০২৬ ইবনে তাইমিয়া স্কুল এন্ড কলেজ। সর্বস্বত্ব সংরক্ষিত। | Developed by IT Department.
+    </div>
+
+    <!-- Scripts -->
     <script>
+        // Preloader Logic
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.visibility = 'hidden'; }, 500);
+        });
+
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            if (html.getAttribute('data-theme') === 'light') {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon';
+            }
+        }
+
+        // Live Clock
+        function updateClock() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('currentDate').innerText = now.toLocaleDateString('bn-BD', options);
+
+            let hours = now.getHours(), minutes = now.getMinutes(), seconds = now.getSeconds();
+            let ampm = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
+            hours = hours % 12; hours = hours ? hours : 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            document.getElementById('currentTime').innerText = `${hours}:${minutes}:${seconds} ${ampm}`;
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        // Search Table Logic
         function searchTable() {
             let input = document.getElementById("searchInput").value.toLowerCase();
             let tables = document.querySelectorAll(".teacher-table");
@@ -249,9 +387,7 @@
             tables.forEach(table => {
                 let tr = table.getElementsByTagName("tr");
                 for (let i = 0; i < tr.length; i++) { 
-                    // প্রথম লাইনে হেডার থাকলে তা স্কিপ করার শর্ত
                     if (tr[i].getElementsByTagName("th").length > 0) continue;
-
                     let rowText = tr[i].innerText.toLowerCase();
                     if (rowText.includes(input)) {
                         tr[i].style.display = "";
@@ -272,6 +408,5 @@
             }
         }
     </script>
-
 </body>
 </html>
