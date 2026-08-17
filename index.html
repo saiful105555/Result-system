@@ -658,7 +658,7 @@
         .btn-3 { border-left-color: #10b981; }
         .btn-4 { border-left-color: #f59e0b; }
         .btn-5 { border-left-color: #8b5cf6; }
-        .btn-6 { border-left-color: #ec4899; } /* নতুন বাটনের বর্ডার কালার */
+        .btn-6 { border-left-color: #ec4899; } 
 
         .btn-icon {
             font-size: 1.8rem;
@@ -677,7 +677,7 @@
         .btn-3 .btn-icon { background: linear-gradient(135deg, #10b981, #059669); }
         .btn-4 .btn-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .btn-5 .btn-icon { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-        .btn-6 .btn-icon { background: linear-gradient(135deg, #ec4899, #be185d); } /* নতুন বাটনের আইকন ব্যাকগ্রাউন্ড */
+        .btn-6 .btn-icon { background: linear-gradient(135deg, #ec4899, #be185d); } 
 
         .btn-text h3 {
             font-size: 1.15rem;
@@ -988,7 +988,7 @@
         }
 
         /* =========================================
-           Roster Modal (Popup) Styles
+           Roster & Teacher List Modal (Popup) Styles
            ========================================= */
         .modal-overlay {
             position: fixed;
@@ -1220,7 +1220,6 @@
             <div class="btn-shine-icon"><i class="fa-solid fa-angles-right"></i></div>
         </a>
 
-        <!-- পরিবর্তন করা হয়েছে এই অংশে -->
         <a href="notice.html" class="mega-eknojor-btn-2">
             <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
             <span>এক নজরে সকলের রেজাল্ট এবং এক নজরে রেজাল্ট তৈরী (৯ম শ্রেণী থেকে দশম শ্রেণী)</span>
@@ -1269,6 +1268,15 @@
             <div class="btn-text">
                 <h3>শিক্ষক আইডি কার্ড জেনারেটর</h3>
                 <p>অটোমেটিক প্রফেশনাল আইডি কার্ড তৈরি</p>
+            </div>
+        </a>
+        
+        <!-- শিফটভিত্তিক শিক্ষক তালিকা বাটন (নতুন যোগ করা হয়েছে) -->
+        <a href="#" onclick="openTeacherListModal(event)" class="nav-btn btn-1">
+            <div class="btn-icon"><i class="fa-solid fa-users-rectangle"></i></div>
+            <div class="btn-text">
+                <h3>শিফটভিত্তিক শিক্ষক তালিকা</h3>
+                <p>সকল শিফটের শিক্ষকদের তালিকা</p>
             </div>
         </a>
     </main>
@@ -1364,24 +1372,51 @@
             </div>
 
             <div class="modal-body">
-                <!-- জবা শিফট (roster.html এর সাথে লিংক করা) -->
                 <a href="roster.html" class="shift-btn shift-jaba">
                     <i class="fa-solid fa-fan"></i> জবা শিফট ডিউটি রোস্টার
                 </a>
-
-                <!-- বেলী শিফট -->
                 <a href="beroster.html" class="shift-btn shift-beli">
                     <i class="fa-solid fa-fan"></i> বেলী শিফট ডিউটি রোস্টার
                 </a>
-
-                <!-- শাপলা শিফট (sroster.html এর সাথে লিংক করা) -->
                 <a href="sroster.html" class="shift-btn shift-shapla">
                     <i class="fa-solid fa-fan"></i> শাপলা শিফট ডিউটি রোস্টার
                 </a>
-
-                <!-- বকুল শিফট (broster.html এর সাথে লিংক করা) -->
                 <a href="broster.html" class="shift-btn shift-bokul">
                     <i class="fa-solid fa-fan"></i> বকুল শিফট ডিউটি রোস্টার
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================
+         Teacher List Selection Modal (Popup) - NEW
+         ========================================= -->
+    <div id="teacherListModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-users" style="color: #0077b6;"></i> শিফট নির্বাচন করুন</h3>
+                <button class="close-btn" onclick="closeTeacherListModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <!-- জবা শিফট শিক্ষক তালিকা -->
+                <a href="#" class="shift-btn shift-jaba">
+                    <i class="fa-solid fa-users"></i> জবা শিফট শিক্ষক তালিকা
+                </a>
+
+                <!-- শাপলা শিফট শিক্ষক তালিকা (এখানে লিংক করা হলো) -->
+                <a href="shapla.list.html" class="shift-btn shift-shapla">
+                    <i class="fa-solid fa-users"></i> শাপলা শিফট শিক্ষক তালিকা
+                </a>
+                
+                <!-- বেলী শিফট শিক্ষক তালিকা -->
+                <a href="#" class="shift-btn shift-beli">
+                    <i class="fa-solid fa-users"></i> বেলী শিফট শিক্ষক তালিকা
+                </a>
+
+                <!-- বকুল শিফট শিক্ষক তালিকা -->
+                <a href="#" class="shift-btn shift-bokul">
+                    <i class="fa-solid fa-users"></i> বকুল শিফট শিক্ষক তালিকা
                 </a>
             </div>
         </div>
@@ -1561,11 +1596,28 @@
             document.getElementById('rosterModal').classList.remove('active'); // পপ-আপ লুকিয়ে ফেলবে
         }
 
+        // =========================================
+        // Teacher List Modal Logic (নতুন যোগ করা হয়েছে)
+        // =========================================
+        function openTeacherListModal(event) {
+            event.preventDefault(); 
+            document.getElementById('teacherListModal').classList.add('active'); 
+        }
+
+        function closeTeacherListModal() {
+            document.getElementById('teacherListModal').classList.remove('active'); 
+        }
+
         // পপ-আপের বাইরের অংশে ক্লিক করলে যেন তা বন্ধ হয়ে যায়
         window.addEventListener('click', function(event) {
-            const modal = document.getElementById('rosterModal');
-            if (event.target === modal) {
+            const rosterModal = document.getElementById('rosterModal');
+            const teacherListModal = document.getElementById('teacherListModal');
+            
+            if (event.target === rosterModal) {
                 closeRosterModal();
+            }
+            if (event.target === teacherListModal) {
+                closeTeacherListModal();
             }
         });
 
