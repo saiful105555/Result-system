@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ইবনে তাইমিয়া স্কুল এন্ড কলেজ - অটোমেটিক রেজাল্ট সিস্টেম</title>
 
-    <!-- Google Fonts & Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -120,23 +119,26 @@
             padding: 0 10px;
         }
 
+        /* Updated Logo Styles */
         .top-left-logo-container {
             flex-shrink: 0;
-            width: 100px;
-            height: 100px;
+            width: 140px; /* Size Increased */
+            height: 140px; /* Size Increased */
             border-radius: 50%;
-            padding: 4px;
+            padding: 5px;
             background: linear-gradient(45deg, #ffb703, #e63946, #00b4d8, #ffffff);
             background-size: 300% 300%;
-            animation: gradientBorder 4s ease infinite, pulseGlow 2s infinite alternate;
+            animation: gradientBorder 3s ease infinite, strongPulseFloat 2.5s ease-in-out infinite alternate;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 5;
         }
 
         .top-left-logo {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            object-fit: cover;
+            object-fit: contain; /* Made contain for clarity without cutting */
             border: 3px solid #ffffff;
             background-color: #ffffff;
         }
@@ -147,9 +149,16 @@
             100% { background-position: 0% 50%; }
         }
 
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 10px rgba(255, 183, 3, 0.5); }
-            100% { box-shadow: 0 0 20px rgba(255, 183, 3, 0.9); }
+        /* New Strong Animation for Logo */
+        @keyframes strongPulseFloat {
+            0% { 
+                box-shadow: 0 0 15px rgba(255, 183, 3, 0.6); 
+                transform: translateY(0px) scale(1); 
+            }
+            100% { 
+                box-shadow: 0 0 40px rgba(255, 183, 3, 1), 0 0 25px rgba(0, 180, 216, 0.8); 
+                transform: translateY(-8px) scale(1.08); 
+            }
         }
 
         .header {
@@ -1132,21 +1141,18 @@
 </head>
 <body>
 
-    <!-- Preloader -->
     <div id="preloader">
         <div class="spinner"></div>
         <h3>লোড হচ্ছে...</h3>
     </div>
 
-    <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="ডার্ক/লাইট মোড পরিবর্তন করুন">
         <i class="fa-solid fa-moon" id="themeIcon"></i>
     </button>
 
-    <!-- Top Header Wrapper -->
     <div class="top-header-wrapper">
         <div class="top-left-logo-container">
-            <img src="https://lh3.googleusercontent.com/d/15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR" alt="School Logo" class="top-left-logo">
+            <img src="https://drive.google.com/uc?export=view&id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" alt="School Logo" class="top-left-logo">
         </div>
 
         <header class="header">
@@ -1156,13 +1162,11 @@
         </header>
     </div>
 
-    <!-- Stylish Live Clock & Date Bar -->
     <div class="clock-bar">
         <div class="date-box"><i class="fa-solid fa-calendar-days"></i> <span id="currentDate">তারিখ লোড হচ্ছে...</span></div>
         <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="currentTime">00:00:00</span></div>
     </div>
 
-    <!-- Notice Board Section with CSS Animation -->
     <div class="notice-board">
         <div class="notice-badge">
             <i class="fa-solid fa-bullhorn"></i> জরুরি বিজ্ঞপ্তি:
@@ -1174,7 +1178,6 @@
         </div>
     </div>
 
-    <!-- Image Slider Section -->
     <div class="image-slider-container">
         <div class="slider-wrapper" id="sliderWrapper">
             <div class="slide active">
@@ -1194,7 +1197,6 @@
         </div>
     </div>
 
-    <!-- Principal Message Section -->
     <section class="principal-message-card">
         <div class="principal-img-container">
             <img src="https://lh3.googleusercontent.com/d/1PRy_QmcCtKkP_2I5VhTPwhYUoqIURwOR" alt="Principal Message" class="principal-img">
@@ -1206,13 +1208,11 @@
             "Ibn Taimiya School & College is one of the best institutions all over the country. Friendly learning environment is the quality of it. The teaching stuff and management of Ibn Taimiya School & College is excellent and favorite to the students."
         </p>
 
-        <!-- প্রফেসরের নাম কালারিং অ্যানিমেশন সহ -->
         <div class="animated-author-name">
             Professor Dr. Md. Shafiqul Alam Helal.
         </div>
     </section>
 
-    <!-- Mega Glowing Eknojor Button Section -->
     <div class="mega-eknojor-container">
         <a href="eknojor.html" class="mega-eknojor-btn">
             <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
@@ -1227,7 +1227,6 @@
         </a>
     </div>
 
-    <!-- Main Navigation Section -->
     <main class="main-container">
         <a href="marksheet-6-8.html" class="nav-btn btn-2">
             <div class="btn-icon"><i class="fa-solid fa-file-signature"></i></div>
@@ -1253,7 +1252,6 @@
             </div>
         </a>
 
-        <!-- ডিউটি রোস্টার জেনারেটর বাটন (ক্লিক করলে পপ-আপ আসবে) -->
         <a href="#" onclick="openRosterModal(event)" class="nav-btn btn-5">
             <div class="btn-icon"><i class="fa-solid fa-calendar-check"></i></div>
             <div class="btn-text">
@@ -1262,7 +1260,6 @@
             </div>
         </a>
 
-        <!-- নতুন শিক্ষক আইডি কার্ড জেনারেটর বাটন -->
         <a href="idcard.html" class="nav-btn btn-6">
             <div class="btn-icon"><i class="fa-solid fa-id-badge"></i></div>
             <div class="btn-text">
@@ -1270,8 +1267,7 @@
                 <p>অটোমেটিক প্রফেশনাল আইডি কার্ড তৈরি</p>
             </div>
         </a>
-        
-        <!-- শিফটভিত্তিক শিক্ষক তালিকা বাটন (নতুন যোগ করা হয়েছে) -->
+
         <a href="#" onclick="openTeacherListModal(event)" class="nav-btn btn-1">
             <div class="btn-icon"><i class="fa-solid fa-users-rectangle"></i></div>
             <div class="btn-text">
@@ -1281,7 +1277,6 @@
         </a>
     </main>
 
-    <!-- Admin Panel Button & Collapsible Control Box -->
     <div class="admin-panel-container">
         <button class="admin-toggle-btn" onclick="openAdminPanel()">
             <i class="fa-solid fa-lock"></i> Admin Panel
@@ -1296,7 +1291,6 @@
         </div>
     </div>
 
-    <!-- 6. Support / Contact Section -->
     <section class="support-section">
         <h3 class="support-title"><i class="fa-solid fa-headset"></i> টেকনিক্যাল সাপোর্ট ও যোগাযোগ</h3>
         <p class="support-desc">সিস্টেম ব্যবহারে কোনো সমস্যা হলে বা নতুন ফিচার প্রয়োজন হলে সরাসরি আমাদের সাথে যোগাযোগ করুন।</p>
@@ -1310,12 +1304,10 @@
         </div>
     </section>
 
-    <!-- Developer Information Footer Section -->
     <footer class="developer-card">
         <div class="supervisor-title">সার্বিক তত্ত্বাবধানে</div>
 
         <div class="developers-wrapper">
-            <!-- First Developer -->
             <div class="dev-profile-box">
                 <div class="profile-frame">
                     <img src="https://lh3.googleusercontent.com/d/1VT8Sn4JUUQdq3NIk9pNb4a4Id-SdcPSP" alt="Saiful Islam" class="profile-img">
@@ -1335,7 +1327,6 @@
                 </div>
             </div>
 
-            <!-- Second Developer -->
             <div class="dev-profile-box">
                 <div class="profile-frame">
                     <img src="https://lh3.googleusercontent.com/d/1YZMgZOfJ0MJEFzjdlkeG7Y7wwe-9scoL" alt="Engr. Imdadul Haque Imran" class="profile-img">
@@ -1355,15 +1346,11 @@
         </div>
     </footer>
 
-    <!-- 7. Standard Copyright Footer -->
     <div class="copyright-footer">
-        &copy; ২০২৪ - ২০২৬ ইবনে তাইমিয়া স্কুল এন্ড কলেজ। সর্বস্বত্ব সংরক্ষিত। | Developed by IT Department.
+        © ২০২৪ - ২০২৬ ইবনে তাইমিয়া স্কুল এন্ড কলেজ। সর্বস্বত্ব সংরক্ষিত। | Developed by IT Department.
     </div>
 
 
-    <!-- =========================================
-         Roster Selection Modal (Popup)
-         ========================================= -->
     <div id="rosterModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -1388,9 +1375,6 @@
         </div>
     </div>
 
-    <!-- =========================================
-         Teacher List Selection Modal (Popup) - NEW
-         ========================================= -->
     <div id="teacherListModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -1399,22 +1383,18 @@
             </div>
 
             <div class="modal-body">
-                <!-- জবা শিফট শিক্ষক তালিকা -->
                 <a href="#" class="shift-btn shift-jaba">
                     <i class="fa-solid fa-users"></i> জবা শিফট শিক্ষক তালিকা
                 </a>
 
-                <!-- শাপলা শিফট শিক্ষক তালিকা (এখানে লিংক করা হলো) -->
                 <a href="shapla.list.html" class="shift-btn shift-shapla">
                     <i class="fa-solid fa-users"></i> শাপলা শিফট শিক্ষক তালিকা
                 </a>
-                
-                <!-- বেলী শিফট শিক্ষক তালিকা -->
+
                 <a href="#" class="shift-btn shift-beli">
                     <i class="fa-solid fa-users"></i> বেলী শিফট শিক্ষক তালিকা
                 </a>
 
-                <!-- বকুল শিফট শিক্ষক তালিকা -->
                 <a href="#" class="shift-btn shift-bokul">
                     <i class="fa-solid fa-users"></i> বকুল শিফট শিক্ষক তালিকা
                 </a>
@@ -1423,7 +1403,6 @@
     </div>
 
 
-    <!-- JavaScript Logic -->
     <script>
         // JSONBin.io কনফিগারেশন
         const BIN_ID = "6a70d4e5da38895dfeb4c7eb";
@@ -1612,7 +1591,7 @@
         window.addEventListener('click', function(event) {
             const rosterModal = document.getElementById('rosterModal');
             const teacherListModal = document.getElementById('teacherListModal');
-            
+
             if (event.target === rosterModal) {
                 closeRosterModal();
             }
