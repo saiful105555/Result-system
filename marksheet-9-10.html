@@ -73,12 +73,20 @@
             top: 0;
             background-color: #005691;
             color: white;
+            z-index: 1;
         }
         .marks-input-table input {
             width: 100%;
             padding: 5px;
             text-align: center;
             border: 1px solid #ddd;
+            font-size: 14px;
+        }
+        .locked-input {
+            background-color: #e9ecef !important;
+            color: #495057;
+            font-weight: bold;
+            cursor: not-allowed;
         }
         .btn-submit {
             display: block;
@@ -239,7 +247,7 @@
         }
         .signature-line {
             border-top: 1px dashed #005691;
-            width: 220px;
+            width: 240px;
             text-align: center;
             padding-top: 4px;
             color: #005691;
@@ -272,23 +280,23 @@
         <div class="form-grid">
             <div class="form-group">
                 <label>Examination Name:</label>
-                <input type="text" id="in_exam" value="Half Yearly Examination-2026" oninput="saveToCache()">
+                <input type="text" id="in_exam" value="নির্বাচনি পরিক্ষা ২০২৬" oninput="saveToCache()">
             </div>
             <div class="form-group">
                 <label>Class:</label>
-                <input type="text" id="in_class" value="8" oninput="saveToCache()">
+                <input type="text" id="in_class" value="দশম" oninput="saveToCache()">
             </div>
             <div class="form-group">
                 <label>Section:</label>
-                <input type="text" id="in_sec" value="A" oninput="saveToCache()">
+                <input type="text" id="in_sec" value="B" oninput="saveToCache()">
             </div>
             <div class="form-group">
                 <label>Shift:</label>
-                <input type="text" id="in_shift" value="Joba" oninput="saveToCache()">
+                <input type="text" id="in_shift" value="জবা" oninput="saveToCache()">
             </div>
             <div class="form-group">
                 <label>Subject:</label>
-                <input type="text" id="in_subject" value="ICT" oninput="saveToCache()">
+                <input type="text" id="in_subject" value="তথ্য ও যোগাযোগ প্রযুক্তি" oninput="saveToCache()">
             </div>
             <div class="form-group">
                 <label>Total Students:</label>
@@ -296,24 +304,24 @@
             </div>
             <div class="form-group">
                 <label>Total Marks:</label>
-                <input type="text" id="in_total_marks" value="100 / 50" oninput="saveToCache()">
+                <input type="text" id="in_total_marks" value="50" oninput="saveToCache()">
             </div>
             <div class="form-group">
                 <label>Subject Teacher's Name & Mobile:</label>
-                <input type="text" id="in_teacher" value="Md. Saiful Islam (018XXXXXXXX)" oninput="saveToCache()">
+                <input type="text" id="in_teacher" value="ইঞ্জি: সাইফুল ইসলাম-০১৬২২১৮৬৮১২" oninput="saveToCache()">
             </div>
         </div>
 
-        <h3>Enter Student Marks</h3>
+        <h3>Enter Student Marks (শুধুমাত্র MCQ ইনপুট দিন)</h3>
         <div class="input-table-wrapper">
             <table class="marks-input-table">
                 <thead>
                     <tr>
                         <th>Roll No</th>
                         <th>MCQ</th>
-                        <th>E.T</th>
-                        <th>Prac.</th>
-                        <th>Tuto</th>
+                        <th>PRAC</th>
+                        <th>TOTAL</th>
+                        <th>GPA point</th>
                     </tr>
                 </thead>
                 <tbody id="inputMarksBody">
@@ -337,7 +345,7 @@
 
         <!-- Header -->
         <div class="inst-title" id="out_inst">Ibn Taimiya School & College</div>
-        <div class="header-banner" id="out_exam">Marks Sheet <br> Half Yearly Examination-2026</div>
+        <div class="header-banner" id="out_exam">Marks Sheet <br> নির্বাচনি পরিক্ষা ২০২৬</div>
 
         <div class="info-row">
             <div>Total Students: <span id="out_total_students"></span></div>
@@ -360,12 +368,9 @@
                         <tr>
                             <th>Roll</th>
                             <th>MCQ</th>
-                            <th>E.T</th>
-                            <th>Prac.</th>
-                            <th>Total</th>
-                            <th>70%</th>
-                            <th>Tuto</th>
-                            <th>G. Total</th>
+                            <th>PRAC</th>
+                            <th>TOTAL</th>
+                            <th>GPA point</th>
                         </tr>
                     </thead>
                     <tbody id="leftTableBody"></tbody>
@@ -379,12 +384,9 @@
                         <tr>
                             <th>Roll</th>
                             <th>MCQ</th>
-                            <th>E.T</th>
-                            <th>Prac.</th>
-                            <th>Total</th>
-                            <th>70%</th>
-                            <th>Tuto</th>
-                            <th>G. Total</th>
+                            <th>PRAC</th>
+                            <th>TOTAL</th>
+                            <th>GPA point</th>
                         </tr>
                     </thead>
                     <tbody id="rightTableBody"></tbody>
@@ -401,17 +403,17 @@
                 </div>
                 <div class="summary-box">
                     <span>Pass Examinee:</span>
-                    <span></span>
+                    <span id="out_pass_ex"></span>
                 </div>
                 <div class="summary-box">
                     <span>Fail Examinee:</span>
-                    <span></span>
+                    <span id="out_fail_ex"></span>
                 </div>
             </div>
 
             <div class="signature-section">
                 <div class="signature-line" id="out_teacher">
-                    Subject Teacher's Name & Mobile
+                    ইঞ্জি: সাইফুল ইসলাম-০১৬২২১৮৬৮১২
                 </div>
             </div>
         </div>
@@ -419,6 +421,40 @@
     </div>
 
     <script>
+        const CACHE_KEY = 'marksSheetCache_ICT_10B_2026';
+        const FIXED_PRAC = 25;
+
+        // ৫০ মার্কের পরীক্ষায় ৮০% (৪০ মার্ক = 5.00) স্কেলে GPA Point নির্ণয়
+        function calculateGPAPoint(totalMarksOutOf50) {
+            const scaledTo100 = (totalMarksOutOf50 / 50) * 100;
+            if (scaledTo100 >= 80) return "5.00";
+            if (scaledTo100 >= 70) return "4.00";
+            if (scaledTo100 >= 60) return "3.50";
+            if (scaledTo100 >= 50) return "3.00";
+            if (scaledTo100 >= 40) return "2.00";
+            if (scaledTo100 >= 33) return "1.00";
+            return "0.00";
+        }
+
+        // ইনপুট দেওয়ার সাথে সাথে TOTAL ও GPA point অটো আপডেট হওয়ার ফাংশন
+        function onMcqInput(roll) {
+            const mcqEl = document.getElementById(`mcq_${roll}`);
+            const totalEl = document.getElementById(`total_${roll}`);
+            const gpaEl = document.getElementById(`gpa_${roll}`);
+
+            const mcqStr = mcqEl ? mcqEl.value.trim() : '';
+            if (mcqStr !== '' && !isNaN(parseFloat(mcqStr))) {
+                const mcqNum = parseFloat(mcqStr);
+                const totalVal = mcqNum + FIXED_PRAC;
+                totalEl.value = totalVal;
+                gpaEl.value = calculateGPAPoint(totalVal);
+            } else {
+                totalEl.value = '';
+                gpaEl.value = '';
+            }
+            saveToCache();
+        }
+
         // ইনপুট ডেটা লোকাল স্টোরেজে (Cache) সেভ করার ফাংশন
         function saveToCache() {
             const data = {
@@ -436,34 +472,27 @@
             const count = parseInt(data.in_total_students) || 0;
             for (let i = 1; i <= count; i++) {
                 const mcq = document.getElementById(`mcq_${i}`);
-                const et = document.getElementById(`et_${i}`);
-                const prac = document.getElementById(`prac_${i}`);
-                const tuto = document.getElementById(`tuto_${i}`);
-
                 if (mcq) data.marks[`mcq_${i}`] = mcq.value;
-                if (et) data.marks[`et_${i}`] = et.value;
-                if (prac) data.marks[`prac_${i}`] = prac.value;
-                if (tuto) data.marks[`tuto_${i}`] = tuto.value;
             }
 
-            localStorage.setItem('marksSheetCache_General', JSON.stringify(data));
+            localStorage.setItem(CACHE_KEY, JSON.stringify(data));
         }
 
         // ক্যাশ মেমোরি থেকে ডেটা লোড করার ফাংশন
         function loadFromCache() {
-            const savedData = localStorage.getItem('marksSheetCache_General');
+            const savedData = localStorage.getItem(CACHE_KEY);
             if (!savedData) return false;
 
             try {
                 const data = JSON.parse(savedData);
-                document.getElementById('in_exam').value = data.in_exam || '';
-                document.getElementById('in_class').value = data.in_class || '';
-                document.getElementById('in_sec').value = data.in_sec || '';
-                document.getElementById('in_shift').value = data.in_shift || '';
-                document.getElementById('in_subject').value = data.in_subject || '';
+                document.getElementById('in_exam').value = data.in_exam || 'নির্বাচনি পরিক্ষা ২০২৬';
+                document.getElementById('in_class').value = data.in_class || 'দশম';
+                document.getElementById('in_sec').value = data.in_sec || 'B';
+                document.getElementById('in_shift').value = data.in_shift || 'জবা';
+                document.getElementById('in_subject').value = data.in_subject || 'তথ্য ও যোগাযোগ প্রযুক্তি';
                 document.getElementById('in_total_students').value = data.in_total_students || '70';
-                document.getElementById('in_total_marks').value = data.in_total_marks || '';
-                document.getElementById('in_teacher').value = data.in_teacher || '';
+                document.getElementById('in_total_marks').value = data.in_total_marks || '50';
+                document.getElementById('in_teacher').value = data.in_teacher || 'ইঞ্জি: সাইফুল ইসলাম-০১৬২২১৮৬৮১২';
 
                 renderInputRows(data.marks);
                 return true;
@@ -473,15 +502,15 @@
             }
         }
 
-        // ক্যাশ মেমোরি ক্লিয়ার করার বাটন ফাংশন
+        // ক্যাশ মেমোরি ক্লিয়ার করার বাটন ফাংশন
         function clearCacheMemory() {
             if (confirm("আপনি কি নিশ্চিতভাবে সব সংরক্ষিত ক্যাশ মেমোরি মুছে ফেলতে চান?")) {
-                localStorage.removeItem('marksSheetCache_General');
+                localStorage.removeItem(CACHE_KEY);
                 location.reload();
             }
         }
 
-        // ডাইনামিক ইনপুট রো তৈরি (ক্যাশ ডেটা থাকলে তা বসিয়ে দেওয়া)
+        // ডাইনামিক ইনপুট রো তৈরি (PRAC=25 লকড এবং TOTAL ও GPA অটো ক্যালকুলেটেড)
         function renderInputRows(savedMarks = {}) {
             const count = parseInt(document.getElementById('in_total_students').value) || 0;
             const inputMarksBody = document.getElementById('inputMarksBody');
@@ -495,23 +524,28 @@
             inputMarksBody.innerHTML = '';
             for (let i = 1; i <= count; i++) {
                 let mcqVal = savedMarks[`mcq_${i}`] !== undefined ? savedMarks[`mcq_${i}`] : (existingData[`mcq_${i}`] || '');
-                let etVal = savedMarks[`et_${i}`] !== undefined ? savedMarks[`et_${i}`] : (existingData[`et_${i}`] || '');
-                let pracVal = savedMarks[`prac_${i}`] !== undefined ? savedMarks[`prac_${i}`] : (existingData[`prac_${i}`] || '');
-                let tutoVal = savedMarks[`tuto_${i}`] !== undefined ? savedMarks[`tuto_${i}`] : (existingData[`tuto_${i}`] || '');
+                let mcqStr = String(mcqVal).trim();
+                let totalVal = '';
+                let gpaVal = '';
+
+                if (mcqStr !== '' && !isNaN(parseFloat(mcqStr))) {
+                    totalVal = parseFloat(mcqStr) + FIXED_PRAC;
+                    gpaVal = calculateGPAPoint(totalVal);
+                }
 
                 inputMarksBody.innerHTML += `
                     <tr>
                         <td><b>${i}</b></td>
-                        <td><input type="text" id="mcq_${i}" value="${mcqVal}" oninput="saveToCache()"></td>
-                        <td><input type="text" id="et_${i}" value="${etVal}" oninput="saveToCache()"></td>
-                        <td><input type="text" id="prac_${i}" value="${pracVal}" oninput="saveToCache()"></td>
-                        <td><input type="text" id="tuto_${i}" value="${tutoVal}" oninput="saveToCache()"></td>
+                        <td><input type="text" id="mcq_${i}" value="${mcqVal}" placeholder="MCQ" oninput="onMcqInput(${i})"></td>
+                        <td><input type="text" id="prac_${i}" value="${FIXED_PRAC}" class="locked-input" readonly tabindex="-1"></td>
+                        <td><input type="text" id="total_${i}" value="${totalVal}" class="locked-input" readonly tabindex="-1"></td>
+                        <td><input type="text" id="gpa_${i}" value="${gpaVal}" class="locked-input" readonly tabindex="-1"></td>
                     </tr>
                 `;
             }
         }
 
-        // পেজ লোড হওয়ার সাথে সাথে ক্যাশ চেক করবে
+        // পেজ লোড হওয়ার সাথে সাথে ক্যাশ চেক করবে
         window.onload = function() {
             if (!loadFromCache()) {
                 renderInputRows();
@@ -519,7 +553,7 @@
         };
 
         function generateMarksSheet() {
-            saveToCache(); // জেনারেট করার সময়ও ডেটা সেভ করে রাখা
+            saveToCache();
             const total = parseInt(document.getElementById('in_total_students').value) || 0;
 
             document.getElementById('out_exam').innerHTML = `Marks Sheet <br> ${document.getElementById('in_exam').value}`;
@@ -541,41 +575,24 @@
 
             for (let i = 1; i <= total; i++) {
                 let mcqStr = document.getElementById(`mcq_${i}`) ? document.getElementById(`mcq_${i}`).value.trim() : '';
-                let etStr = document.getElementById(`et_${i}`) ? document.getElementById(`et_${i}`).value.trim() : '';
-                let pracStr = document.getElementById(`prac_${i}`) ? document.getElementById(`prac_${i}`).value.trim() : '';
-                let tutoStr = document.getElementById(`tuto_${i}`) ? document.getElementById(`tuto_${i}`).value.trim() : '';
-
-                let mcqNum = parseFloat(mcqStr) || 0;
-                let etNum = parseFloat(etStr) || 0;
-                let pracNum = parseFloat(pracStr) || 0;
-                let tutoNum = parseFloat(tutoStr) || 0;
-
+                let pracDisplay = FIXED_PRAC;
                 let sumTotal = '';
-                let sum70 = '';
-                let grandTotal = '';
+                let gpaPoint = '';
 
-                if (mcqStr !== '' || etStr !== '' || pracStr !== '') {
-                    let totalVal = mcqNum + etNum + pracNum;
+                if (mcqStr !== '' && !isNaN(parseFloat(mcqStr))) {
+                    let mcqNum = parseFloat(mcqStr);
+                    let totalVal = mcqNum + FIXED_PRAC;
                     sumTotal = totalVal;
-
-                    let val70 = Math.round(totalVal * 0.70);
-                    sum70 = val70;
-
-                    grandTotal = val70 + tutoNum;
-                } else if (tutoStr !== '') {
-                    grandTotal = tutoNum;
+                    gpaPoint = calculateGPAPoint(totalVal);
                 }
 
                 let rowHTML = `
                     <tr>
                         <td><b>${i}</b></td>
                         <td>${mcqStr}</td>
-                        <td>${etStr}</td>
-                        <td>${pracStr}</td>
-                        <td>${sumTotal}</td>
-                        <td>${sum70}</td>
-                        <td>${tutoStr}</td>
-                        <td><b>${grandTotal}</b></td>
+                        <td>${pracDisplay}</td>
+                        <td><b>${sumTotal}</b></td>
+                        <td><b>${gpaPoint}</b></td>
                     </tr>
                 `;
 
