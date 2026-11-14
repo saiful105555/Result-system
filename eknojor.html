@@ -18,470 +18,195 @@
     /* =======================================================
        INPUT PART CSS (Enhanced & Beautiful UI)
        ======================================================= */
-    * { 
-      box-sizing: border-box; 
-      font-family: 'Hind Siliguri', 'Poppins', sans-serif; 
-      transition: all 0.25s ease-in-out;
-    }
-
-    body { 
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      margin: 0; 
-      padding: 15px 10px; 
-      min-height: 100vh;
-      color: #1e293b;
-    }
+    * { box-sizing: border-box; font-family: 'Hind Siliguri', 'Poppins', sans-serif; transition: all 0.25s ease-in-out; }
+    body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); margin: 0; padding: 15px 10px; min-height: 100vh; color: #1e293b; }
 
     .container {
-      max-width: 1350px;
-      width: 100%;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(10px);
-      padding: 25px 20px;
-      border-radius: 16px;
+      max-width: 1350px; width: 100%; margin: 0 auto;
+      background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);
+      padding: 25px 20px; border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(124, 58, 237, 0.2);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .input-header-custom {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 25px;
-      padding: 20px 25px;
+      display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding: 20px 25px;
       background: linear-gradient(135deg, #4338ca, #6d28d9, #be185d);
-      border-radius: 14px;
-      color: white;
-      box-shadow: 0 10px 20px rgba(109, 40, 217, 0.3);
+      border-radius: 14px; color: white; box-shadow: 0 10px 20px rgba(109, 40, 217, 0.3);
     }
 
     .css-logo {
-      width: 75px;
-      height: 75px;
-      background: #ffffff;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #4f46e5;
-      font-weight: 800;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      flex-shrink: 0;
-      border: 3px solid #facc15;
+      width: 75px; height: 75px; background: #ffffff; border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #4f46e5; font-weight: 800; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      flex-shrink: 0; border: 3px solid #facc15;
     }
     .css-logo span { font-size: 10px; color: #1e293b; line-height: 1; }
     .css-logo i { font-size: 24px; margin-bottom: 2px; }
 
     .header-text-container { flex-grow: 1; overflow: hidden; text-align: left; }
-    .input-header-custom h1 { margin: 0; font-size: 24px; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);}
+    .input-header-custom h1 { margin: 0; font-size: 24px; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
     .input-header-custom h2 { margin: 4px 0; color: #e0e7ff; font-size: 16px; font-weight: 600; }
 
     .global-info-bar {
-      display: flex;
-      gap: 15px;
-      background: #f1f5f9;
-      padding: 15px 20px;
-      border-radius: 12px;
-      border: 1.5px solid #cbd5e1;
-      margin-bottom: 20px;
-      align-items: center;
-      flex-wrap: wrap;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      display: flex; gap: 15px; background: #f1f5f9; padding: 15px 20px;
+      border-radius: 12px; border: 1.5px solid #cbd5e1; margin-bottom: 20px;
+      align-items: center; flex-wrap: wrap; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
     }
-
     .global-info-bar > div { display: flex; flex-direction: column; gap: 5px; }
-
-    .global-info-bar label {
-      font-weight: 700;
-      font-size: 13px;
-      color: #334155;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* সুন্দর ইনপুট ফিল্ড ডিজাইন */
+    .global-info-bar label { font-weight: 700; font-size: 13px; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; }
     .global-info-bar input {
-      padding: 8px 12px;
-      border: 2px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 700;
-      width: 150px;
-      color: #0f172a;
-      background: #ffffff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      padding: 8px 12px; border: 2px solid #cbd5e1; border-radius: 8px;
+      font-size: 15px; font-weight: 700; width: 150px; color: #0f172a;
+      background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
+    .global-info-bar input:focus { border-color: #4f46e5; outline: none; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); }
 
-    .global-info-bar input:focus {
-      border-color: #4f46e5;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-    }
+    .running-text-wrapper { width: 100%; overflow: hidden; margin-top: 8px; background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 6px 0; }
+    .running-text { display: inline-block; white-space: nowrap; padding-left: 100%; animation: marqueeText 12s linear infinite; color: #dc2626; font-size: 14px; font-weight: 700; }
+    @keyframes marqueeText { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
 
-    .running-text-wrapper {
-      width: 100%;
-      overflow: hidden;
-      margin-top: 8px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 6px 0;
-    }
+    .section-card { background: #ffffff; border-radius: 12px; padding: 20px 15px; margin-bottom: 18px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04); }
+    .section-title { font-size: 17px; font-weight: 700; color: #3730a3; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
 
-    .running-text {
-      display: inline-block;
-      white-space: nowrap;
-      padding-left: 100%;
-      animation: marqueeText 12s linear infinite;
-      color: #dc2626; 
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    @keyframes marqueeText {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-100%, 0); }
-    }
-
-    .section-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 20px 15px;
-      margin-bottom: 18px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-    }
-
-    .section-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: #3730a3;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .multi-table-container {
-      width: 100%;
-      overflow-x: auto;
-      max-height: 520px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-    }
-
-    .multi-input-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      min-width: 2500px;
-    }
-
-    .multi-input-table th, .multi-input-table td {
-      border: 1px solid #cbd5e1;
-      padding: 10px 8px;
-      text-align: center;
-      vertical-align: middle;
-    }
-
+    .multi-table-container { width: 100%; overflow-x: auto; max-height: 520px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    .multi-input-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 2500px; }
+    .multi-input-table th, .multi-input-table td { border: 1px solid #cbd5e1; padding: 10px 8px; text-align: center; vertical-align: middle; }
     .border-right-thick { border-right: 3px solid #6366f1 !important; }
+    .multi-input-table th { background: #1e1b4b; color: white; position: sticky; top: 0; z-index: 2; font-size: 13px; letter-spacing: 0.3px; }
 
-    .multi-input-table th {
-      background: #1e1b4b;
-      color: white;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      font-size: 13px;
-      letter-spacing: 0.3px;
-    }
-
-    /* টেবিলের ভেতরের ইনপুট বক্সের প্রিমিয়াম ডিজাইন */
     .multi-input-table input {
-      width: 100%;
-      min-width: 60px;
-      padding: 10px 8px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 15px;
-      font-family: 'Poppins', sans-serif;
-      background: #f8fafc;
-      font-weight: 700;
-      color: #0f172a;
-      transition: all 0.2s ease;
+      width: 100%; min-width: 60px; padding: 10px 8px; border: 2px solid #e2e8f0;
+      border-radius: 8px; text-align: center; font-size: 15px; font-family: 'Poppins', sans-serif;
+      background: #f8fafc; font-weight: 700; color: #0f172a; transition: all 0.2s ease;
     }
+    .multi-input-table input:hover { border-color: #94a3b8; }
+    .multi-input-table input:focus { background: #ffffff; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); outline: none; transform: scale(1.02); }
+    .multi-input-table input[type="text"] { text-align: left; padding-left: 12px; min-width: 150px; font-family: 'Hind Siliguri', sans-serif; font-weight: 600; }
+    .multi-input-table td:nth-child(1) input { min-width: 70px; text-align: center; color: #b91c1c; font-weight: 800; }
 
-    .multi-input-table input:hover {
-      border-color: #94a3b8;
-    }
-
-    .multi-input-table input:focus {
-      background: #ffffff;
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-      outline: none;
-      transform: scale(1.02);
-    }
-
-    .multi-input-table input[type="text"] { 
-      text-align: left; 
-      padding-left: 12px; 
-      min-width: 150px; 
-      font-family: 'Hind Siliguri', sans-serif;
-      font-weight: 600;
-    }
-    
-    .multi-input-table td:nth-child(1) input { min-width: 70px; text-align: center; color: #b91c1c; font-weight: 800;}
-    
     .multi-input-table span[class$="-tot"], .multi-input-table span[class$="-gr"] {
-      font-size: 16px; 
-      font-weight: 800; 
-      color: #4338ca;
-      background: #e0e7ff;
-      padding: 5px 10px;
-      border-radius: 6px;
-      display: inline-block;
-      min-width: 40px;
+      font-size: 16px; font-weight: 800; color: #4338ca; background: #e0e7ff;
+      padding: 5px 10px; border-radius: 6px; display: inline-block; min-width: 40px;
     }
+    .multi-input-table span[class$="-gr"] { background: #fef3c7; color: #b45309; }
 
-    .multi-input-table span[class$="-gr"] {
-      background: #fef3c7;
-      color: #b45309;
-    }
-
-    .btn-action-group {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
-    }
-
+    .btn-action-group { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
     .btn-custom {
-      padding: 12px 18px;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: white;
-      transition: 0.3s;
+      padding: 12px 18px; border: none; border-radius: 10px; font-weight: 700;
+      font-size: 15px; cursor: pointer; display: flex; align-items: center;
+      gap: 8px; color: white; transition: 0.3s;
     }
-
     .btn-add { background: #3b82f6; }
     .btn-add:hover { background: #2563eb; transform: translateY(-2px); }
     .btn-add-10 { background: #6366f1; }
     .btn-add-10:hover { background: #4f46e5; transform: translateY(-2px); }
     .btn-clear-cache { background: #ef4444; margin-left: auto; }
-    .btn-clear-cache:hover { background: #dc2626; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);}
+    .btn-clear-cache:hover { background: #dc2626; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3); }
 
-    .btn-download-all {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-      flex: 1;
-      justify-content: center;
-      padding: 16px;
-      font-size: 16px;
-      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
+    .btn-summary-sheet {
+      background: linear-gradient(135deg, #be123c 0%, #e11d48 100%);
+      flex: 1; justify-content: center; padding: 16px; font-size: 16px;
+      box-shadow: 0 8px 18px rgba(225, 29, 72, 0.35);
     }
-    .btn-download-all:hover { background: linear-gradient(135deg, #047857 0%, #059669 100%); transform: translateY(-2px);}
-
-    .btn-print-all {
-      background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-      flex: 1;
-      justify-content: center;
-      padding: 16px;
-      font-size: 16px;
-      box-shadow: 0 8px 18px rgba(245, 158, 11, 0.35);
-    }
-    .btn-print-all:hover { background: linear-gradient(135deg, #b45309 0%, #d97706 100%); transform: translateY(-2px);}
+    .btn-summary-sheet:hover { background: linear-gradient(135deg, #9f1239 0%, #be123c 100%); transform: translateY(-2px); }
 
     .btn-poster-view {
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-      flex: 1;
-      justify-content: center;
-      padding: 16px;
-      font-size: 16px;
+      flex: 1; justify-content: center; padding: 16px; font-size: 16px;
       box-shadow: 0 8px 18px rgba(124, 58, 237, 0.35);
     }
-    .btn-poster-view:hover { background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%); transform: translateY(-2px);}
+    .btn-poster-view:hover { background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%); transform: translateY(-2px); }
+
+    .btn-download-all {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      flex: 1; justify-content: center; padding: 16px; font-size: 16px;
+      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
+    }
+    .btn-download-all:hover { background: linear-gradient(135deg, #047857 0%, #059669 100%); transform: translateY(-2px); }
+
+    .btn-print-all {
+      background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+      flex: 1; justify-content: center; padding: 16px; font-size: 16px;
+      box-shadow: 0 8px 18px rgba(245, 158, 11, 0.35);
+    }
+    .btn-print-all:hover { background: linear-gradient(135deg, #b45309 0%, #d97706 100%); transform: translateY(-2px); }
 
     /* =======================================================
-       OUTPUT PART CSS (Professional Update & Watermark Fixed)
+       OUTPUT PART CSS (Marksheet Print & Watermark)
        ======================================================= */
-    #batchRenderContainer { 
-      position: absolute; left: -9999px; top: 0; width: 1050px;
-    }
+    #batchRenderContainer { position: absolute; left: -9999px; top: 0; width: 1050px; }
     #printArea { display: none; }
 
     .print-report-wrapper {
-        position: relative;
-        width: 1050px;
-        background-color: #fff;
-        padding: 30px 40px;
-        font-family: 'Times New Roman', Times, serif;
-        box-sizing: border-box;
-        margin-bottom: 20px;
-        page-break-after: always;
-        color: #000;
-        z-index: 1;
+      position: relative; width: 1050px; background-color: #fff; padding: 30px 40px;
+      font-family: 'Times New Roman', Times, serif; box-sizing: border-box;
+      margin-bottom: 20px; page-break-after: always; color: #000; z-index: 1;
     }
-
-    /* Watermark: Positioned to start right from Bangla-I row */
     .pr-watermark {
-        position: absolute;
-        top: 660px; 
-        left: 50%;
-        transform: translateX(-50%);
-        width: 480px;
-        height: auto;
-        opacity: 0.12 !important; 
-        z-index: 0;
-        pointer-events: none;
-        -webkit-print-color-adjust: exact; 
-        print-color-adjust: exact;
+      position: absolute; top: 660px; left: 50%; transform: translateX(-50%);
+      width: 480px; height: auto; opacity: 0.12 !important; z-index: 0;
+      pointer-events: none; -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
-
-    .pr-content-layer {
-        position: relative;
-        z-index: 2;
-    }
-
+    .pr-content-layer { position: relative; z-index: 2; }
     .pr-header-section { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
     .pr-header-left { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-
     .pr-progress-badge {
-        background-color: #1e5f3b !important; color: #fff !important;
-        padding: 8px 12px; font-size: 18px; font-weight: bold; border-radius: 4px; text-align: center; width: 140px;
-        box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      background-color: #1e5f3b !important; color: #fff !important; padding: 8px 12px;
+      font-size: 18px; font-weight: bold; border-radius: 4px; text-align: center; width: 140px;
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.1); -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
     .pr-class-badge {
-        background-color: #be1e2d !important; color: #fff !important;
-        padding: 5px; font-size: 16px; font-weight: bold; border-radius: 4px; text-align: center; width: 140px; margin-top: -5px;
-        box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      background-color: #be1e2d !important; color: #fff !important; padding: 5px;
+      font-size: 16px; font-weight: bold; border-radius: 4px; text-align: center; width: 140px; margin-top: -5px;
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.1); -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
     .pr-logo { width: 95px; height: 95px; margin-top: 5px; }
-    
     .pr-header-center { text-align: center; flex-grow: 1; padding: 2px 10px 0 10px; }
-    .pr-bismillah {
-        font-family: 'Amiri', 'Traditional Arabic', 'Times New Roman', serif;
-        font-size: 22px;
-        font-weight: 700;
-        color: #065f46 !important;
-        margin-bottom: 4px;
-        line-height: 1.1;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    .pr-bismillah { font-family: 'Amiri', 'Traditional Arabic', 'Times New Roman', serif; font-size: 22px; font-weight: 700; color: #065f46 !important; margin-bottom: 4px; line-height: 1.1; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pr-school-name {
+      font-family: 'Cinzel', 'Times New Roman', Georgia, serif; color: #1c3c78 !important;
+      font-size: 32px; font-weight: 900; margin-bottom: 6px; text-transform: uppercase;
+      letter-spacing: 0.5px; line-height: 1.15; text-shadow: 1.5px 1.5px 0px rgba(28, 60, 120, 0.12);
+      border-bottom: 2.5px solid #be1e2d; display: inline-block; padding-bottom: 3px;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
     }
-    .pr-school-name { 
-        font-family: 'Cinzel', 'Times New Roman', Georgia, serif;
-        color: #1c3c78 !important; 
-        font-size: 32px; 
-        font-weight: 900; 
-        margin-bottom: 6px; 
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        line-height: 1.15;
-        text-shadow: 1.5px 1.5px 0px rgba(28, 60, 120, 0.12);
-        border-bottom: 2.5px solid #be1e2d;
-        display: inline-block;
-        padding-bottom: 3px;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    }
-    .pr-school-address { 
-        font-family: 'Poppins', sans-serif;
-        font-size: 15px; 
-        font-weight: 700; 
-        color: #991b1b !important; 
-        margin-bottom: 3px;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    }
-    .pr-school-email {
-        font-family: 'Poppins', sans-serif;
-        font-size: 13.5px;
-        font-weight: 700;
-        color: #0369a1 !important;
-        margin-bottom: 2px;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    }
-    .pr-school-website {
-        font-family: 'Poppins', sans-serif;
-        font-size: 13.5px;
-        font-weight: 700;
-        color: #4338ca !important;
-        margin-bottom: 2px;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    }
-
-    .pr-header-divider {
-        width: 100%;
-        height: 4px;
-        border-top: 2px solid #1c3c78;
-        border-bottom: 1px solid #1c3c78;
-        margin-bottom: 20px;
-    }
-
-    .pr-grading-table { border-collapse: collapse; font-size: 12px; text-align: center; border: 1.5px solid #000; box-shadow: 2px 2px 0px rgba(0,0,0,0.05);}
-    .pr-grading-table th, .pr-grading-table td { border: 1px solid #000; padding: 2px 6px; font-weight: bold;}
-
-    .pr-student-info-box {
-        border: 2px solid #1c3c78;
-        padding: 12px 20px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        background-color: #f8fbff !important;
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    }
-
-    .pr-student-info { display: flex; flex-wrap: wrap; gap: 15px; font-size: 15px; font-weight: bold; margin-bottom: 8px;}
+    .pr-school-address { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; color: #991b1b !important; margin-bottom: 3px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pr-school-email { font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: #0369a1 !important; margin-bottom: 2px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pr-school-website { font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: #4338ca !important; margin-bottom: 2px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pr-header-divider { width: 100%; height: 4px; border-top: 2px solid #1c3c78; border-bottom: 1px solid #1c3c78; margin-bottom: 20px; }
+    .pr-grading-table { border-collapse: collapse; font-size: 12px; text-align: center; border: 1.5px solid #000; box-shadow: 2px 2px 0px rgba(0,0,0,0.05); }
+    .pr-grading-table th, .pr-grading-table td { border: 1px solid #000; padding: 2px 6px; font-weight: bold; }
+    .pr-student-info-box { border: 2px solid #1c3c78; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; background-color: #f8fbff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pr-student-info { display: flex; flex-wrap: wrap; gap: 15px; font-size: 15px; font-weight: bold; margin-bottom: 8px; }
     .pr-student-info:last-child { margin-bottom: 0; }
     .pr-info-item { display: flex; align-items: flex-end; }
     .pr-info-label { margin-right: 5px; color: #111; }
-    .pr-info-line { border-bottom: 1px dashed #555; min-width: 150px; display: inline-block; height: 20px; font-weight: bold; padding-left: 5px; color: #000;}
+    .pr-info-line { border-bottom: 1px dashed #555; min-width: 150px; display: inline-block; height: 20px; font-weight: bold; padding-left: 5px; color: #000; }
 
-    .pr-marks-table { width: 100%; border-collapse: collapse; text-align: center; margin-bottom: 20px; border: 2px solid #1c3c78 !important; position: relative; z-index: 2;}
+    .pr-marks-table { width: 100%; border-collapse: collapse; text-align: center; margin-bottom: 20px; border: 2px solid #1c3c78 !important; position: relative; z-index: 2; }
     .pr-marks-table th, .pr-marks-table td { border: 1px solid #444 !important; padding: 5px; background-clip: padding-box; }
     .pr-marks-table thead th { border: 1px solid #1c3c78 !important; font-size: 15px; }
-
-    .pr-mark-val {
-        font-size: 16px !important;
-        font-weight: bold !important;
-        color: #111 !important;
-        background-color: transparent !important; 
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
-    }
-
+    .pr-mark-val { font-size: 16px !important; font-weight: bold !important; color: #111 !important; background-color: transparent !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .pr-bg-yellow { background-color: rgba(228, 221, 159, 0.9) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .pr-bg-grey { background-color: rgba(226, 226, 226, 0.9) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .pr-bg-blue { background-color: rgba(184, 204, 228, 0.9) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-
     .pr-text-green { color: #006633 !important; font-weight: bold; text-align: left; padding-left: 10px !important; font-size: 15px; }
-    .pr-text-blue { color: #1c3c78 !important; font-weight: bold; text-align: center; padding-left: 0 !important; font-size: 15px;}
+    .pr-text-blue { color: #1c3c78 !important; font-weight: bold; text-align: center; padding-left: 0 !important; font-size: 15px; }
     .pr-text-red { color: #c00000 !important; font-weight: bold; }
-
-    .pr-vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; padding: 10px 5px !important; white-space: nowrap; font-weight: bold;}
+    .pr-vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; padding: 10px 5px !important; white-space: nowrap; font-weight: bold; }
     .pr-marks-col { width: 50px; }
-
-    .pr-footer-section { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 35px; position: relative; z-index: 2;}
-    
-    .pr-attendance-table { border-collapse: collapse; text-align: center; font-size: 13px; font-weight: bold; border: 1.5px solid #000; box-shadow: 2px 2px 0px rgba(0,0,0,0.05); background: #fff;}
+    .pr-footer-section { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 35px; position: relative; z-index: 2; }
+    .pr-attendance-table { border-collapse: collapse; text-align: center; font-size: 13px; font-weight: bold; border: 1.5px solid #000; box-shadow: 2px 2px 0px rgba(0,0,0,0.05); background: #fff; }
     .pr-attendance-table th, .pr-attendance-table td { border: 1px solid #000; padding: 5px 8px; }
-
-    /* Signatures issue fixed by modifying gap and box width so it perfectly fits in page */
     .pr-signatures { display: flex; gap: 20px; font-weight: bold; font-size: 14px; }
-    .pr-sign-box { text-align: center; border-top: 1.5px dashed #000; padding-top: 5px; width: 175px; color: #111; white-space: nowrap;}
+    .pr-sign-box { text-align: center; border-top: 1.5px dashed #000; padding-top: 5px; width: 175px; color: #111; white-space: nowrap; }
 
     @media print {
       body { background: #fff !important; }
       body * { visibility: hidden !important; }
       #printArea, #printArea * { visibility: visible !important; }
-      #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0;}
+      #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; }
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     }
   </style>
@@ -597,6 +322,9 @@
   </div>
 
   <div class="btn-action-group" style="margin-top: 20px;">
+    <button class="btn-custom btn-summary-sheet" onclick="openResultSummarySheet()">
+      <i class="fa-solid fa-chart-pie"></i> ফলাফল সামারি শীট (Full A4 Page)
+    </button>
     <button class="btn-custom btn-poster-view" onclick="openPosterSummaryView()">
       <i class="fa-solid fa-chalkboard-user"></i> এক নজরে সকল শিক্ষার্থীর মার্কস (Smart View)
     </button>
@@ -617,22 +345,26 @@
     loadDataFromCache();
   };
 
+  function toBnNum(val) {
+    return String(val).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+  }
+
   const subjectsConfig = [
-    { id: 'b1', name: 'Bangla-I', max: 100, pass: 40 },
-    { id: 'b2', name: 'Bangla-II', max: 50, pass: 20 },
-    { id: 'e1', name: 'English-I', max: 100, pass: 40 },
-    { id: 'e2', name: 'English-II', max: 100, pass: 40 },
-    { id: 'math', name: 'Mathematics', max: 100, pass: 40 },
-    { id: 'rel', name: 'Religion Studies', max: 100, pass: 40 },
-    { id: 'arab', name: 'Arabic', max: 100, pass: 40 },
-    { id: 'bgs', name: 'Bangladesh & Global Studies', max: 100, pass: 40 },
-    { id: 'sci', name: 'Science', max: 100, pass: 40 },
-    { id: 'ict', name: 'Information & Communication Technology', max: 50, pass: 20 },
-    { id: 'agri', name: 'Agriculture Studies/Home Science', max: 50, pass: 20 },
-    { id: 'art', name: 'Art & Craft', max: 50, pass: 20 },
-    { id: 'spoken', name: 'Spoken English', max: 25, pass: 15 },
-    { id: 'moral', name: 'Moral Activities', max: 50, pass: 20 },
-    { id: 'drill', name: 'Drill', max: 25, pass: 15 }
+    { id: 'b1', name: 'Bangla-I', bnName: 'বাংলা ১ম পত্র (Bangla-I)', max: 100, pass: 40 },
+    { id: 'b2', name: 'Bangla-II', bnName: 'বাংলা ২য় পত্র (Bangla-II)', max: 50, pass: 20 },
+    { id: 'e1', name: 'English-I', bnName: 'ইংরেজি ১ম পত্র (English-I)', max: 100, pass: 40 },
+    { id: 'e2', name: 'English-II', bnName: 'ইংরেজি ২য় পত্র (English-II)', max: 100, pass: 40 },
+    { id: 'math', name: 'Mathematics', bnName: 'সাধারণ গণিত (Mathematics)', max: 100, pass: 40 },
+    { id: 'rel', name: 'Religion Studies', bnName: 'ধর্ম ও নৈতিক শিক্ষা (Religion)', max: 100, pass: 40 },
+    { id: 'arab', name: 'Arabic', bnName: 'আরবী (Arabic)', max: 100, pass: 40 },
+    { id: 'bgs', name: 'Bangladesh & Global Studies', bnName: 'বাংলাদেশ ও বিশ্বপরিচয় (BGS)', max: 100, pass: 40 },
+    { id: 'sci', name: 'Science', bnName: 'বিজ্ঞান (Science)', max: 100, pass: 40 },
+    { id: 'ict', name: 'Information & Communication Technology', bnName: 'তথ্য ও যোগাযোগ প্রযুক্তি (ICT)', max: 50, pass: 20 },
+    { id: 'agri', name: 'Agriculture Studies/Home Science', bnName: 'কৃষি শিক্ষা / গার্হস্থ্য বিজ্ঞান', max: 50, pass: 20 },
+    { id: 'art', name: 'Art & Craft', bnName: 'চারু ও কারুকলা (Art & Craft)', max: 50, pass: 20 },
+    { id: 'spoken', name: 'Spoken English', bnName: 'স্পোকেন ইংলিশ (Spoken English)', max: 25, pass: 15 },
+    { id: 'moral', name: 'Moral Activities', bnName: 'মোরাল অ্যাক্টিভিটিজ (Moral Activ.)', max: 50, pass: 20 },
+    { id: 'drill', name: 'Drill', bnName: 'ড্রীল (Drill)', max: 25, pass: 15 }
   ];
 
   function saveDataToCache() {
@@ -748,8 +480,12 @@
   }
 
   function calculateSubject(row, cls, totalMarks) {
-    let etInput = parseFloat(row.querySelector(`.${cls}-et`).value) || 0;
-    let tuInput = parseFloat(row.querySelector(`.${cls}-tu`).value) || 0;
+    const etEl = row.querySelector(`.${cls}-et`);
+    const tuEl = row.querySelector(`.${cls}-tu`);
+    const hasInput = (etEl && etEl.value.trim() !== '') || (tuEl && tuEl.value.trim() !== '');
+
+    let etInput = parseFloat(etEl.value) || 0;
+    let tuInput = parseFloat(tuEl.value) || 0;
 
     let et70 = Math.round(etInput * 0.70);
 
@@ -765,7 +501,7 @@
     const grading = getGrading(percentage);
 
     return {
-      etInput: etInput, tuInput: tuInput, et70: et70, tu: tuVal, tot: tot, lg: grading.lg, gp: grading.gp
+      hasInput: hasInput, etInput: etInput, tuInput: tuInput, et70: et70, tu: tuVal, tot: tot, lg: grading.lg, gp: grading.gp
     };
   }
 
@@ -825,7 +561,7 @@
     studentStats.sort((a, b) => {
       if (b.gpa !== a.gpa) return b.gpa - a.gpa;
       if (b.grandTotal !== a.grandTotal) return b.grandTotal - a.grandTotal;
-      return a.roll - b.roll;
+      return a.roll - a.roll;
     });
 
     const meritMap = new Map();
@@ -851,7 +587,7 @@
 
     let results = {};
     subjectsConfig.forEach(sub => {
-        results[sub.id] = calculateSubject(row, sub.id, sub.max);
+      results[sub.id] = calculateSubject(row, sub.id, sub.max);
     });
 
     const banglaTotal = results.b1.tot + results.b2.tot;
@@ -864,7 +600,7 @@
 
     let grandTotalMarks = banglaTotal + englishTotal;
     ['math', 'rel', 'arab', 'bgs', 'sci', 'ict', 'agri', 'art', 'spoken', 'moral', 'drill'].forEach(id => {
-        grandTotalMarks += results[id].tot;
+      grandTotalMarks += results[id].tot;
     });
 
     let totalGP = gpaSubjects.reduce((acc, sub) => acc + sub.gp, 0);
@@ -876,217 +612,213 @@
     const meritPosition = meritMap.get(row) || '';
 
     const renderRow = (id, name, max, pass) => `
-        <tr>
-            <td class="pr-text-green">${name}</td>
-            <td style="font-weight:bold;">${max}</td><td style="font-weight:bold;">${pass}</td>
-            <td class="pr-mark-val">${results[id].et70 || ''}</td>
-            <td class="pr-mark-val">${results[id].tu || ''}</td>
-            <td class="pr-mark-val" style="color:#0f172a !important;">${results[id].tot || ''}</td>
-            <td class="pr-mark-val" style="color:#b91c1c !important;">${results[id].lg}</td>
-            <td class="pr-mark-val">${results[id].gp.toFixed(2)}</td>
-        </tr>
+      <tr>
+        <td class="pr-text-green">${name}</td>
+        <td style="font-weight:bold;">${max}</td><td style="font-weight:bold;">${pass}</td>
+        <td class="pr-mark-val">${results[id].et70 || ''}</td>
+        <td class="pr-mark-val">${results[id].tu || ''}</td>
+        <td class="pr-mark-val" style="color:#0f172a !important;">${results[id].tot || ''}</td>
+        <td class="pr-mark-val" style="color:#b91c1c !important;">${results[id].lg}</td>
+        <td class="pr-mark-val">${results[id].gp.toFixed(2)}</td>
+      </tr>
     `;
 
     return `
       <div class="print-report-wrapper">
-          <!-- Proxy Image URL used for Watermark (Solves Google Drive CORS block) -->
-          <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" class="pr-watermark" alt="Watermark" crossorigin="anonymous">
-          
-          <div class="pr-content-layer">
-              <div class="pr-header-section">
-                  <div class="pr-header-left">
-                      <div class="pr-progress-badge">Progress Report</div>
-                      <div class="pr-class-badge">(Six - Eight)</div>
-                      <!-- Proxy Image URL used for Logo (Solves Google Drive CORS block) -->
-                      <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" alt="Logo" class="pr-logo" crossorigin="anonymous">
-                  </div>
+        <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" class="pr-watermark" alt="Watermark" crossorigin="anonymous">
+        <div class="pr-content-layer">
+          <div class="pr-header-section">
+            <div class="pr-header-left">
+              <div class="pr-progress-badge">Progress Report</div>
+              <div class="pr-class-badge">(Six - Eight)</div>
+              <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" alt="Logo" class="pr-logo" crossorigin="anonymous">
+            </div>
 
-                  <div class="pr-header-center">
-                      <div class="pr-bismillah">بسم الله الرحمن الرحيم</div>
-                      <div class="pr-school-name">IBNE TAIMIYA SCHOOL &amp; COLLEGE</div>
-                      <div class="pr-school-address">Address: Tomchom Bridge, Cumilla, Bangladesh.</div>
-                      <div class="pr-school-email">E-mail: ibntaimia1979@gmail.com</div>
-                      <div class="pr-school-website">Website: www.itsc.edu.bd</div>
-                  </div>
+            <div class="pr-header-center">
+              <div class="pr-bismillah">بسم الله الرحمن الرحيم</div>
+              <div class="pr-school-name">IBNE TAIMIYA SCHOOL &amp; COLLEGE</div>
+              <div class="pr-school-address">Address: Tomchom Bridge, Cumilla, Bangladesh.</div>
+              <div class="pr-school-email">E-mail: ibntaimia1979@gmail.com</div>
+              <div class="pr-school-website">Website: www.itsc.edu.bd</div>
+            </div>
 
-                  <div class="pr-header-right">
-                      <table class="pr-grading-table">
-                          <tr><th class="pr-bg-yellow">Letter<br>Grade</th><th class="pr-bg-yellow">Class Interval (%)</th><th class="pr-bg-yellow">Grade<br>Point</th></tr>
-                          <tr><td>A+</td><td>80-100</td><td>5.00</td></tr>
-                          <tr><td>A</td><td>70-79</td><td>4.00</td></tr>
-                          <tr><td>A-</td><td>60-69</td><td>3.50</td></tr>
-                          <tr><td>B</td><td>50-59</td><td>3.00</td></tr>
-                          <tr><td>C</td><td>40-49</td><td>2.00</td></tr>
-                          <tr><td>F</td><td>00-39</td><td>0.00</td></tr>
-                      </table>
-                  </div>
-              </div>
-              
-              <div class="pr-header-divider"></div>
-
-              <div class="pr-student-info-box">
-                  <div class="pr-student-info">
-                      <div class="pr-info-item" style="flex-grow: 1;">
-                          <span class="pr-info-label">Name:</span> <span class="pr-info-line" style="width: 100%;">${name}</span>
-                      </div>
-                      <div class="pr-info-item">
-                          <span class="pr-info-label">Father's Name:</span> <span class="pr-info-line" style="width: 250px;">${fname}</span>
-                      </div>
-                      <div class="pr-info-item">
-                          <span class="pr-info-label">Mother's Name:</span> <span class="pr-info-line" style="width: 250px;">${mname}</span>
-                      </div>
-                  </div>
-                  <div class="pr-student-info">
-                      <div class="pr-info-item">
-                          <span class="pr-info-label">Class:</span> <span class="pr-info-line" style="width: 100px;">${className}</span>
-                      </div>
-                      <div class="pr-info-item">
-                          <span class="pr-info-label">Section:</span> <span class="pr-info-line" style="width: 120px;">${section}</span>
-                      </div>
-                      <div class="pr-info-item">
-                          <span class="pr-info-label">Roll No:</span> <span class="pr-info-line" style="width: 100px;">${roll}</span>
-                      </div>
-                      <div class="pr-info-item">
-                          <span class="pr-info-label">Shift:</span> <span class="pr-info-line" style="width: 100px;">${shift}</span>
-                      </div>
-                      <div class="pr-info-item">
-                          <span class="pr-info-label">Examination Year:</span> <span class="pr-info-line" style="width: 120px;">${examYear}</span>
-                      </div>
-                  </div>
-              </div>
-
-              <table class="pr-marks-table">
-                  <thead>
-                      <tr>
-                          <th rowspan="3" class="pr-bg-yellow pr-text-green" style="font-size: 20px;">Subject</th>
-                          <th rowspan="3" class="pr-vertical-text pr-bg-grey pr-marks-col">Total<br>Marks</th>
-                          <th rowspan="3" class="pr-vertical-text pr-bg-grey pr-marks-col">Pass<br>Marks</th>
-                          <th colspan="5" class="pr-bg-yellow pr-text-green">Annual Examination</th>
-                          <th rowspan="3" class="pr-vertical-text pr-bg-yellow pr-text-red pr-marks-col">GPA</th>
-                          <th rowspan="3" class="pr-vertical-text pr-bg-yellow pr-text-red pr-marks-col">Merit<br>Position</th>
-                      </tr>
-                      <tr>
-                          <th colspan="2" class="pr-bg-yellow pr-text-green">Obtained Marks</th>
-                          <th rowspan="2" class="pr-vertical-text pr-bg-grey pr-marks-col">Total Marks</th>
-                          <th rowspan="2" class="pr-vertical-text pr-bg-grey pr-marks-col">Letter Grade</th>
-                          <th rowspan="2" class="pr-vertical-text pr-bg-grey pr-marks-col">Grade Point</th>
-                      </tr>
-                      <tr>
-                          <th class="pr-vertical-text pr-bg-grey pr-marks-col">E.T. 70%</th>
-                          <th class="pr-vertical-text pr-bg-grey pr-marks-col">Tuto</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr>
-                          <td class="pr-text-green">Bangla-I</td>
-                          <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
-                          <td class="pr-mark-val">${results.b1.et70 || ''}</td>
-                          <td class="pr-mark-val">${results.b1.tu || ''}</td>
-                          <td class="pr-mark-val" style="color:#0f172a !important;">${results.b1.tot || ''}</td>
-                          <td class="pr-mark-val" style="color:#b91c1c !important;">${results.b1.lg}</td>
-                          <td class="pr-mark-val">${results.b1.gp.toFixed(2)}</td>
-                          
-                          <td rowspan="17" class="pr-bg-blue" style="vertical-align: middle; text-align: center; font-size: 30px; font-weight: 900; color: #b91c1c;">${finalGPA}</td>
-                          <td rowspan="17" class="pr-bg-blue" style="vertical-align: middle; text-align: center; font-size: 26px; font-weight: 900; color: #1c3c78;">${meritPosition}</td>
-                      </tr>
-                      <tr>
-                          <td class="pr-text-green">Bangla-II</td>
-                          <td style="font-weight:bold;">50</td><td style="font-weight:bold;">20</td>
-                          <td class="pr-mark-val">${results.b2.et70 || ''}</td>
-                          <td class="pr-mark-val">${results.b2.tu || ''}</td>
-                          <td class="pr-mark-val" style="color:#0f172a !important;">${results.b2.tot || ''}</td>
-                          <td class="pr-mark-val" style="color:#b91c1c !important;">${results.b2.lg}</td>
-                          <td class="pr-mark-val">${results.b2.gp.toFixed(2)}</td>
-                      </tr>
-                      <tr>
-                          <td class="pr-text-blue">Total</td>
-                          <td class="pr-bg-blue" style="font-weight:bold;">150</td><td class="pr-bg-blue" style="font-weight:bold;">60</td>
-                          <td class="pr-bg-blue"></td><td class="pr-bg-blue"></td>
-                          <td class="pr-bg-blue" style="font-size:16px; font-weight:bold; color:#0f172a !important;">${banglaTotal}</td>
-                          <td class="pr-bg-blue" style="font-size:16px; font-weight:bold; color:#b91c1c !important;">${banglaRes.lg}</td>
-                          <td class="pr-bg-blue" style="font-size:16px; font-weight:bold;">${banglaRes.gp.toFixed(2)}</td>
-                      </tr>
-                      
-                      <tr>
-                          <td class="pr-text-green">English-I</td>
-                          <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
-                          <td class="pr-mark-val">${results.e1.et70 || ''}</td>
-                          <td class="pr-mark-val">${results.e1.tu || ''}</td>
-                          <td class="pr-mark-val" style="color:#0f172a !important;">${results.e1.tot || ''}</td>
-                          <td class="pr-mark-val" style="color:#b91c1c !important;">${results.e1.lg}</td>
-                          <td class="pr-mark-val">${results.e1.gp.toFixed(2)}</td>
-                      </tr>
-                      <tr>
-                          <td class="pr-text-green">English-II</td>
-                          <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
-                          <td class="pr-mark-val">${results.e2.et70 || ''}</td>
-                          <td class="pr-mark-val">${results.e2.tu || ''}</td>
-                          <td class="pr-mark-val" style="color:#0f172a !important;">${results.e2.tot || ''}</td>
-                          <td class="pr-mark-val" style="color:#b91c1c !important;">${results.e2.lg}</td>
-                          <td class="pr-mark-val">${results.e2.gp.toFixed(2)}</td>
-                      </tr>
-                      <tr>
-                          <td class="pr-text-blue">Total</td>
-                          <td class="pr-bg-blue" style="font-weight:bold;">200</td><td class="pr-bg-blue" style="font-weight:bold;">80</td>
-                          <td class="pr-bg-blue"></td><td class="pr-bg-blue"></td>
-                          <td class="pr-bg-blue" style="font-size:16px; font-weight:bold; color:#0f172a !important;">${englishTotal}</td>
-                          <td class="pr-bg-blue" style="font-size:16px; font-weight:bold; color:#b91c1c !important;">${englishRes.lg}</td>
-                          <td class="pr-bg-blue" style="font-size:16px; font-weight:bold;">${englishRes.gp.toFixed(2)}</td>
-                      </tr>
-
-                      ${renderRow('math', 'Mathematics', 100, 40)}
-                      ${renderRow('rel', 'Religion Studies', 100, 40)}
-                      ${renderRow('arab', 'Arabic', 100, 40)}
-                      ${renderRow('bgs', 'Bangladesh & Global Studies', 100, 40)}
-                      ${renderRow('sci', 'Science', 100, 40)}
-                      
-                      <tr>
-                          <td class="pr-text-green" style="font-size: 13px;">Information & Communication Technology</td>
-                          <td style="font-weight:bold;">50</td><td style="font-weight:bold;">20</td>
-                          <td class="pr-mark-val">${results.ict.et70 || ''}</td>
-                          <td class="pr-mark-val">${results.ict.tu || ''}</td>
-                          <td class="pr-mark-val" style="color:#0f172a !important;">${results.ict.tot || ''}</td>
-                          <td class="pr-mark-val" style="color:#b91c1c !important;">${results.ict.lg}</td>
-                          <td class="pr-mark-val">${results.ict.gp.toFixed(2)}</td>
-                      </tr>
-                      
-                      ${renderRow('agri', 'Agriculture Studies/Home Science', 50, 20)}
-                      ${renderRow('art', 'Art & Craft', 50, 20)}
-                      ${renderRow('spoken', 'Spoken English', 25, 15)}
-                      ${renderRow('moral', 'Moral Activities', 50, 20)}
-                      ${renderRow('drill', 'Drill', 25, 15)}
-
-                      <tr>
-                          <td class="pr-text-red" style="font-size: 18px; text-align: left; padding-left: 10px;">GRAND TOTAL</td>
-                          <td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td>
-                          <td class="pr-bg-grey" style="font-weight:900; font-size:18px; color:#111 !important;">${grandTotalMarks}</td>
-                          <td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td>
-                      </tr>
-                  </tbody>
+            <div class="pr-header-right">
+              <table class="pr-grading-table">
+                <tr><th class="pr-bg-yellow">Letter<br>Grade</th><th class="pr-bg-yellow">Class Interval (%)</th><th class="pr-bg-yellow">Grade<br>Point</th></tr>
+                <tr><td>A+</td><td>80-100</td><td>5.00</td></tr>
+                <tr><td>A</td><td>70-79</td><td>4.00</td></tr>
+                <tr><td>A-</td><td>60-69</td><td>3.50</td></tr>
+                <tr><td>B</td><td>50-59</td><td>3.00</td></tr>
+                <tr><td>C</td><td>40-49</td><td>2.00</td></tr>
+                <tr><td>F</td><td>00-39</td><td>0.00</td></tr>
               </table>
-
-              <div class="pr-footer-section">
-                  <table class="pr-attendance-table">
-                      <tr>
-                          <th class="pr-bg-blue">Name of Exam.</th>
-                          <th class="pr-bg-blue">Total Working Days</th>
-                          <th class="pr-bg-blue">Attendance</th>
-                          <th class="pr-bg-blue">Highest Attendance</th>
-                      </tr>
-                      <tr>
-                          <td class="pr-bg-yellow">Annual</td>
-                          <td class="pr-mark-val" style="border:1px solid #000 !important;">${totalWorkingDays}</td> 
-                          <td class="pr-mark-val" style="border:1px solid #000 !important;">${att}</td>
-                          <td class="pr-mark-val" style="border:1px solid #000 !important;">${highestAttendance}</td>
-                      </tr>
-                  </table>
-                  <div class="pr-signatures">
-                      <div class="pr-sign-box">Guardian's Signature</div>
-                      <div class="pr-sign-box">Class Teacher's Signature</div>
-                      <div class="pr-sign-box">Principal's Signature</div>
-                  </div>
-              </div>
+            </div>
           </div>
+
+          <div class="pr-header-divider"></div>
+
+          <div class="pr-student-info-box">
+            <div class="pr-student-info">
+              <div class="pr-info-item" style="flex-grow: 1;">
+                <span class="pr-info-label">Name:</span> <span class="pr-info-line" style="width: 100%;">${name}</span>
+              </div>
+              <div class="pr-info-item">
+                <span class="pr-info-label">Father's Name:</span> <span class="pr-info-line" style="width: 250px;">${fname}</span>
+              </div>
+              <div class="pr-info-item">
+                <span class="pr-info-label">Mother's Name:</span> <span class="pr-info-line" style="width: 250px;">${mname}</span>
+              </div>
+            </div>
+            <div class="pr-student-info">
+              <div class="pr-info-item">
+                <span class="pr-info-label">Class:</span> <span class="pr-info-line" style="width: 100px;">${className}</span>
+              </div>
+              <div class="pr-info-item">
+                <span class="pr-info-label">Section:</span> <span class="pr-info-line" style="width: 120px;">${section}</span>
+              </div>
+              <div class="pr-info-item">
+                <span class="pr-info-label">Roll No:</span> <span class="pr-info-line" style="width: 100px;">${roll}</span>
+              </div>
+              <div class="pr-info-item">
+                <span class="pr-info-label">Shift:</span> <span class="pr-info-line" style="width: 100px;">${shift}</span>
+              </div>
+              <div class="pr-info-item">
+                <span class="pr-info-label">Examination Year:</span> <span class="pr-info-line" style="width: 120px;">${examYear}</span>
+              </div>
+            </div>
+          </div>
+
+          <table class="pr-marks-table">
+            <thead>
+              <tr>
+                <th rowspan="3" class="pr-bg-yellow pr-text-green" style="font-size: 20px;">Subject</th>
+                <th rowspan="3" class="pr-vertical-text pr-bg-grey pr-marks-col">Total<br>Marks</th>
+                <th rowspan="3" class="pr-vertical-text pr-bg-grey pr-marks-col">Pass<br>Marks</th>
+                <th colspan="5" class="pr-bg-yellow pr-text-green">Annual Examination</th>
+                <th rowspan="3" class="pr-vertical-text pr-bg-yellow pr-text-red pr-marks-col">GPA</th>
+                <th rowspan="3" class="pr-vertical-text pr-bg-yellow pr-text-red pr-marks-col">Merit<br>Position</th>
+              </tr>
+              <tr>
+                <th colspan="2" class="pr-bg-yellow pr-text-green">Obtained Marks</th>
+                <th rowspan="2" class="pr-vertical-text pr-bg-grey pr-marks-col">Total Marks</th>
+                <th rowspan="2" class="pr-vertical-text pr-bg-grey pr-marks-col">Letter Grade</th>
+                <th rowspan="2" class="pr-vertical-text pr-bg-grey pr-marks-col">Grade Point</th>
+              </tr>
+              <tr>
+                <th class="pr-vertical-text pr-bg-grey pr-marks-col">E.T. 70%</th>
+                <th class="pr-vertical-text pr-bg-grey pr-marks-col">Tuto</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="pr-text-green">Bangla-I</td>
+                <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
+                <td class="pr-mark-val">${results.b1.et70 || ''}</td>
+                <td class="pr-mark-val">${results.b1.tu || ''}</td>
+                <td class="pr-mark-val" style="color:#0f172a !important;">${results.b1.tot || ''}</td>
+                <td class="pr-mark-val" style="color:#b91c1c !important;">${results.b1.lg}</td>
+                <td class="pr-mark-val">${results.b1.gp.toFixed(2)}</td>
+                <td rowspan="17" class="pr-bg-blue" style="vertical-align: middle; text-align: center; font-size: 30px; font-weight: 900; color: #b91c1c;">${finalGPA}</td>
+                <td rowspan="17" class="pr-bg-blue" style="vertical-align: middle; text-align: center; font-size: 26px; font-weight: 900; color: #1c3c78;">${meritPosition}</td>
+              </tr>
+              <tr>
+                <td class="pr-text-green">Bangla-II</td>
+                <td style="font-weight:bold;">50</td><td style="font-weight:bold;">20</td>
+                <td class="pr-mark-val">${results.b2.et70 || ''}</td>
+                <td class="pr-mark-val">${results.b2.tu || ''}</td>
+                <td class="pr-mark-val" style="color:#0f172a !important;">${results.b2.tot || ''}</td>
+                <td class="pr-mark-val" style="color:#b91c1c !important;">${results.b2.lg}</td>
+                <td class="pr-mark-val">${results.b2.gp.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td class="pr-text-blue">Total</td>
+                <td class="pr-bg-blue" style="font-weight:bold;">150</td><td class="pr-bg-blue" style="font-weight:bold;">60</td>
+                <td class="pr-bg-blue"></td><td class="pr-bg-blue"></td>
+                <td class="pr-bg-blue" style="font-size:16px; font-weight:bold; color:#0f172a !important;">${banglaTotal}</td>
+                <td class="pr-bg-blue" style="font-size:16px; font-weight:bold; color:#b91c1c !important;">${banglaRes.lg}</td>
+                <td class="pr-bg-blue" style="font-size:16px; font-weight:bold;">${banglaRes.gp.toFixed(2)}</td>
+              </tr>
+
+              <tr>
+                <td class="pr-text-green">English-I</td>
+                <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
+                <td class="pr-mark-val">${results.e1.et70 || ''}</td>
+                <td class="pr-mark-val">${results.e1.tu || ''}</td>
+                <td class="pr-mark-val" style="color:#0f172a !important;">${results.e1.tot || ''}</td>
+                <td class="pr-mark-val" style="color:#b91c1c !important;">${results.e1.lg}</td>
+                <td class="pr-mark-val">${results.e1.gp.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td class="pr-text-green">English-II</td>
+                <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
+                <td class="pr-mark-val">${results.e2.et70 || ''}</td>
+                <td class="pr-mark-val">${results.e2.tu || ''}</td>
+                <td class="pr-mark-val" style="color:#0f172a !important;">${results.e2.tot || ''}</td>
+                <td class="pr-mark-val" style="color:#b91c1c !important;">${results.e2.lg}</td>
+                <td class="pr-mark-val">${results.e2.gp.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td class="pr-text-blue">Total</td>
+                <td class="pr-bg-blue" style="font-weight:bold;">200</td><td class="pr-bg-blue" style="font-weight:bold;">80</td>
+                <td class="pr-bg-blue"></td><td class="pr-bg-blue"></td>
+                <td class="pr-bg-blue" style="font-size:16px; font-weight:bold; color:#0f172a !important;">${englishTotal}</td>
+                <td class="pr-bg-blue" style="font-size:16px; font-weight:bold; color:#b91c1c !important;">${englishRes.lg}</td>
+                <td class="pr-bg-blue" style="font-size:16px; font-weight:bold;">${englishRes.gp.toFixed(2)}</td>
+              </tr>
+
+              ${renderRow('math', 'Mathematics', 100, 40)}
+              ${renderRow('rel', 'Religion Studies', 100, 40)}
+              ${renderRow('arab', 'Arabic', 100, 40)}
+              ${renderRow('bgs', 'Bangladesh & Global Studies', 100, 40)}
+              ${renderRow('sci', 'Science', 100, 40)}
+
+              <tr>
+                <td class="pr-text-green" style="font-size: 13px;">Information & Communication Technology</td>
+                <td style="font-weight:bold;">50</td><td style="font-weight:bold;">20</td>
+                <td class="pr-mark-val">${results.ict.et70 || ''}</td>
+                <td class="pr-mark-val">${results.ict.tu || ''}</td>
+                <td class="pr-mark-val" style="color:#0f172a !important;">${results.ict.tot || ''}</td>
+                <td class="pr-mark-val" style="color:#b91c1c !important;">${results.ict.lg}</td>
+                <td class="pr-mark-val">${results.ict.gp.toFixed(2)}</td>
+              </tr>
+
+              ${renderRow('agri', 'Agriculture Studies/Home Science', 50, 20)}
+              ${renderRow('art', 'Art & Craft', 50, 20)}
+              ${renderRow('spoken', 'Spoken English', 25, 15)}
+              ${renderRow('moral', 'Moral Activities', 50, 20)}
+              ${renderRow('drill', 'Drill', 25, 15)}
+
+              <tr>
+                <td class="pr-text-red" style="font-size: 18px; text-align: left; padding-left: 10px;">GRAND TOTAL</td>
+                <td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td>
+                <td class="pr-bg-grey" style="font-weight:900; font-size:18px; color:#111 !important;">${grandTotalMarks}</td>
+                <td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pr-footer-section">
+            <table class="pr-attendance-table">
+              <tr>
+                <th class="pr-bg-blue">Name of Exam.</th>
+                <th class="pr-bg-blue">Total Working Days</th>
+                <th class="pr-bg-blue">Attendance</th>
+                <th class="pr-bg-blue">Highest Attendance</th>
+              </tr>
+              <tr>
+                <td class="pr-bg-yellow">Annual</td>
+                <td class="pr-mark-val" style="border:1px solid #000 !important;">${totalWorkingDays}</td>
+                <td class="pr-mark-val" style="border:1px solid #000 !important;">${att}</td>
+                <td class="pr-mark-val" style="border:1px solid #000 !important;">${highestAttendance}</td>
+              </tr>
+            </table>
+            <div class="pr-signatures">
+              <div class="pr-sign-box">Guardian's Signature</div>
+              <div class="pr-sign-box">Class Teacher's Signature</div>
+              <div class="pr-sign-box">Principal's Signature</div>
+            </div>
+          </div>
+        </div>
       </div>
     `;
   }
@@ -1119,11 +851,11 @@
 
         const element = renderContainer.firstElementChild;
         const opt = {
-          margin:       0,
-          filename:     `Progress_Report_Roll_${roll}.pdf`,
-          image:        { type: 'jpeg', quality: 1 },
-          html2canvas:  { scale: 2, useCORS: true, allowTaint: true }, // allowTaint added for safety
-          jsPDF:        { unit: 'px', format: [1050, 1485], orientation: 'portrait' }
+          margin: 0,
+          filename: `Progress_Report_Roll_${roll}.pdf`,
+          image: { type: 'jpeg', quality: 1 },
+          html2canvas: { scale: 2, useCORS: true, allowTaint: true },
+          jsPDF: { unit: 'px', format: [1050, 1485], orientation: 'portrait' }
         };
 
         const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
@@ -1147,6 +879,649 @@
     }
   }
 
+  /* =====================================================================
+     FULL-PAGE FITTED A4 RESULT SUMMARY SHEET (পুরো ১ পেইজ জুড়ে ফিট এবং ডান পাশ কাটা মুক্ত)
+     ===================================================================== */
+  function openResultSummarySheet() {
+    const rows = Array.from(document.querySelectorAll('#mainTableBody tr'));
+    if (rows.length === 0) {
+      alert('দয়া করে অন্তত একজন শিক্ষার্থীর তথ্য ইনপুট দিন।');
+      return;
+    }
+
+    const className = document.getElementById('globalClass').value || '-';
+    const section = document.getElementById('globalSection').value || '-';
+    const shift = document.getElementById('globalShift').value || '-';
+    const examYear = document.getElementById('globalExamYear').value || '2026';
+    const todayStr = toBnNum(new Date().toLocaleDateString('en-GB'));
+
+    const summarySubjectsList = [
+      { key: 'b1', label: 'বাংলা ১ম পত্র (Bangla-I)', max: 100, isCombined: false },
+      { key: 'b2', label: 'বাংলা ২য় পত্র (Bangla-II)', max: 50, isCombined: false },
+      { key: 'bangla_comb', label: 'বাংলা ১ম ও ২য় পত্র (একত্রে - GPA)', max: 150, isCombined: true },
+      { key: 'e1', label: 'ইংরেজি ১ম পত্র (English-I)', max: 100, isCombined: false },
+      { key: 'e2', label: 'ইংরেজি ২য় পত্র (English-II)', max: 100, isCombined: false },
+      { key: 'english_comb', label: 'ইংরেজি ১ম ও ২য় পত্র (একত্রে - GPA)', max: 200, isCombined: true },
+      { key: 'math', label: 'সাধারণ গণিত (Mathematics)', max: 100, isCombined: false },
+      { key: 'rel', label: 'ধর্ম ও নৈতিক শিক্ষা (Religion Studies)', max: 100, isCombined: false },
+      { key: 'arab', label: 'আরবী (Arabic)', max: 100, isCombined: false },
+      { key: 'bgs', label: 'বাংলাদেশ ও বিশ্বপরিচয় (BGS)', max: 100, isCombined: false },
+      { key: 'sci', label: 'বিজ্ঞান (Science)', max: 100, isCombined: false },
+      { key: 'ict', label: 'তথ্য ও যোগাযোগ প্রযুক্তি (ICT)', max: 50, isCombined: false },
+      { key: 'agri', label: 'কৃষি শিক্ষা / গার্হস্থ্য বিজ্ঞান (Agri/Home)', max: 50, isCombined: false },
+      { key: 'art', label: 'চারু ও কারুকলা (Art & Craft)', max: 50, isCombined: false },
+      { key: 'spoken', label: 'স্পোকেন ইংলিশ (Spoken English)', max: 25, isCombined: false },
+      { key: 'moral', label: 'মোরাল অ্যাক্টিভিটিজ (Moral Activities)', max: 50, isCombined: false },
+      { key: 'drill', label: 'ড্রীল (Drill)', max: 25, isCombined: false }
+    ];
+
+    let subStats = {};
+    summarySubjectsList.forEach(s => {
+      subStats[s.key] = {
+        examinees: 0, pass: 0, fail: 0, highest: 0,
+        grades: { 'A+': 0, 'A': 0, 'A-': 0, 'B': 0, 'C': 0, 'F': 0 }
+      };
+    });
+
+    let totalStudents = rows.length;
+    let totalExaminees = 0;
+    let totalAbsent = 0;
+    let overallPassCount = 0;
+    let overallFailCount = 0;
+
+    let gpaDist = { 'A+': 0, 'A': 0, 'A-': 0, 'B': 0, 'C': 0, 'F': 0 };
+    let failBySubCount = { 1: [], 2: [], 3: [], 4: [] };
+    let topStudent = { roll: '-', name: '-', gpa: -1, total: -1 };
+
+    rows.forEach((row, idx) => {
+      const roll = row.querySelector('.in-roll').value || String(idx + 1);
+      const name = row.querySelector('.in-name').value || '-';
+
+      let results = {};
+      let anyMarkEntered = false;
+      subjectsConfig.forEach(sub => {
+        results[sub.id] = calculateSubject(row, sub.id, sub.max);
+        if (results[sub.id].hasInput || results[sub.id].tot > 0) anyMarkEntered = true;
+      });
+
+      const banglaTotal = results.b1.tot + results.b2.tot;
+      const englishTotal = results.e1.tot + results.e2.tot;
+      const banglaRes = { tot: banglaTotal, ...getGrading((banglaTotal / 150) * 100) };
+      const englishRes = { tot: englishTotal, ...getGrading((englishTotal / 200) * 100) };
+
+      let grandTotalMarks = banglaTotal + englishTotal;
+      ['math', 'rel', 'arab', 'bgs', 'sci', 'ict', 'agri', 'art', 'spoken', 'moral', 'drill'].forEach(id => {
+        grandTotalMarks += results[id].tot;
+      });
+
+      if (!anyMarkEntered && grandTotalMarks === 0) {
+        totalAbsent++;
+        return;
+      }
+
+      totalExaminees++;
+
+      const allMap = { ...results, bangla_comb: banglaRes, english_comb: englishRes };
+      summarySubjectsList.forEach(s => {
+        const r = allMap[s.key];
+        const st = subStats[s.key];
+        st.examinees++;
+        if (r.tot > st.highest) st.highest = r.tot;
+        st.grades[r.lg] = (st.grades[r.lg] || 0) + 1;
+        if (r.lg === 'F') st.fail++;
+        else st.pass++;
+      });
+
+      const gpaSubjects = [banglaRes, englishRes, results.math, results.rel, results.arab, results.bgs, results.sci, results.ict, results.agri];
+      const failedGpaSubjectsCount = gpaSubjects.filter(sub => sub.gp === 0).length;
+
+      let totalGP = gpaSubjects.reduce((acc, sub) => acc + sub.gp, 0);
+      let finalGPA = parseFloat((totalGP / gpaSubjects.length).toFixed(2));
+      if (finalGPA > 5.00) finalGPA = 5.00;
+
+      if (failedGpaSubjectsCount > 0) {
+        finalGPA = 0.00;
+        overallFailCount++;
+        gpaDist['F']++;
+        if (failedGpaSubjectsCount === 1) failBySubCount[1].push(roll);
+        else if (failedGpaSubjectsCount === 2) failBySubCount[2].push(roll);
+        else if (failedGpaSubjectsCount === 3) failBySubCount[3].push(roll);
+        else failBySubCount[4].push(roll);
+      } else {
+        overallPassCount++;
+        if (finalGPA === 5.00) gpaDist['A+']++;
+        else if (finalGPA >= 4.00) gpaDist['A']++;
+        else if (finalGPA >= 3.50) gpaDist['A-']++;
+        else if (finalGPA >= 3.00) gpaDist['B']++;
+        else gpaDist['C']++;
+      }
+
+      if (finalGPA > topStudent.gpa || (finalGPA === topStudent.gpa && grandTotalMarks > topStudent.total)) {
+        topStudent = { roll: roll, name: name, gpa: finalGPA, total: grandTotalMarks };
+      }
+    });
+
+    const overallPassRate = totalExaminees > 0 ? ((overallPassCount / totalExaminees) * 100).toFixed(2) : '0.00';
+    const overallFailRate = totalExaminees > 0 ? ((overallFailCount / totalExaminees) * 100).toFixed(2) : '0.00';
+
+    let subjectRowsHTML = '';
+    summarySubjectsList.forEach((s, index) => {
+      const st = subStats[s.key];
+      const pRate = st.examinees > 0 ? ((st.pass / st.examinees) * 100).toFixed(1) : '0.0';
+      const rowBg = s.isCombined ? 'background:#eff6ff;font-weight:700;' : '';
+      subjectRowsHTML += `
+        <tr style="${rowBg}">
+          <td>${toBnNum(String(index + 1).padStart(2, '0'))}</td>
+          <td class="subj-name">${s.label}</td>
+          <td>${toBnNum(s.max)}</td>
+          <td>${toBnNum(st.examinees)}</td>
+          <td class="col-pass">${toBnNum(st.pass)}</td>
+          <td class="col-fail">${toBnNum(st.fail)}</td>
+          <td>${toBnNum(pRate)}%</td>
+          <td>${toBnNum(st.highest)}</td>
+          <td>${toBnNum(st.grades['A+'])}</td>
+          <td>${toBnNum(st.grades['A'])}</td>
+          <td>${toBnNum(st.grades['A-'])}</td>
+          <td>${toBnNum(st.grades['B'])}</td>
+          <td>${toBnNum(st.grades['C'])}</td>
+          <td class="col-fail">${toBnNum(st.grades['F'])}</td>
+        </tr>
+      `;
+    });
+
+    const pct = (cnt) => totalExaminees > 0 ? toBnNum(((cnt / totalExaminees) * 100).toFixed(2)) + '%' : '০.০০%';
+
+    const summaryWin = window.open('', '_blank');
+    summaryWin.document.write(`
+      <!DOCTYPE html>
+      <html lang="bn">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=1100, user-scalable=yes">
+        <title>ফলাফল সারসংক্ষেপ (Result Summary) - ${className} (${section})</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
+        <style>
+          :root {
+            --primary: #1e3a8a;
+            --primary-light: #eff6ff;
+            --border-color: #64748b;
+            --table-header: #1e293b;
+            --success-bg: #ecfdf5;
+            --success-text: #047857;
+            --danger-bg: #fef2f2;
+            --danger-text: #b91c1c;
+            --warning-text: #b45309;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+          }
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', sans-serif;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          body {
+            background: #cbd5e1;
+            color: var(--text-dark);
+            padding: 15px 0;
+            min-width: 1080px;
+          }
+
+          .toolbar {
+            width: 1050px;
+            margin: 0 auto 14px auto;
+            background: #ffffff;
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .toolbar-info { font-size: 15px; color: var(--text-muted); font-weight: 600; }
+          .toolbar-actions { display: flex; gap: 12px; }
+          .btn {
+            padding: 10px 20px; border-radius: 8px; border: none; font-size: 15px;
+            font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; color: #fff;
+          }
+          .btn-pdf { background: #dc2626; }
+          .btn-pdf:hover { background: #b91c1c; }
+          .btn-print { background: var(--primary); }
+          .btn-print:hover { background: #172554; }
+
+          /* Exact A4 Resolution Match (1050px x 1485px) - Fills 100% of Page Vertically & Horizontally */
+          .a4-sheet {
+            width: 1050px;
+            height: 1485px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 26px 32px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+          }
+          .sheet-border {
+            border: 3px solid var(--primary);
+            padding: 18px 22px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+
+          .top-content-flex {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+          }
+
+          /* Institution Header */
+          .inst-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2.5px double var(--primary);
+            padding-bottom: 10px;
+          }
+          .inst-logo { width: 78px; height: 78px; }
+          .inst-center { text-align: center; flex: 1; line-height: 1.25; }
+          .inst-name { font-family: 'Noto Serif Bengali', serif; font-size: 28px; font-weight: 700; color: var(--primary); }
+          .inst-name-en { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 800; color: #991b1b; letter-spacing: 0.5px; }
+          .inst-address { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+          .badge-row { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 6px; }
+          .exam-title-badge {
+            display: inline-block; background: var(--primary); color: #fff;
+            padding: 4px 18px; border-radius: 99px; font-size: 15px; font-weight: 700;
+          }
+          .report-subtitle { font-size: 17px; font-weight: 700; color: #0f172a; text-decoration: underline; text-underline-offset: 4px; }
+
+          /* Meta Bar */
+          .meta-info-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            border: 2px solid var(--border-color); border-radius: 8px;
+            background: #f8fafc; overflow: hidden;
+          }
+          .meta-cell {
+            padding: 8px 14px; border-right: 1.5px solid var(--border-color);
+            font-size: 15.5px; display: flex; justify-content: space-between; align-items: center;
+          }
+          .meta-cell:last-child { border-right: none; }
+          .meta-label { color: var(--text-muted); font-weight: 600; }
+          .meta-val { font-weight: 700; color: var(--text-dark); }
+
+          /* Section Title */
+          .sec-title {
+            font-size: 15.5px; font-weight: 700; color: #ffffff; background: var(--table-header);
+            padding: 6px 12px; border-radius: 6px 6px 0 0; display: flex; justify-content: space-between; align-items: center;
+          }
+
+          /* KPI Grid */
+          .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 6px; }
+          .kpi-box { border: 2px solid var(--border-color); border-radius: 8px; padding: 10px 6px; text-align: center; background: #fff; }
+          .kpi-box.pass-box { background: var(--success-bg); border-color: #6ee7b7; }
+          .kpi-box.fail-box { background: var(--danger-bg); border-color: #fca5a5; }
+          .kpi-box.rate-box { background: var(--primary-light); border-color: #93c5fd; }
+          .kpi-num { font-size: 23px; font-weight: 700; line-height: 1.15; }
+          .pass-box .kpi-num { color: var(--success-text); }
+          .fail-box .kpi-num { color: var(--danger-text); }
+          .rate-box .kpi-num { color: var(--primary); }
+          .kpi-label { font-size: 13.5px; font-weight: 600; color: var(--text-muted); margin-top: 3px; }
+
+          /* Stretchable Tables to Fill Vertical Space */
+          .table-stretch-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+          }
+          table.summary-table {
+            width: 100%;
+            flex: 1;
+            border-collapse: collapse;
+            font-size: 14.5px;
+          }
+          table.summary-table th, table.summary-table td {
+            border: 1.5px solid #64748b;
+            padding: 6px 6px;
+            text-align: center;
+          }
+          table.summary-table th { background: #f1f5f9; font-weight: 700; color: #0f172a; font-size: 14.5px; }
+          table.summary-table td.subj-name { text-align: left; font-weight: 600; padding-left: 10px; }
+
+          .col-pass { background: var(--success-bg); color: var(--success-text); font-weight: 700; }
+          .col-fail { background: var(--danger-bg); color: var(--danger-text); font-weight: 700; }
+          .total-row td { background: #f8fafc; font-weight: 700; }
+
+          .analytics-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+          }
+          .analytics-col {
+            display: flex;
+            flex-direction: column;
+          }
+
+          /* Signatures & Footer */
+          .bottom-footer-wrap {
+            margin-top: 14px;
+          }
+          .signature-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px;
+            margin-top: 38px; padding-top: 6px; text-align: center;
+          }
+          .sig-box { border-top: 2px dashed #1e293b; padding-top: 6px; font-size: 15px; font-weight: 700; color: #1e293b; }
+          .sheet-footer-note {
+            display: flex; justify-content: space-between; font-size: 13px;
+            color: var(--text-muted); border-top: 1.5px solid #cbd5e1; padding-top: 6px; margin-top: 10px; font-weight: 600;
+          }
+
+          @media print {
+            @page { size: A4 portrait; margin: 0mm; }
+            html, body {
+              width: 1050px !important;
+              height: 1485px !important;
+              background: #fff !important;
+              padding: 0 !important;
+              margin: 0 !important;
+              overflow: hidden !important;
+            }
+            .toolbar { display: none !important; }
+            .a4-sheet {
+              box-shadow: none !important;
+              margin: 0 !important;
+              width: 1050px !important;
+              height: 1485px !important;
+              page-break-after: avoid !important;
+              page-break-inside: avoid !important;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="toolbar">
+          <div class="toolbar-info">
+            ✅ সম্পূর্ণ A4 পৃষ্ঠায় (১০০% ফিট) ও ডান পাশ কাটা মুক্তভাবে সেট করা হয়েছে।
+          </div>
+          <div class="toolbar-actions">
+            <button class="btn btn-pdf" id="pdfBtn" onclick="downloadPDF()">📥 ১ পৃষ্ঠায় PDF ডাউনলোড</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ প্রিন্ট করুন (A4)</button>
+          </div>
+        </div>
+
+        <div class="a4-sheet" id="summarySheetArea">
+          <div class="sheet-border">
+            <div class="top-content-flex">
+              <!-- Header -->
+              <div class="inst-header">
+                <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" class="inst-logo" alt="Logo" crossorigin="anonymous">
+                <div class="inst-center">
+                  <div class="inst-name" contenteditable="true">ইবনে তাইমিয়া স্কুল এন্ড কলেজ, কুমিল্লা</div>
+                  <div class="inst-name-en" contenteditable="true">IBNE TAIMIYA SCHOOL & COLLEGE</div>
+                  <div class="inst-address" contenteditable="true">টমছমব্রীজ, কুমিল্লা | E-mail: ibntaimia1979@gmail.com | Web: www.itsc.edu.bd</div>
+                  <div class="badge-row">
+                    <span class="exam-title-badge" contenteditable="true">বার্ষিক পরীক্ষা - ${toBnNum(examYear)}</span>
+                    <span class="report-subtitle" contenteditable="true">ফলাফল সারসংক্ষেপ প্রতিবেদন (Result Summary Sheet)</span>
+                  </div>
+                </div>
+                <div style="width:78px;"></div>
+              </div>
+
+              <!-- Class/Section Info -->
+              <div class="meta-info-grid">
+                <div class="meta-cell">
+                  <span class="meta-label">শ্রেণি (Class):</span>
+                  <span class="meta-val" contenteditable="true">${className}</span>
+                </div>
+                <div class="meta-cell">
+                  <span class="meta-label">শাখা (Section):</span>
+                  <span class="meta-val" contenteditable="true">${section}</span>
+                </div>
+                <div class="meta-cell">
+                  <span class="meta-label">শিফট (Shift):</span>
+                  <span class="meta-val" contenteditable="true">${shift}</span>
+                </div>
+                <div class="meta-cell">
+                  <span class="meta-label">তারিখ:</span>
+                  <span class="meta-val" contenteditable="true">${todayStr}</span>
+                </div>
+              </div>
+
+              <!-- 1. Overall KPIs -->
+              <div>
+                <div class="sec-title">
+                  <span>১. এক নজরে সামগ্রিক ফলাফল (Overall Pass/Fail Statistics)</span>
+                  <span style="font-size:13px;font-weight:400;">৯টি মূল GPA বিষয়ের ফলাফলের ভিত্তিতে</span>
+                </div>
+                <div class="kpi-grid">
+                  <div class="kpi-box">
+                    <div class="kpi-num" contenteditable="true">${toBnNum(totalStudents)}</div>
+                    <div class="kpi-label">মোট শিক্ষার্থী</div>
+                  </div>
+                  <div class="kpi-box">
+                    <div class="kpi-num" contenteditable="true">${toBnNum(totalExaminees)}</div>
+                    <div class="kpi-label">মোট পরীক্ষার্থী</div>
+                  </div>
+                  <div class="kpi-box">
+                    <div class="kpi-num" style="color:var(--warning-text);" contenteditable="true">${toBnNum(totalAbsent)}</div>
+                    <div class="kpi-label">অনুপস্থিত</div>
+                  </div>
+                  <div class="kpi-box pass-box">
+                    <div class="kpi-num" contenteditable="true">${toBnNum(overallPassCount)}</div>
+                    <div class="kpi-label">মোট উত্তীর্ণ (পাশ)</div>
+                  </div>
+                  <div class="kpi-box fail-box">
+                    <div class="kpi-num" contenteditable="true">${toBnNum(overallFailCount)}</div>
+                    <div class="kpi-label">মোট অনুত্তীর্ণ (ফেইল)</div>
+                  </div>
+                  <div class="kpi-box rate-box">
+                    <div class="kpi-num" contenteditable="true">${toBnNum(overallPassRate)}%</div>
+                    <div class="kpi-label">পাশের হার (%)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Subject-wise Breakdown (Auto-stretches vertically) -->
+              <div class="table-stretch-wrap">
+                <div class="sec-title">
+                  <span>২. বিষয়ভিত্তিক পাশ-ফেইল ও গ্রেড বিবরণী (Subject-wise Breakdown)</span>
+                </div>
+                <table class="summary-table">
+                  <thead>
+                    <tr>
+                      <th rowspan="2" style="width:38px;">ক্র.</th>
+                      <th rowspan="2" style="text-align:left;padding-left:10px;">বিষয়ের নাম (Subject)</th>
+                      <th rowspan="2">পূর্ণমান</th>
+                      <th rowspan="2">পরীক্ষার্থী</th>
+                      <th rowspan="2" class="col-pass">মোট পাশ</th>
+                      <th rowspan="2" class="col-fail">মোট ফেইল</th>
+                      <th rowspan="2">পাশের হার</th>
+                      <th rowspan="2">সর্বোচ্চ</th>
+                      <th colspan="6">বিষয়ভিত্তিক প্রাপ্ত গ্রেড সংখ্যা</th>
+                    </tr>
+                    <tr>
+                      <th style="width:44px;">A+</th>
+                      <th style="width:44px;">A</th>
+                      <th style="width:44px;">A-</th>
+                      <th style="width:44px;">B</th>
+                      <th style="width:44px;">C</th>
+                      <th class="col-fail" style="width:44px;">F</th>
+                    </tr>
+                  </thead>
+                  <tbody contenteditable="true">
+                    ${subjectRowsHTML}
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- 3 & 4. GPA Distribution & Multi-Subject Fail Analysis -->
+              <div class="analytics-row">
+                <div class="analytics-col">
+                  <div class="sec-title">
+                    <span>৩. জিপিএ / গ্রেডভিত্তিক ফলাফল (GPA Summary)</span>
+                  </div>
+                  <table class="summary-table">
+                    <thead>
+                      <tr>
+                        <th>লেটার গ্রেড</th>
+                        <th>জিপিএ (GPA)</th>
+                        <th>শিক্ষার্থীর সংখ্যা</th>
+                        <th>শতকরা হার (%)</th>
+                      </tr>
+                    </thead>
+                    <tbody contenteditable="true">
+                      <tr>
+                        <td><strong>A+</strong></td>
+                        <td>৫.০০</td>
+                        <td class="col-pass">${toBnNum(gpaDist['A+'])} জন</td>
+                        <td>${pct(gpaDist['A+'])}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>A</strong></td>
+                        <td>৪.০০ - ৪.৯৯</td>
+                        <td>${toBnNum(gpaDist['A'])} জন</td>
+                        <td>${pct(gpaDist['A'])}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>A-</strong></td>
+                        <td>৩.৫০ - ৩.৯৯</td>
+                        <td>${toBnNum(gpaDist['A-'])} জন</td>
+                        <td>${pct(gpaDist['A-'])}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>B</strong></td>
+                        <td>৩.০০ - ৩.৪৯</td>
+                        <td>${toBnNum(gpaDist['B'])} জন</td>
+                        <td>${pct(gpaDist['B'])}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>C</strong></td>
+                        <td>২.০০ - ২.৯৯</td>
+                        <td>${toBnNum(gpaDist['C'])} জন</td>
+                        <td>${pct(gpaDist['C'])}</td>
+                      </tr>
+                      <tr>
+                        <td class="col-fail"><strong>F (ফেইল)</strong></td>
+                        <td class="col-fail">০.০০</td>
+                        <td class="col-fail">${toBnNum(gpaDist['F'])} জন</td>
+                        <td class="col-fail">${pct(gpaDist['F'])}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="analytics-col">
+                  <div class="sec-title" style="background:#991b1b;">
+                    <span>৪. অকৃতকার্য (Fail) ও মেধা তালিকার বিশ্লেষণ</span>
+                  </div>
+                  <table class="summary-table">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left;padding-left:8px;">অকৃতকার্য বিষয়ের বিবরণ</th>
+                        <th style="width:85px;">সংখ্যা</th>
+                        <th>রোল নম্বরসমূহ</th>
+                      </tr>
+                    </thead>
+                    <tbody contenteditable="true">
+                      <tr>
+                        <td class="subj-name">১টি বিষয়ে ফেইল</td>
+                        <td class="col-fail">${toBnNum(failBySubCount[1].length)} জন</td>
+                        <td>${failBySubCount[1].length ? toBnNum(failBySubCount[1].join(', ')) : '-'}</td>
+                      </tr>
+                      <tr>
+                        <td class="subj-name">২টি বিষয়ে ফেইল</td>
+                        <td class="col-fail">${toBnNum(failBySubCount[2].length)} জন</td>
+                        <td>${failBySubCount[2].length ? toBnNum(failBySubCount[2].join(', ')) : '-'}</td>
+                      </tr>
+                      <tr>
+                        <td class="subj-name">৩টি বিষয়ে ফেইল</td>
+                        <td class="col-fail">${toBnNum(failBySubCount[3].length)} জন</td>
+                        <td>${failBySubCount[3].length ? toBnNum(failBySubCount[3].join(', ')) : '-'}</td>
+                      </tr>
+                      <tr>
+                        <td class="subj-name">৪ বা ততোধিক বিষয়ে ফেইল</td>
+                        <td class="col-fail">${toBnNum(failBySubCount[4].length)} জন</td>
+                        <td>${failBySubCount[4].length ? toBnNum(failBySubCount[4].join(', ')) : '-'}</td>
+                      </tr>
+                      <tr class="total-row">
+                        <td class="subj-name">সর্বমোট অকৃতকার্য (ফেইল)</td>
+                        <td class="col-fail">${toBnNum(overallFailCount)} জন</td>
+                        <td>ফেইলের হার: ${toBnNum(overallFailRate)}%</td>
+                      </tr>
+                      <tr>
+                        <td class="subj-name">১ম স্থান (Merit 1st)</td>
+                        <td class="col-pass">রোল: ${toBnNum(topStudent.roll)}</td>
+                        <td>মোট নম্বর: ${toBnNum(topStudent.total >= 0 ? topStudent.total : 0)} (GPA: ${toBnNum(topStudent.gpa >= 0 ? topStudent.gpa.toFixed(2) : '0.00')})</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer & Signatures -->
+            <div class="bottom-footer-wrap">
+              <div class="signature-grid">
+                <div class="sig-box" contenteditable="true">শ্রেণি শিক্ষকের স্বাক্ষর (Class Teacher)</div>
+                <div class="sig-box" contenteditable="true">শিফট ইনচার্জ (Shift In-charge)</div>
+                <div class="sig-box" contenteditable="true">অধ্যক্ষের স্বাক্ষর (Principal's Signature)</div>
+              </div>
+              <div class="sheet-footer-note">
+                <span contenteditable="true">প্রস্তুতকারক: ইঞ্জি: সাইফুল ইসলাম (সহ শিক্ষক, জবা শিফট) - ইবনে তাইমিয়া স্কুল এন্ড কলেজ</span>
+                <span>পৃষ্ঠা: ১ / ১ (Summary Report)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          function downloadPDF() {
+            const btn = document.getElementById('pdfBtn');
+            btn.innerText = '⏳ জেনারেট হচ্ছে...';
+            btn.disabled = true;
+
+            const element = document.getElementById('summarySheetArea');
+            const opt = {
+              margin: 0,
+              filename: 'Result_Summary_${className}_${section}_${examYear}.pdf',
+              image: { type: 'jpeg', quality: 1 },
+              html2canvas: {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                width: 1050,
+                height: 1485,
+                windowWidth: 1100,
+                scrollX: 0,
+                scrollY: 0
+              },
+              jsPDF: { unit: 'px', format: [1050, 1485], orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+              while (pdf.internal.getNumberOfPages() > 1) {
+                pdf.deletePage(pdf.internal.getNumberOfPages());
+              }
+            }).save().finally(function () {
+              btn.innerText = '📥 ১ পৃষ্ঠায় PDF ডাউনলোড';
+              btn.disabled = false;
+            });
+          }
+        <\/script>
+      </body>
+      </html>
+    `);
+    summaryWin.document.close();
+  }
+
+  /* =====================================================================
+     SMART TABULATION SHEET (এক নজরে সকল শিক্ষার্থীর মার্কস)
+     ===================================================================== */
   function openPosterSummaryView() {
     const rows = document.querySelectorAll('#mainTableBody tr');
     if(rows.length === 0) {
@@ -1194,23 +1569,23 @@
         grandTotalMarks += res.tot;
 
         if (!excludedFromPoster.includes(sub.id)) {
-            let gradeColor = res.lg === 'F' ? '#ef4444' : (res.lg === 'A+' ? '#16a34a' : '#1e293b');
+          let gradeColor = res.lg === 'F' ? '#ef4444' : (res.lg === 'A+' ? '#16a34a' : '#1e293b');
 
-            subCellsHTML += `
-              <td>${res.et70}</td>
-              <td>${res.tu}</td>
-              <td><b>${res.tot}</b></td>
-              <td class="subject-divider"><b style="color:${gradeColor};">${res.lg}</b></td>
-            `;
+          subCellsHTML += `
+            <td>${res.et70}</td>
+            <td>${res.tu}</td>
+            <td><b>${res.tot}</b></td>
+            <td class="subject-divider"><b style="color:${gradeColor};">${res.lg}</b></td>
+          `;
 
-            if (sub.id === 'b2') {
-              let bTotalColor = banglaRes.lg === 'F' ? '#ef4444' : (banglaRes.lg === 'A+' ? '#16a34a' : '#1e3a8a');
-              subCellsHTML += `<td class="subject-divider" style="background: #e0e7ff;"><b style="color: #1e3a8a;">${banglaTotal}</b><br><span style="font-size: 10px; color:${bTotalColor}; font-weight:bold;">(${banglaRes.lg})</span></td>`;
-            }
-            if (sub.id === 'e2') {
-              let eTotalColor = englishRes.lg === 'F' ? '#ef4444' : (englishRes.lg === 'A+' ? '#16a34a' : '#1e3a8a');
-              subCellsHTML += `<td class="subject-divider" style="background: #e0e7ff;"><b style="color: #1e3a8a;">${englishTotal}</b><br><span style="font-size: 10px; color:${eTotalColor}; font-weight:bold;">(${englishRes.lg})</span></td>`;
-            }
+          if (sub.id === 'b2') {
+            let bTotalColor = banglaRes.lg === 'F' ? '#ef4444' : (banglaRes.lg === 'A+' ? '#16a34a' : '#1e3a8a');
+            subCellsHTML += `<td class="subject-divider" style="background: #e0e7ff;"><b style="color: #1e3a8a;">${banglaTotal}</b><br><span style="font-size: 10px; color:${bTotalColor}; font-weight:bold;">(${banglaRes.lg})</span></td>`;
+          }
+          if (sub.id === 'e2') {
+            let eTotalColor = englishRes.lg === 'F' ? '#ef4444' : (englishRes.lg === 'A+' ? '#16a34a' : '#1e3a8a');
+            subCellsHTML += `<td class="subject-divider" style="background: #e0e7ff;"><b style="color: #1e3a8a;">${englishTotal}</b><br><span style="font-size: 10px; color:${eTotalColor}; font-weight:bold;">(${englishRes.lg})</span></td>`;
+          }
         }
       });
 
@@ -1239,29 +1614,21 @@
           @page { size: legal landscape; margin: 10mm; }
           body { font-family: 'Hind Siliguri', sans-serif; margin: 0; padding: 25px; color: #1e293b; background: #f8fafc; }
           .sheet-container { background: #fff; padding: 20px 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
-          
           .header { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px double #cbd5e1; }
-          .header h1 { margin: 0; font-size: 26px; color: #1e3a8a; font-weight: 800; letter-spacing: 0.5px;}
-          .header h2 { margin: 6px 0 0 0; font-size: 16px; color: #475569; font-weight: 600;}
-          
+          .header h1 { margin: 0; font-size: 26px; color: #1e3a8a; font-weight: 800; letter-spacing: 0.5px; }
+          .header h2 { margin: 6px 0 0 0; font-size: 16px; color: #475569; font-weight: 600; }
           .info-badges { display: flex; justify-content: center; gap: 15px; margin-top: 12px; }
-          .badge { background: #e0e7ff; color: #3730a3; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: 700; border: 1px solid #c7d2fe; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-          
-          .poster-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-bottom:20px;}
+          .badge { background: #e0e7ff; color: #3730a3; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: 700; border: 1px solid #c7d2fe; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+          .poster-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-bottom: 20px; }
           .poster-table th, .poster-table td { border: 1px solid #cbd5e1; padding: 5px 3px; vertical-align: middle; }
-          
-          .poster-table thead th { background: #1e293b; color: #f8fafc; font-weight: 600; font-size: 12px; padding: 8px 3px; border: 1px solid #475569;}
+          .poster-table thead th { background: #1e293b; color: #f8fafc; font-weight: 600; font-size: 12px; padding: 8px 3px; border: 1px solid #475569; }
           .poster-table thead tr:nth-child(2) th { background: #334155; font-size: 11px; color: #e2e8f0; }
-          
           .poster-table tbody tr:nth-child(even) { background-color: #f1f5f9; }
           .poster-table tbody tr:hover { background-color: #e2e8f0; }
-          
           .subject-divider { border-right: 2.5px solid #475569 !important; }
-          
           .print-btn-container { text-align: center; margin: 30px 0 10px 0; }
-          .print-btn { background: #4f46e5; color: white; border: none; padding: 14px 28px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); transition: 0.3s;}
+          .print-btn { background: #4f46e5; color: white; border: none; padding: 14px 28px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); transition: 0.3s; }
           .print-btn:hover { background: #4338ca; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4); }
-          
           @media print {
             body { background: #fff; padding: 0; }
             .sheet-container { padding: 0; box-shadow: none; border: none; border-radius: 0; }
@@ -1292,15 +1659,12 @@
                 <th rowspan="2">রোল</th>
                 <th rowspan="2">শিক্ষার্থীর নাম</th>
                 <th rowspan="2" class="subject-divider">পিতার নাম</th>
-                
                 <th colspan="4" class="subject-divider">বাংলা-১</th>
                 <th colspan="4" class="subject-divider">বাংলা-২</th>
                 <th rowspan="2" class="subject-divider" style="background: #3b82f6;">বাংলা (১+২)</th>
-                
                 <th colspan="4" class="subject-divider">ইংরেজি-১</th>
                 <th colspan="4" class="subject-divider">ইংরেজি-২</th>
                 <th rowspan="2" class="subject-divider" style="background: #3b82f6;">ইংরেজি (১+২)</th>
-                
                 <th colspan="4" class="subject-divider">গণিত</th>
                 <th colspan="4" class="subject-divider">ধর্ম শিক্ষা</th>
                 <th colspan="4" class="subject-divider">আরবী</th>
@@ -1308,17 +1672,14 @@
                 <th colspan="4" class="subject-divider">বিজ্ঞান</th>
                 <th colspan="4" class="subject-divider">ICT</th>
                 <th colspan="4" class="subject-divider">Agri/Home</th>
-                
                 <th rowspan="2" class="subject-divider" style="background:#059669;">মোট নম্বর</th>
                 <th rowspan="2" style="background:#ea580c;">GPA</th>
               </tr>
               <tr>
                 <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                
                 <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
-                
                 <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
                 <th>E.T(70%)</th><th>Tu</th><th>Tot</th><th class="subject-divider">Gr</th>
@@ -1334,7 +1695,7 @@
           </table>
 
           <div class="print-btn-container">
-            <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> পেজটি প্রিন্ট / PDF সেভ করুন</button>
+            <button class="print-btn" onclick="window.print()">🖨️ পেজটি প্রিন্ট / PDF সেভ করুন</button>
           </div>
         </div>
       </body>
