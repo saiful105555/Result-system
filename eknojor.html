@@ -101,6 +101,10 @@
     .btn-add:hover { background: #2563eb; transform: translateY(-2px); }
     .btn-add-10 { background: #6366f1; }
     .btn-add-10:hover { background: #4f46e5; transform: translateY(-2px); }
+    .btn-export-json { background: #0891b2; }
+    .btn-export-json:hover { background: #0e7490; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(8, 145, 178, 0.3); }
+    .btn-import-json { background: #0d9488; }
+    .btn-import-json:hover { background: #0f766e; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3); }
     .btn-clear-cache { background: #ef4444; margin-left: auto; }
     .btn-clear-cache:hover { background: #dc2626; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3); }
 
@@ -317,6 +321,9 @@
     <div class="btn-action-group">
       <button class="btn-custom btn-add" onclick="addStudentRow()"><i class="fa-solid fa-plus"></i> ১ জন যোগ করুন</button>
       <button class="btn-custom btn-add-10" onclick="addMultipleRows(10)"><i class="fa-solid fa-user-plus"></i> ১০ জন যোগ করুন</button>
+      <button class="btn-custom btn-export-json" onclick="exportDataToJson()"><i class="fa-solid fa-file-export"></i> JSON ব্যাকআপ সেভ (Export)</button>
+      <input type="file" id="jsonImportInput" accept=".json" style="display:none;" onchange="importDataFromJson(event)">
+      <button class="btn-custom btn-import-json" onclick="document.getElementById('jsonImportInput').click()"><i class="fa-solid fa-file-import"></i> JSON ফাইল লোড (Import)</button>
       <button class="btn-custom btn-clear-cache" onclick="clearCacheData()"><i class="fa-solid fa-trash-can"></i> ক্যাশ মেমোরি রিসেট</button>
     </div>
   </div>
@@ -422,6 +429,81 @@
       }
     }
     addMultipleRows(3);
+  }
+
+  /* =======================================================
+     JSON FILE EXPORT & IMPORT FUNCTIONS (স্থায়ী ডেটা সংরক্ষণ)
+     ======================================================= */
+  function exportDataToJson() {
+    saveDataToCache();
+    const globalData = JSON.parse(localStorage.getItem('itsc_global_info_v5') || '{}');
+    const studentsData = JSON.parse(localStorage.getItem('itsc_students_data_v5') || '[]');
+
+    const backupPayload = {
+      global: globalData,
+      students: studentsData,
+      exportedAt: new Date().toISOString()
+    };
+
+    const clsName = (globalData.cls || 'Class').replace(/\s+/g, '_');
+    const secName = (globalData.sec || 'Sec').replace(/\s+/g, '_');
+    const yr = (globalData.year || '2026').replace(/\s+/g, '_');
+    const fileName = `ITSC_Result_Backup_${clsName}_${secName}_${yr}.json`;
+
+    const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json;charset=utf-8' });
+    if (typeof saveAs === 'function') {
+      saveAs(blob, fileName);
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  function importDataFromJson(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const backup = JSON.parse(e.target.result);
+        if (backup && backup.global && Array.isArray(backup.students)) {
+          localStorage.setItem('itsc_global_info_v5', JSON.stringify(backup.global));
+          localStorage.setItem('itsc_students_data_v5', JSON.stringify(backup.students));
+
+          document.getElementById('globalClass').value = backup.global.cls || '';
+          document.getElementById('globalSection').value = backup.global.sec || '';
+          document.getElementById('globalShift').value = backup.global.shift || '';
+          document.getElementById('globalExamYear').value = backup.global.year || '2026';
+          document.getElementById('globalWorkingDays').value = backup.global.workingDays || '';
+          document.getElementById('globalHighestAtt').value = backup.global.highestAtt || '';
+
+          const tbody = document.getElementById('mainTableBody');
+          tbody.innerHTML = '';
+          if (backup.students.length > 0) {
+            backup.students.forEach(student => addStudentRow(student));
+          } else {
+            addMultipleRows(3);
+          }
+
+          alert('JSON ফাইল থেকে সকল ডেটা সফলভাবে লোড এবং সংরক্ষণ করা হয়েছে!');
+        } else {
+          alert('ভুল ফাইল ফরম্যাট! অনুগ্রহ করে সঠিক ব্যাকআপ JSON ফাইল নির্বাচন করুন।');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('ফাইলটি পড়া যায়নি! এটি সঠিক JSON ফাইল কি না তা যাচাই করুন।');
+      } finally {
+        event.target.value = '';
+      }
+    };
+    reader.readAsText(file);
   }
 
   function clearCacheData() {
@@ -1092,7 +1174,6 @@
           .btn-print { background: var(--primary); }
           .btn-print:hover { background: #172554; }
 
-          /* Exact A4 Resolution Match (1050px x 1485px) - Fills 100% of Page Vertically & Horizontally */
           .a4-sheet {
             width: 1050px;
             height: 1485px;
@@ -1121,7 +1202,6 @@
             gap: 12px;
           }
 
-          /* Institution Header */
           .inst-header {
             display: flex;
             align-items: center;
@@ -1141,7 +1221,6 @@
           }
           .report-subtitle { font-size: 17px; font-weight: 700; color: #0f172a; text-decoration: underline; text-underline-offset: 4px; }
 
-          /* Meta Bar */
           .meta-info-grid {
             display: grid; grid-template-columns: repeat(4, 1fr);
             border: 2px solid var(--border-color); border-radius: 8px;
@@ -1155,13 +1234,11 @@
           .meta-label { color: var(--text-muted); font-weight: 600; }
           .meta-val { font-weight: 700; color: var(--text-dark); }
 
-          /* Section Title */
           .sec-title {
             font-size: 15.5px; font-weight: 700; color: #ffffff; background: var(--table-header);
             padding: 6px 12px; border-radius: 6px 6px 0 0; display: flex; justify-content: space-between; align-items: center;
           }
 
-          /* KPI Grid */
           .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 6px; }
           .kpi-box { border: 2px solid var(--border-color); border-radius: 8px; padding: 10px 6px; text-align: center; background: #fff; }
           .kpi-box.pass-box { background: var(--success-bg); border-color: #6ee7b7; }
@@ -1173,7 +1250,6 @@
           .rate-box .kpi-num { color: var(--primary); }
           .kpi-label { font-size: 13.5px; font-weight: 600; color: var(--text-muted); margin-top: 3px; }
 
-          /* Stretchable Tables to Fill Vertical Space */
           .table-stretch-wrap {
             flex: 1;
             display: flex;
@@ -1207,7 +1283,6 @@
             flex-direction: column;
           }
 
-          /* Signatures & Footer */
           .bottom-footer-wrap {
             margin-top: 14px;
           }
@@ -1326,7 +1401,7 @@
                 </div>
               </div>
 
-              <!-- 2. Subject-wise Breakdown (Auto-stretches vertically) -->
+              <!-- 2. Subject-wise Breakdown -->
               <div class="table-stretch-wrap">
                 <div class="sec-title">
                   <span>২. বিষয়ভিত্তিক পাশ-ফেইল ও গ্রেড বিবরণী (Subject-wise Breakdown)</span>
