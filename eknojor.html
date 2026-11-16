@@ -347,6 +347,9 @@
 <div id="batchRenderContainer"></div>
 <div id="printArea"></div>
 
+<!-- পেজ লোড হওয়ার সাথে সাথেই লোগোটি ক্যাশ মেমোরিতে লোড করে রাখবে -->
+<img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" crossorigin="anonymous" style="width:1px; height:1px; opacity:0; position:fixed; pointer-events:none;" alt="preload-logo">
+
 <script>
   window.onload = function() {
     loadDataFromCache();
@@ -905,12 +908,26 @@
     `;
   }
 
-  function printAllReports() {
+  async function printAllReports() {
     const rows = document.querySelectorAll('#mainTableBody tr');
     const printArea = document.getElementById('printArea');
     printArea.innerHTML = '';
     rows.forEach(row => printArea.innerHTML += generateReportHTML(row));
-    window.print();
+
+    // প্রিন্ট এরিয়ার সব লোগো এবং জলছাপ লোড হওয়া পর্যন্ত অপেক্ষা করবে
+    const images = Array.from(printArea.querySelectorAll('img'));
+    await Promise.all(images.map(img => {
+      if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
+      return new Promise(resolve => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    }));
+
+    // ব্রাউজারকে ছবি রেন্ডার করার জন্য সামান্য সময় দিয়ে প্রিন্ট কল করা
+    setTimeout(() => {
+      window.print();
+    }, 150);
   }
 
   async function generateAllStudentsZip() {
