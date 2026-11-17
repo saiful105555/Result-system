@@ -7,7 +7,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cinzel:wght@700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
@@ -216,7 +215,6 @@
             color: #fff; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25); transition: transform 0.2s ease;
         }
-        .btn-a4-pdf { background: linear-gradient(135deg, #059669, #10b981); }
         .btn-a4-print { background: linear-gradient(135deg, #d97706, #f59e0b); }
         .btn-a4-action:hover { transform: translateY(-2px); }
 
@@ -486,7 +484,7 @@
             <div id="errorBox" class="error-box"></div>
         </section>
 
-        <!-- স্মার্ট ১ পেইজ A4 প্রোগ্রেস রিপোর্ট ভিউ -->
+        <!-- স্মার্ট ১ পেইজ A4 প্রোগ্রেস রিপোর্ট ভিউ (ডাউনলোড অপশন ব্যতীত) -->
         <section id="resultViewSection">
             <div class="a4-action-toolbar">
                 <div class="a4-toolbar-title">
@@ -494,9 +492,6 @@
                     <span>অফিশিয়াল প্রোগ্রেস রিপোর্ট (১ পেইজ A4 ফরম্যাট)</span>
                 </div>
                 <div class="a4-toolbar-btns">
-                    <button class="btn-a4-action btn-a4-pdf" id="btnDownloadPDF" onclick="downloadStudentA4PDF()">
-                        <i class="fa-solid fa-file-pdf"></i> A4 সাইজে PDF ডাউনলোড
-                    </button>
                     <button class="btn-a4-action btn-a4-print" onclick="printStudentA4Marksheet()">
                         <i class="fa-solid fa-print"></i> প্রিন্ট করুন (A4)
                     </button>
@@ -515,9 +510,7 @@
     </div>
 
     <script>
-        // ক্যাশ অবজেক্ট যাতে একই শ্রেণী ও শাখার ফাইল বারবার লোড করতে না হয়
         const classDataCache = {};
-        let currentSearchedMeta = { cls: "Eight", sec: "B", roll: "Student" };
 
         const portalSubjectsConfig = [
             { id: 'b1', name: 'Bangla-I', max: 100, pass: 40 },
@@ -590,7 +583,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // গিটহাব থেকে নির্বাচিত শ্রেণী ও শাখার JSON ফাইল লোড করার ফাংশন
         async function loadClassSectionJSON(cls, sec) {
             const cacheKey = `${cls}_${sec}`;
             if (classDataCache[cacheKey]) {
@@ -600,7 +592,6 @@
             const clsLower = cls.toLowerCase();
             const secLower = sec.toLowerCase();
 
-            // সম্ভাব্য ফাইলের নামের তালিকা (যেকোনো একটি নাম দিয়ে গিটহাবে আপলোড করলেই কাজ করবে)
             const candidateFiles = [
                 `ITSC_Result_Backup_${cls}_${sec}_2026.json`,
                 `ITSC_Result_Backup_${cls}_${sec}_2025.json`,
@@ -754,12 +745,6 @@
                 errorBox.style.display = 'block';
                 return;
             }
-
-            currentSearchedMeta = {
-                cls: selectedClass,
-                sec: selectedSection,
-                roll: student.roll || searchRoll
-            };
 
             const ev = evaluateStudentStats(student);
             const meritPos = calculateMeritPosition(resultsData, student);
@@ -1025,48 +1010,6 @@
                 window.print();
                 adjustA4MobileScale();
             }, 150);
-        }
-
-        async function downloadStudentA4PDF() {
-            const area = document.getElementById('a4MarksheetArea');
-            if (!area) return;
-
-            const btn = document.getElementById('btnDownloadPDF');
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> জেনারেট হচ্ছে...`;
-            btn.disabled = true;
-
-            area.style.transform = 'none';
-
-            const opt = {
-                margin: 0,
-                filename: `Progress_Report_${currentSearchedMeta.cls}_${currentSearchedMeta.sec}_Roll_${currentSearchedMeta.roll}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    allowTaint: true,
-                    width: 1050,
-                    height: 1485,
-                    windowWidth: 1100,
-                    scrollX: 0,
-                    scrollY: 0
-                },
-                jsPDF: { unit: 'px', format: [1050, 1485], orientation: 'portrait' }
-            };
-
-            try {
-                await html2pdf().set(opt).from(area).toPdf().get('pdf').then(function(pdf) {
-                    while (pdf.internal.getNumberOfPages() > 1) {
-                        pdf.deletePage(pdf.internal.getNumberOfPages());
-                    }
-                }).save();
-            } catch (e) {
-                alert('PDF ডাউনলোডে সমস্যা হয়েছে, প্রিন্ট বাটন ব্যবহার করুন।');
-            } finally {
-                adjustA4MobileScale();
-                btn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> A4 সাইজে PDF ডাউনলোড`;
-                btn.disabled = false;
-            }
         }
     </script>
 
