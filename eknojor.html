@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Progress Report Generator - Ibn Taimiya School & College</title>
 
-  <!-- Google Fonts & Font Awesome Icons -->
+  <!-- Google Fonts, Kalpurush & Font Awesome Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cinzel:wght@700;800;900&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- PDF & ZIP Libraries -->
@@ -69,11 +70,27 @@
     .section-card { background: #ffffff; border-radius: 12px; padding: 20px 15px; margin-bottom: 18px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04); }
     .section-title { font-size: 17px; font-weight: 700; color: #3730a3; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
 
-    .multi-table-container { width: 100%; overflow-x: auto; max-height: 520px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    .multi-table-container { width: 100%; overflow-x: auto; max-height: 520px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); position: relative; }
     .multi-input-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 2500px; }
     .multi-input-table th, .multi-input-table td { border: 1px solid #cbd5e1; padding: 10px 8px; text-align: center; vertical-align: middle; }
     .border-right-thick { border-right: 3px solid #6366f1 !important; }
     .multi-input-table th { background: #1e1b4b; color: white; position: sticky; top: 0; z-index: 2; font-size: 13px; letter-spacing: 0.3px; }
+
+    /* Sticky Roll Column */
+    .multi-input-table thead tr:first-child th:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 5;
+      background: #1e1b4b;
+      box-shadow: 3px 0 6px rgba(0, 0, 0, 0.25);
+    }
+    .multi-input-table tbody td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      background: #eef2ff;
+      box-shadow: 3px 0 6px rgba(0, 0, 0, 0.1);
+    }
 
     .multi-input-table input {
       width: 100%; min-width: 60px; padding: 10px 8px; border: 2px solid #e2e8f0;
@@ -83,7 +100,7 @@
     .multi-input-table input:hover { border-color: #94a3b8; }
     .multi-input-table input:focus { background: #ffffff; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); outline: none; transform: scale(1.02); }
     .multi-input-table input[type="text"] { text-align: left; padding-left: 12px; min-width: 150px; font-family: 'Hind Siliguri', sans-serif; font-weight: 600; }
-    .multi-input-table td:nth-child(1) input { min-width: 70px; text-align: center; color: #b91c1c; font-weight: 800; }
+    .multi-input-table td:nth-child(1) input { min-width: 70px; text-align: center; color: #b91c1c; font-weight: 800; background: #ffffff; }
 
     .multi-input-table span[class$="-tot"], .multi-input-table span[class$="-gr"] {
       font-size: 16px; font-weight: 800; color: #4338ca; background: #e0e7ff;
@@ -335,8 +352,8 @@
     <button class="btn-custom btn-poster-view" onclick="openPosterSummaryView()">
       <i class="fa-solid fa-chalkboard-user"></i> এক নজরে সকল শিক্ষার্থীর মার্কস (Smart View)
     </button>
-    <button class="btn-custom btn-download-all" id="downloadAllBtn" onclick="generateAllStudentsZip()">
-      <i class="fa-solid fa-file-zipper"></i> ZIP ফাইল ডাউনলোড
+    <button class="btn-custom btn-download-all" id="downloadAllBtn" onclick="openStudentMeritList()">
+      <i class="fa-solid fa-list-ol"></i> ছাত্র তালিকা ডাউনলোড
     </button>
     <button class="btn-custom btn-print-all" onclick="printAllReports()">
       <i class="fa-solid fa-print"></i> সব মার্কশীট প্রিন্ট
@@ -357,6 +374,11 @@
 
   function toBnNum(val) {
     return String(val).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+  }
+
+  function toBnOrdinal(n) {
+    const map = { 1: '১ম', 2: '২য়', 3: '৩য়', 4: '৪র্থ', 5: '৫ম', 6: '৬ষ্ঠ', 7: '৭ম', 8: '৮ম', 9: '৯ম', 10: '১০ম' };
+    return map[n] || (toBnNum(n) + 'তম');
   }
 
   const subjectsConfig = [
@@ -564,6 +586,15 @@
     return { lg: 'F', gp: 0.00 };
   }
 
+  function getOverallLetterGrade(gpa) {
+    if (gpa >= 5.00) return 'A+';
+    if (gpa >= 4.00) return 'A';
+    if (gpa >= 3.50) return 'A-';
+    if (gpa >= 3.00) return 'B';
+    if (gpa >= 2.00) return 'C';
+    return 'F';
+  }
+
   function calculateSubject(row, cls, totalMarks) {
     const etEl = row.querySelector(`.${cls}-et`);
     const tuEl = row.querySelector(`.${cls}-tu`);
@@ -646,7 +677,7 @@
     studentStats.sort((a, b) => {
       if (b.gpa !== a.gpa) return b.gpa - a.gpa;
       if (b.grandTotal !== a.grandTotal) return b.grandTotal - a.grandTotal;
-      return a.roll - a.roll;
+      return a.roll - b.roll;
     });
 
     const meritMap = new Map();
@@ -914,7 +945,6 @@
     printArea.innerHTML = '';
     rows.forEach(row => printArea.innerHTML += generateReportHTML(row));
 
-    // প্রিন্ট এরিয়ার সব লোগো এবং জলছাপ লোড হওয়া পর্যন্ত অপেক্ষা করবে
     const images = Array.from(printArea.querySelectorAll('img'));
     await Promise.all(images.map(img => {
       if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
@@ -924,58 +954,454 @@
       });
     }));
 
-    // ব্রাউজারকে ছবি রেন্ডার করার জন্য সামান্য সময় দিয়ে প্রিন্ট কল করা
     setTimeout(() => {
       window.print();
     }, 150);
   }
 
-  async function generateAllStudentsZip() {
-    const rows = document.querySelectorAll('#mainTableBody tr');
-    const btn = document.getElementById('downloadAllBtn');
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> জেনারেট হচ্ছে...`;
-    btn.disabled = true;
-
-    const zip = new JSZip();
-    const renderContainer = document.getElementById('batchRenderContainer');
-    let successCount = 0;
-
-    try {
-      for(let i=0; i<rows.length; i++) {
-        const row = rows[i];
-        const roll = row.querySelector('.in-roll').value || `${i+1}`;
-        renderContainer.innerHTML = generateReportHTML(row);
-
-        await new Promise(resolve => setTimeout(resolve, 200));
-
-        const element = renderContainer.firstElementChild;
-        const opt = {
-          margin: 0,
-          filename: `Progress_Report_Roll_${roll}.pdf`,
-          image: { type: 'jpeg', quality: 1 },
-          html2canvas: { scale: 2, useCORS: true, allowTaint: true },
-          jsPDF: { unit: 'px', format: [1050, 1485], orientation: 'portrait' }
-        };
-
-        const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
-        if (pdfBlob) {
-          zip.file(`Progress_Report_Roll_${roll}.pdf`, pdfBlob);
-          successCount++;
-        }
-      }
-      if (successCount > 0) {
-        const content = await zip.generateAsync({ type: "blob" });
-        saveAs(content, "All_Reports.zip");
-        alert('ZIP ডাউনলোড সফল হয়েছে!');
-      }
-    } catch(err) {
-      console.error(err);
-      alert('সমস্যা হয়েছে।');
-    } finally {
-      renderContainer.innerHTML = '';
-      btn.innerHTML = `<i class="fa-solid fa-file-zipper"></i> ZIP ফাইল ডাউনলোড`;
-      btn.disabled = false;
+  /* =====================================================================
+     MERIT-WISE STUDENT LIST (তম অনুযায়ী ছাত্র তালিকা - Kalpurush Font, Max 2 Pages A4)
+     ===================================================================== */
+  function openStudentMeritList() {
+    const rows = Array.from(document.querySelectorAll('#mainTableBody tr'));
+    if (rows.length === 0) {
+      alert('দয়া করে অন্তত একজন শিক্ষার্থীর তথ্য ইনপুট দিন।');
+      return;
     }
+
+    const className = document.getElementById('globalClass').value || '-';
+    const section = document.getElementById('globalSection').value || '-';
+    const shift = document.getElementById('globalShift').value || '-';
+    const examYear = document.getElementById('globalExamYear').value || '2026';
+    const todayStr = toBnNum(new Date().toLocaleDateString('en-GB'));
+
+    const studentsList = rows.map((row, idx) => {
+      const rollStr = row.querySelector('.in-roll').value || String(idx + 1);
+      const rollNum = parseInt(rollStr.replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d))) || (idx + 1);
+      const name = row.querySelector('.in-name').value || '-';
+      const fname = row.querySelector('.in-fname').value || '-';
+      const mname = row.querySelector('.in-mname').value || '-';
+
+      let results = {};
+      subjectsConfig.forEach(sub => {
+        results[sub.id] = calculateSubject(row, sub.id, sub.max);
+      });
+
+      const banglaTotal = results.b1.tot + results.b2.tot;
+      const englishTotal = results.e1.tot + results.e2.tot;
+      const banglaRes = getGrading((banglaTotal / 150) * 100);
+      const englishRes = getGrading((englishTotal / 200) * 100);
+
+      const gpaSubjects = [banglaRes, englishRes, results.math, results.rel, results.arab, results.bgs, results.sci, results.ict, results.agri];
+      const failedCount = gpaSubjects.filter(s => s.gp === 0).length;
+
+      let grandTotalMarks = banglaTotal + englishTotal;
+      ['math', 'rel', 'arab', 'bgs', 'sci', 'ict', 'agri', 'art', 'spoken', 'moral', 'drill'].forEach(id => {
+        grandTotalMarks += results[id].tot;
+      });
+
+      let totalGP = gpaSubjects.reduce((acc, sub) => acc + sub.gp, 0);
+      let finalGPA = parseFloat((totalGP / gpaSubjects.length).toFixed(2));
+      if (finalGPA > 5.00) finalGPA = 5.00;
+      if (failedCount > 0) finalGPA = 0.00;
+
+      const letterGrade = failedCount > 0 ? 'F' : getOverallLetterGrade(finalGPA);
+
+      return {
+        rollStr,
+        rollNum,
+        name,
+        fname,
+        mname,
+        grandTotal: grandTotalMarks,
+        gpa: finalGPA,
+        lg: letterGrade,
+        failedCount
+      };
+    });
+
+    // Sort: Passed first (by GPA desc, GrandTotal desc, Roll asc), then Failed (by failedCount asc [F1, F2...], GrandTotal desc, Roll asc)
+    studentsList.sort((a, b) => {
+      const aPass = a.failedCount === 0 ? 1 : 0;
+      const bPass = b.failedCount === 0 ? 1 : 0;
+      if (aPass !== bPass) return bPass - aPass;
+
+      if (aPass === 1) {
+        if (b.gpa !== a.gpa) return b.gpa - a.gpa;
+        if (b.grandTotal !== a.grandTotal) return b.grandTotal - a.grandTotal;
+        return a.rollNum - b.rollNum;
+      } else {
+        if (a.failedCount !== b.failedCount) return a.failedCount - b.failedCount;
+        if (b.grandTotal !== a.grandTotal) return b.grandTotal - a.grandTotal;
+        return a.rollNum - b.rollNum;
+      }
+    });
+
+    let passRank = 0;
+    studentsList.forEach(st => {
+      if (st.failedCount === 0) {
+        passRank++;
+        st.tomText = toBnOrdinal(passRank);
+        st.isFail = false;
+      } else {
+        st.tomText = `F${st.failedCount}`;
+        st.isFail = true;
+      }
+    });
+
+    const totalCount = studentsList.length;
+    // Decide 1 or 2 pages (strictly max 2 pages)
+    const useTwoPages = totalCount > 45;
+    const maxPages = useTwoPages ? 2 : 1;
+
+    // If totalCount is very high (e.g. > 110), use 2 side-by-side columns per page so even 200+ students fit on 2 pages!
+    const useDualColumnPerPage = totalCount > 110;
+    const pagesData = useTwoPages
+      ? [studentsList.slice(0, Math.ceil(totalCount / 2)), studentsList.slice(Math.ceil(totalCount / 2))]
+      : [studentsList];
+
+    const maxRowsInAnyPage = Math.max(...pagesData.map(p => useDualColumnPerPage ? Math.ceil(p.length / 2) : p.length));
+
+    // Dynamic font size & cell padding to guarantee strict fitting within A4 height (1485px)
+    let fontSizePx = 15;
+    let cellPadV = 6;
+    if (maxRowsInAnyPage > 50) { fontSizePx = 11.5; cellPadV = 2.2; }
+    else if (maxRowsInAnyPage > 42) { fontSizePx = 12.5; cellPadV = 3; }
+    else if (maxRowsInAnyPage > 34) { fontSizePx = 13.5; cellPadV = 4; }
+    else if (maxRowsInAnyPage > 26) { fontSizePx = 14.5; cellPadV = 5; }
+
+    const renderTableHTML = (slice, startIndex) => `
+      <table class="merit-table">
+        <thead>
+          <tr>
+            <th style="width: 48px;">ক্র.নং</th>
+            <th style="width: 78px;">তম</th>
+            <th style="width: 68px;">রোল</th>
+            <th style="text-align: left; padding-left: 10px;">শিক্ষার্থীর নাম</th>
+            <th style="text-align: left; padding-left: 10px;">পিতার নাম</th>
+            <th style="width: 88px;">মোট নম্বর</th>
+            <th style="width: 72px;">গ্রেড</th>
+            <th style="width: 78px;">জিপিএ</th>
+          </tr>
+        </thead>
+        <tbody contenteditable="true">
+          ${slice.map((st, i) => `
+            <tr class="${st.isFail ? 'fail-row' : ''}">
+              <td>${toBnNum(startIndex + i + 1)}</td>
+              <td class="${st.isFail ? 'tom-fail' : 'tom-pass'}">${st.tomText}</td>
+              <td style="font-weight: 700;">${toBnNum(st.rollStr)}</td>
+              <td style="text-align: left; padding-left: 10px; font-weight: 600;">${st.name}</td>
+              <td style="text-align: left; padding-left: 10px;">${st.fname}</td>
+              <td style="font-weight: 700;">${toBnNum(st.grandTotal)}</td>
+              <td style="font-weight: 700; color: ${st.isFail ? '#b91c1c' : '#047857'};">${st.lg}</td>
+              <td style="font-weight: 700;">${toBnNum(st.gpa.toFixed(2))}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    let pagesHTML = '';
+    let globalIdx = 0;
+
+    pagesData.forEach((pageStudents, pIdx) => {
+      const isLastPage = (pIdx === pagesData.length - 1);
+      let bodyContent = '';
+
+      if (useDualColumnPerPage) {
+        const half = Math.ceil(pageStudents.length / 2);
+        const leftSlice = pageStudents.slice(0, half);
+        const rightSlice = pageStudents.slice(half);
+        bodyContent = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>${renderTableHTML(leftSlice, globalIdx)}</div>
+            <div>${renderTableHTML(rightSlice, globalIdx + leftSlice.length)}</div>
+          </div>
+        `;
+      } else {
+        bodyContent = renderTableHTML(pageStudents, globalIdx);
+      }
+      globalIdx += pageStudents.length;
+
+      pagesHTML += `
+        <div class="a4-sheet">
+          <div class="sheet-border">
+            <div class="top-wrap">
+              <div class="inst-header">
+                <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" class="inst-logo" alt="Logo" crossorigin="anonymous">
+                <div class="inst-center">
+                  <div class="inst-name" contenteditable="true">ইবনে তাইমিয়া স্কুল এন্ড কলেজ, কুমিল্লা</div>
+                  <div class="inst-address" contenteditable="true">টমছমব্রীজ, কুমিল্লা | বার্ষিক পরীক্ষা - ${toBnNum(examYear)}</div>
+                  <div class="badge-row">
+                    <span class="title-pill" contenteditable="true">মেধাক্রম (তম) অনুযায়ী ছাত্রদের ফলাফল তালিকা</span>
+                  </div>
+                </div>
+                <div style="width: 65px; text-align: right; font-size: 13px; font-weight: 700; color: #475569;">
+                  পৃষ্ঠা: ${toBnNum(pIdx + 1)}/${toBnNum(pagesData.length)}
+                </div>
+              </div>
+
+              <div class="meta-bar" contenteditable="true">
+                <span><strong>শ্রেণি:</strong> ${className}</span>
+                <span><strong>শাখা:</strong> ${section}</span>
+                <span><strong>শিফট:</strong> ${shift}</span>
+                <span><strong>মোট শিক্ষার্থী:</strong> ${toBnNum(totalCount)} জন</span>
+                <span><strong>তারিখ:</strong> ${todayStr}</span>
+              </div>
+
+              <div class="table-holder">
+                ${bodyContent}
+              </div>
+            </div>
+
+            ${isLastPage ? `
+              <div class="footer-wrap">
+                <div class="sig-grid">
+                  <div class="sig-box" contenteditable="true">শ্রেণি শিক্ষকের স্বাক্ষর</div>
+                  <div class="sig-box" contenteditable="true">শিফট ইনচার্জের স্বাক্ষর</div>
+                  <div class="sig-box" contenteditable="true">অধ্যক্ষের স্বাক্ষর</div>
+                </div>
+                <div class="footer-note">
+                  <span contenteditable="true">প্রস্তুতকারক: ইঞ্জি: সাইফুল ইসলাম (সহ শিক্ষক, জবা শিফট) - ইবনে তাইমিয়া স্কুল এন্ড কলেজ</span>
+                  <span>পৃষ্ঠা: ${toBnNum(pIdx + 1)} / ${toBnNum(pagesData.length)}</span>
+                </div>
+              </div>
+            ` : `
+              <div class="footer-wrap">
+                <div class="footer-note">
+                  <span>চলমান পৃষ্ঠা... (পরবর্তী পৃষ্ঠায় দেখুন)</span>
+                  <span>পৃষ্ঠা: ${toBnNum(pIdx + 1)} / ${toBnNum(pagesData.length)}</span>
+                </div>
+              </div>
+            `}
+          </div>
+        </div>
+      `;
+    });
+
+    const listWin = window.open('', '_blank');
+    listWin.document.write(`
+      <!DOCTYPE html>
+      <html lang="bn">
+      <head>
+        <meta charset="UTF-8">
+        <title>মেধাক্রম অনুযায়ী ছাত্র তালিকা - ${className} (${section})</title>
+        <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
+        <style>
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kalpurush', sans-serif !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          body {
+            background: #cbd5e1;
+            color: #0f172a;
+            padding: 15px 0;
+            min-width: 1080px;
+          }
+          .toolbar {
+            width: 1050px;
+            margin: 0 auto 14px auto;
+            background: #ffffff;
+            padding: 12px 22px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .toolbar-info { font-size: 16px; font-weight: 700; color: #1e3a8a; }
+          .toolbar-actions { display: flex; gap: 12px; }
+          .btn {
+            padding: 10px 20px; border-radius: 8px; border: none; font-size: 16px;
+            font-weight: 700; cursor: pointer; color: #fff;
+          }
+          .btn-pdf { background: #059669; }
+          .btn-pdf:hover { background: #047857; }
+          .btn-print { background: #1e3a8a; }
+          .btn-print:hover { background: #172554; }
+
+          #allPagesWrapper {
+            width: 1050px;
+            margin: 0 auto;
+          }
+          .a4-sheet {
+            width: 1050px;
+            height: 1485px;
+            margin: 0 auto 15px auto;
+            background: #ffffff;
+            padding: 22px 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            page-break-after: always;
+            page-break-inside: avoid;
+          }
+          .a4-sheet:last-child {
+            page-break-after: avoid;
+            margin-bottom: 0;
+          }
+          .sheet-border {
+            border: 2.5px solid #1e3a8a;
+            padding: 14px 18px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .inst-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px double #1e3a8a;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+          }
+          .inst-logo { width: 65px; height: 65px; }
+          .inst-center { text-align: center; flex: 1; }
+          .inst-name { font-size: 26px; font-weight: 700; color: #1e3a8a; line-height: 1.15; }
+          .inst-address { font-size: 15px; color: #334155; font-weight: 600; }
+          .badge-row { margin-top: 4px; }
+          .title-pill {
+            display: inline-block;
+            background: #1e3a8a;
+            color: #ffffff;
+            padding: 3px 18px;
+            border-radius: 99px;
+            font-size: 16px;
+            font-weight: 700;
+          }
+          .meta-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #f1f5f9;
+            border: 1.5px solid #64748b;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 15px;
+            margin-bottom: 8px;
+          }
+          table.merit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: ${fontSizePx}px;
+          }
+          table.merit-table th, table.merit-table td {
+            border: 1px solid #334155;
+            padding: ${cellPadV}px 5px;
+            text-align: center;
+            line-height: 1.15;
+          }
+          table.merit-table th {
+            background: #1e293b;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: ${Math.min(fontSizePx + 0.5, 15.5)}px;
+          }
+          table.merit-table tbody tr:nth-child(even) { background: #f8fafc; }
+          table.merit-table tr.fail-row { background: #fef2f2 !important; }
+          .tom-pass { font-weight: 700; color: #1e3a8a; background: #eff6ff; }
+          .tom-fail { font-weight: 700; color: #b91c1c; background: #fee2e2; font-family: 'Poppins', 'Kalpurush', sans-serif !important; }
+
+          .sig-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 28px;
+            text-align: center;
+          }
+          .sig-box {
+            border-top: 1.5px dashed #0f172a;
+            padding-top: 5px;
+            font-size: 15px;
+            font-weight: 700;
+          }
+          .footer-note {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #475569;
+            border-top: 1px solid #cbd5e1;
+            padding-top: 4px;
+            margin-top: 6px;
+            font-weight: 600;
+          }
+
+          @media print {
+            @page { size: A4 portrait; margin: 0mm; }
+            html, body {
+              width: 1050px !important;
+              background: #fff !important;
+              padding: 0 !important;
+              margin: 0 !important;
+            }
+            .toolbar { display: none !important; }
+            #allPagesWrapper { width: 1050px !important; margin: 0 !important; }
+            .a4-sheet {
+              box-shadow: none !important;
+              margin: 0 !important;
+              width: 1050px !important;
+              height: 1485px !important;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="toolbar">
+          <div class="toolbar-info">
+            ✅ মেধাক্রম (তম) অনুযায়ী ছাত্র তালিকা (Kalpurush ফন্ট, সর্বোচ্চ ${toBnNum(maxPages)} পৃষ্ঠায় A4 সেট করা হয়েছে)
+          </div>
+          <div class="toolbar-actions">
+            <button class="btn btn-pdf" id="pdfDownloadBtn" onclick="downloadStudentListPDF()">📥 ছাত্র তালিকা PDF ডাউনলোড</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ প্রিন্ট করুন (A4)</button>
+          </div>
+        </div>
+
+        <div id="allPagesWrapper">
+          ${pagesHTML}
+        </div>
+
+        <script>
+          function downloadStudentListPDF() {
+            const btn = document.getElementById('pdfDownloadBtn');
+            btn.innerText = '⏳ ডাউনলোড হচ্ছে...';
+            btn.disabled = true;
+
+            const element = document.getElementById('allPagesWrapper');
+            const maxAllowedPages = ${maxPages};
+            const opt = {
+              margin: 0,
+              filename: 'Student_Merit_List_${className}_${section}_${examYear}.pdf',
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                width: 1050,
+                windowWidth: 1100,
+                scrollX: 0,
+                scrollY: 0
+              },
+              jsPDF: { unit: 'px', format: [1050, 1485], orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+              while (pdf.internal.getNumberOfPages() > maxAllowedPages) {
+                pdf.deletePage(pdf.internal.getNumberOfPages());
+              }
+            }).save().finally(function () {
+              btn.innerText = '📥 ছাত্র তালিকা PDF ডাউনলোড';
+              btn.disabled = false;
+            });
+          }
+        <\/script>
+      </body>
+      </html>
+    `);
+    listWin.document.close();
   }
 
   /* =====================================================================
