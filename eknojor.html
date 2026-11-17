@@ -1050,28 +1050,43 @@
     });
 
     const totalCount = studentsList.length;
-    // Decide 1 or 2 pages (strictly max 2 pages)
-    const useTwoPages = totalCount > 45;
+    // ১ম পেইজ সম্পূর্ণ পরিপূর্ণ করে অবশিষ্ট অংশ ২য় পেইজে নেওয়া হবে
+    const useTwoPages = totalCount > 50;
     const maxPages = useTwoPages ? 2 : 1;
 
-    // If totalCount is very high (e.g. > 110), use 2 side-by-side columns per page so even 200+ students fit on 2 pages!
-    const useDualColumnPerPage = totalCount > 110;
-    const pagesData = useTwoPages
-      ? [studentsList.slice(0, Math.ceil(totalCount / 2)), studentsList.slice(Math.ceil(totalCount / 2))]
-      : [studentsList];
+    // ১০৮ জনের বেশি হলে প্রতি পেইজে ২টি করে কলাম হবে
+    const useDualColumnPerPage = totalCount > 108;
+
+    let pagesData = [];
+    if (!useTwoPages) {
+      pagesData = [studentsList];
+    } else if (useDualColumnPerPage) {
+      const firstPageCap = 112; // ১ম পেইজে ২ কলামে ৫৬+৫৬ = ১১২ জন পূর্ণ থাকবে
+      pagesData = [
+        studentsList.slice(0, firstPageCap),
+        studentsList.slice(firstPageCap)
+      ];
+    } else {
+      // ১ম পেইজে ৫৬ জন (অথবা ৫০-৫৬ জনের ক্ষেত্রে ৫০ জন) দিয়ে ১ম পেইজ পরিপূর্ণ করে বাকিগুলো ২য় পেইজে যাবে
+      const firstPageCap = totalCount > 56 ? 56 : 50;
+      pagesData = [
+        studentsList.slice(0, firstPageCap),
+        studentsList.slice(firstPageCap)
+      ];
+    }
 
     const maxRowsInAnyPage = Math.max(...pagesData.map(p => useDualColumnPerPage ? Math.ceil(p.length / 2) : p.length));
 
-    // Dynamic font size & cell padding to guarantee strict fitting within A4 height (1485px)
+    // ১ম পেইজ যেন নিচ পর্যন্ত পরিপূর্ণ থাকে তার জন্য মাপ নির্ধারণ
     let fontSizePx = 15;
     let cellPadV = 6;
-    if (maxRowsInAnyPage > 50) { fontSizePx = 11.5; cellPadV = 2.2; }
-    else if (maxRowsInAnyPage > 42) { fontSizePx = 12.5; cellPadV = 3; }
-    else if (maxRowsInAnyPage > 34) { fontSizePx = 13.5; cellPadV = 4; }
-    else if (maxRowsInAnyPage > 26) { fontSizePx = 14.5; cellPadV = 5; }
+    if (maxRowsInAnyPage >= 54) { fontSizePx = 13; cellPadV = 3.1; }
+    else if (maxRowsInAnyPage >= 48) { fontSizePx = 13.5; cellPadV = 3.6; }
+    else if (maxRowsInAnyPage > 40) { fontSizePx = 14; cellPadV = 4.2; }
+    else if (maxRowsInAnyPage > 32) { fontSizePx = 14.5; cellPadV = 5; }
 
-    const renderTableHTML = (slice, startIndex) => `
-      <table class="merit-table">
+    const renderTableHTML = (slice, startIndex, stretchHeight = false) => `
+      <table class="merit-table ${stretchHeight ? 'stretch-table' : ''}">
         <thead>
           <tr>
             <th style="width: 48px;">ক্র.নং</th>
@@ -1106,6 +1121,8 @@
 
     pagesData.forEach((pageStudents, pIdx) => {
       const isLastPage = (pIdx === pagesData.length - 1);
+      // ২ পেইজের ক্ষেত্রে ১ম পেইজটি নিচ পর্যন্ত ১০০% পরিপূর্ণ থাকবে এবং ২য় পেইজে যতটুকু ডাটা ততটুকুই থাকবে (বাকি অংশ খালি থাকবে)
+      const shouldFillFullPage = (useTwoPages && pIdx === 0);
       let bodyContent = '';
 
       if (useDualColumnPerPage) {
@@ -1113,20 +1130,20 @@
         const leftSlice = pageStudents.slice(0, half);
         const rightSlice = pageStudents.slice(half);
         bodyContent = `
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div>${renderTableHTML(leftSlice, globalIdx)}</div>
-            <div>${renderTableHTML(rightSlice, globalIdx + leftSlice.length)}</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; height: ${shouldFillFullPage ? '100%' : 'auto'};">
+            <div style="display:flex; flex-direction:column;">${renderTableHTML(leftSlice, globalIdx, shouldFillFullPage)}</div>
+            <div style="display:flex; flex-direction:column;">${renderTableHTML(rightSlice, globalIdx + leftSlice.length, shouldFillFullPage && rightSlice.length === leftSlice.length)}</div>
           </div>
         `;
       } else {
-        bodyContent = renderTableHTML(pageStudents, globalIdx);
+        bodyContent = renderTableHTML(pageStudents, globalIdx, shouldFillFullPage);
       }
       globalIdx += pageStudents.length;
 
       pagesHTML += `
         <div class="a4-sheet">
           <div class="sheet-border">
-            <div class="top-wrap">
+            <div class="top-wrap ${shouldFillFullPage ? 'fill-top-wrap' : ''}">
               <div class="inst-header">
                 <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" class="inst-logo" alt="Logo" crossorigin="anonymous">
                 <div class="inst-center">
@@ -1149,7 +1166,7 @@
                 <span><strong>তারিখ:</strong> ${todayStr}</span>
               </div>
 
-              <div class="table-holder">
+              <div class="table-holder ${shouldFillFullPage ? 'fill-table-holder' : ''}">
                 ${bodyContent}
               </div>
             </div>
@@ -1252,6 +1269,19 @@
             flex-direction: column;
             justify-content: space-between;
           }
+          .fill-top-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+          }
+          .fill-table-holder {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            margin-bottom: 4px;
+          }
           .inst-header {
             display: flex;
             align-items: center;
@@ -1288,6 +1318,10 @@
             width: 100%;
             border-collapse: collapse;
             font-size: ${fontSizePx}px;
+          }
+          table.merit-table.stretch-table {
+            flex: 1;
+            height: 100%;
           }
           table.merit-table th, table.merit-table td {
             border: 1px solid #334155;
