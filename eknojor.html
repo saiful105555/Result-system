@@ -1204,7 +1204,6 @@
         <meta charset="UTF-8">
         <title>মেধাক্রম অনুযায়ী ছাত্র তালিকা - ${className} (${section})</title>
         <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
         <style>
           * {
             box-sizing: border-box;
@@ -1237,8 +1236,6 @@
             padding: 10px 20px; border-radius: 8px; border: none; font-size: 16px;
             font-weight: 700; cursor: pointer; color: #fff;
           }
-          .btn-pdf { background: #059669; }
-          .btn-pdf:hover { background: #047857; }
           .btn-print { background: #1e3a8a; }
           .btn-print:hover { background: #172554; }
 
@@ -1389,7 +1386,6 @@
             ✅ মেধাক্রম (তম) অনুযায়ী ছাত্র তালিকা (Kalpurush ফন্ট, সর্বোচ্চ ${toBnNum(maxPages)} পৃষ্ঠায় A4 সেট করা হয়েছে)
           </div>
           <div class="toolbar-actions">
-            <button class="btn btn-pdf" id="pdfDownloadBtn" onclick="downloadStudentListPDF()">📥 ছাত্র তালিকা PDF ডাউনলোড</button>
             <button class="btn btn-print" onclick="window.print()">🖨️ প্রিন্ট করুন (A4)</button>
           </div>
         </div>
@@ -1397,41 +1393,6 @@
         <div id="allPagesWrapper">
           ${pagesHTML}
         </div>
-
-        <script>
-          function downloadStudentListPDF() {
-            const btn = document.getElementById('pdfDownloadBtn');
-            btn.innerText = '⏳ ডাউনলোড হচ্ছে...';
-            btn.disabled = true;
-
-            const element = document.getElementById('allPagesWrapper');
-            const maxAllowedPages = ${maxPages};
-            const opt = {
-              margin: 0,
-              filename: 'Student_Merit_List_${className}_${section}_${examYear}.pdf',
-              image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true,
-                width: 1050,
-                windowWidth: 1100,
-                scrollX: 0,
-                scrollY: 0
-              },
-              jsPDF: { unit: 'px', format: [1050, 1485], orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
-              while (pdf.internal.getNumberOfPages() > maxAllowedPages) {
-                pdf.deletePage(pdf.internal.getNumberOfPages());
-              }
-            }).save().finally(function () {
-              btn.innerText = '📥 ছাত্র তালিকা PDF ডাউনলোড';
-              btn.disabled = false;
-            });
-          }
-        <\/script>
       </body>
       </html>
     `);
