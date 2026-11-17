@@ -137,8 +137,8 @@
         /* Updated Logo Styles */
         .top-left-logo-container {
             flex-shrink: 0;
-            width: 140px; /* Size Increased */
-            height: 140px; /* Size Increased */
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             padding: 5px;
             background: linear-gradient(45deg, #ffb703, #e63946, #00b4d8, #ffffff);
@@ -153,7 +153,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            object-fit: contain; /* Made contain for clarity without cutting */
+            object-fit: contain;
             border: 3px solid #ffffff;
             background-color: #ffffff;
         }
@@ -164,7 +164,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* New Strong Animation for Logo */
         @keyframes strongPulseFloat {
             0% { 
                 box-shadow: 0 0 15px rgba(255, 183, 3, 0.6); 
@@ -564,7 +563,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Updated Principal Image URL */
             background-image: url('https://drive.google.com/thumbnail?id=1dCF3FHhrMLlDYnnHQ4XYTcFBJFwIv1l9&sz=w1000');
             background-size: cover;
             background-position: center;
@@ -616,19 +614,18 @@
             margin-bottom: 20px;
         }
         
-        /* Updated Animated Author Name */
         .animated-author-name {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem; /* Increased size */
-            font-weight: 800; /* Bolder font */
+            font-size: 2rem;
+            font-weight: 800;
             font-style: italic;
-            letter-spacing: 1.5px; /* Increased letter spacing */
+            letter-spacing: 1.5px;
             display: inline-block;
             background: linear-gradient(270deg, #ffb703, #e63946, #3b82f6, #10b981, #ffb703);
             background-size: 400% 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: glowingTextAnimation 6s ease infinite, textPulse 2s infinite alternate; /* Added pulse animation */
+            animation: glowingTextAnimation 6s ease infinite, textPulse 2s infinite alternate;
             padding: 10px 20px;
             border: 2px solid transparent;
             border-radius: 10px;
@@ -1139,7 +1136,7 @@
         }
 
         .shift-btn::after {
-            content: '\f105'; /* FontAwesome right arrow */
+            content: '\f105';
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             position: absolute;
@@ -1471,6 +1468,11 @@
             color: var(--heading-color);
         }
 
+        .marks-table tr.combined-row {
+            background: rgba(0, 119, 182, 0.12) !important;
+            font-weight: 700;
+        }
+
         .action-btns {
             display: flex;
             justify-content: center;
@@ -1606,7 +1608,6 @@
 
         <section class="principal-message-card">
             <div class="principal-img-container">
-                <!-- Updated Principal Image Source using thumbnail URL -->
                 <img src="https://drive.google.com/thumbnail?id=1dCF3FHhrMLlDYnnHQ4XYTcFBJFwIv1l9&sz=w1000" alt="Principal Message" class="principal-img">
             </div>
             <div class="principal-title-badge">
@@ -1684,7 +1685,7 @@
                 </div>
             </a>
 
-            <!-- নতুন যুক্ত করা অনলাইন রেজাল্ট পোর্টাল বাটন -->
+            <!-- অনলাইন রেজাল্ট পোর্টাল বাটন -->
             <a href="#" onclick="openResultPortal(event)" class="nav-btn btn-7">
                 <div class="btn-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
                 <div class="btn-text">
@@ -1825,11 +1826,11 @@
 
                     <div class="form-group">
                         <label for="rollInput"><i class="fa-solid fa-id-card-clip"></i> রোল নম্বর দিন *</label>
-                        <input type="text" id="rollInput" class="form-control" placeholder="যেমন: 101 বা ১০১" required>
+                        <input type="text" id="rollInput" class="form-control" placeholder="যেমন: 1 বা ১" required>
                     </div>
                 </div>
 
-                <button type="submit" class="search-btn">
+                <button type="submit" class="search-btn" id="portalSearchBtn">
                     <i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন
                 </button>
             </form>
@@ -1841,7 +1842,7 @@
         <section class="result-view-card" id="resultViewCard">
             <div class="marksheet-header">
                 <h2 id="examTitleDisplay">বার্ষিক পরীক্ষা - ২০২৬</h2>
-                <p>একাডেমিক ট্রান্সক্রিপ্ট / বিস্তারিত নম্বরপত্র (শ্রেণী: ৮ম | শাখা: B)</p>
+                <p id="examSubTitleDisplay">একাডেমিক ট্রান্সক্রিপ্ট / বিস্তারিত নম্বরপত্র (শ্রেণী: ৮ম | শাখা: B)</p>
             </div>
 
             <div class="student-info-grid">
@@ -1850,12 +1851,20 @@
                     <span class="value" id="resName">-</span>
                 </div>
                 <div class="info-item">
+                    <span class="label">পিতার নাম</span>
+                    <span class="value" id="resFName">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">মাতার নাম</span>
+                    <span class="value" id="resMName">-</span>
+                </div>
+                <div class="info-item">
                     <span class="label">রোল নম্বর</span>
                     <span class="value" id="resRoll">-</span>
                 </div>
                 <div class="info-item">
-                    <span class="label">শ্রেণী ও শাখা</span>
-                    <span class="value">৮ম (B)</span>
+                    <span class="label">উপস্থিতি (Attendance)</span>
+                    <span class="value" id="resAtt">-</span>
                 </div>
                 <div class="info-item">
                     <span class="label">মোট প্রাপ্ত নম্বর</span>
@@ -1870,7 +1879,7 @@
                     <span class="value" id="resGrade">-</span>
                 </div>
                 <div class="info-item">
-                    <span class="label">মেধাস্থান (Merit)</span>
+                    <span class="label">মেধাস্থান (Merit Position)</span>
                     <span class="value" id="resMerit">-</span>
                 </div>
             </div>
@@ -1880,8 +1889,8 @@
                     <thead>
                         <tr>
                             <th>বিষয়ের নাম</th>
-                            <th>লিখিত (CQ)</th>
-                            <th>এমসিকিউ (MCQ)</th>
+                            <th>পূর্ণমান</th>
+                            <th>ই.টি. (৭০%)</th>
                             <th>টিউটোরিয়াল</th>
                             <th>মোট নম্বর</th>
                             <th>লেটার গ্রেড</th>
@@ -1970,6 +1979,26 @@
         const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
         let resultsData = [];
+        let globalPortalInfo = {};
+
+        // ৬ষ্ঠ থেকে ৮ম শ্রেণীর বিষয়গুলোর কনফিগারেশন
+        const portalSubjectsConfig = [
+            { id: 'b1', name: 'বাংলা ১ম পত্র (Bangla-I)', max: 100, pass: 40 },
+            { id: 'b2', name: 'বাংলা ২য় পত্র (Bangla-II)', max: 50, pass: 20 },
+            { id: 'e1', name: 'ইংরেজি ১ম পত্র (English-I)', max: 100, pass: 40 },
+            { id: 'e2', name: 'ইংরেজি ২য় পত্র (English-II)', max: 100, pass: 40 },
+            { id: 'math', name: 'সাধারণ গণিত (Mathematics)', max: 100, pass: 40 },
+            { id: 'rel', name: 'ধর্ম ও নৈতিক শিক্ষা (Religion Studies)', max: 100, pass: 40 },
+            { id: 'arab', name: 'আরবী (Arabic)', max: 100, pass: 40 },
+            { id: 'bgs', name: 'বাংলাদেশ ও বিশ্বপরিচয় (BGS)', max: 100, pass: 40 },
+            { id: 'sci', name: 'বিজ্ঞান (Science)', max: 100, pass: 40 },
+            { id: 'ict', name: 'তথ্য ও যোগাযোগ প্রযুক্তি (ICT)', max: 50, pass: 20 },
+            { id: 'agri', name: 'কৃষি শিক্ষা / গার্হস্থ্য বিজ্ঞান', max: 50, pass: 20 },
+            { id: 'art', name: 'চারু ও কারুকলা (Art & Craft)', max: 50, pass: 20 },
+            { id: 'spoken', name: 'স্পোকেন ইংলিশ (Spoken English)', max: 25, pass: 15 },
+            { id: 'moral', name: 'মোরাল অ্যাক্টিভিটিজ (Moral Activ.)', max: 50, pass: 20 },
+            { id: 'drill', name: 'ড্রীল (Drill)', max: 25, pass: 15 }
+        ];
 
         // Preloader Logic
         window.addEventListener('load', function() {
@@ -2070,7 +2099,6 @@
             dots[n].classList.add('active');
         }
 
-        // Start Slider on load
         setTimeout(showSlides, 3500);
 
         // Admin Panel Password Protection & Toggle
@@ -2129,20 +2157,17 @@
         }
 
         // =========================================
-        // Roster Modal Logic
+        // Roster & Teacher List Modal Logic
         // =========================================
         function openRosterModal(event) {
-            event.preventDefault(); // বাটনের ডিফল্ট ক্লিক বন্ধ করবে
-            document.getElementById('rosterModal').classList.add('active'); // পপ-আপ দেখাবে
+            event.preventDefault();
+            document.getElementById('rosterModal').classList.add('active');
         }
 
         function closeRosterModal() {
-            document.getElementById('rosterModal').classList.remove('active'); // পপ-আপ লুকিয়ে ফেলবে
+            document.getElementById('rosterModal').classList.remove('active');
         }
 
-        // =========================================
-        // Teacher List Modal Logic (নতুন যোগ করা হয়েছে)
-        // =========================================
         function openTeacherListModal(event) {
             event.preventDefault(); 
             document.getElementById('teacherListModal').classList.add('active'); 
@@ -2152,7 +2177,6 @@
             document.getElementById('teacherListModal').classList.remove('active'); 
         }
 
-        // পপ-আপের বাইরের অংশে ক্লিক করলে যেন তা বন্ধ হয়ে যায়
         window.addEventListener('click', function(event) {
             const rosterModal = document.getElementById('rosterModal');
             const teacherListModal = document.getElementById('teacherListModal');
@@ -2166,7 +2190,7 @@
         });
 
         // =========================================
-        // Online Result Portal Navigation & Logic
+        // Online Result Portal Navigation & JSON Logic
         // =========================================
         function openResultPortal(event) {
             if (event) event.preventDefault();
@@ -2174,6 +2198,9 @@
             document.getElementById('portalPageView').style.display = 'flex';
             document.title = 'অনলাইন রেজাল্ট পোর্টাল - ইবনে তাইমিয়া স্কুল এন্ড কলেজ';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (resultsData.length === 0) {
+                loadPortalResultsJSON();
+            }
             setTimeout(() => {
                 const rollInput = document.getElementById('rollInput');
                 if (rollInput) rollInput.focus();
@@ -2188,37 +2215,171 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function loadPortalResultsJSON() {
-            fetch('result.json')
-                .then(response => {
-                    if (!response.ok) throw new Error("result.json পাওয়া যায়নি");
-                    return response.json();
-                })
-                .then(data => {
-                    resultsData = Array.isArray(data) ? data : (data.students || data.results || []);
-                })
-                .catch(error => {
-                    console.error("JSON লোড করতে সমস্যা হয়েছে:", error);
-                });
+        // আপনার আপলোড করা JSON ফাইল লোড করার ফাংশন
+        async function loadPortalResultsJSON() {
+            const candidateFiles = [
+                'ITSC_Result_Backup_Eight_B_2026.json',
+                'ITSC_Result_Backup_Eight_B_2025.json',
+                'Eight_B_2026.json',
+                'Eight_B.json',
+                'result.json'
+            ];
+
+            for (const fileName of candidateFiles) {
+                try {
+                    const response = await fetch(`./${fileName}?t=${Date.now()}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        globalPortalInfo = data.global || {};
+                        resultsData = Array.isArray(data) ? data : (data.students || data.results || []);
+                        if (resultsData.length > 0) {
+                            console.log(`সফলভাবে লোড হয়েছে: ${fileName}`);
+                            return true;
+                        }
+                    }
+                } catch (err) {
+                    console.warn(`${fileName} লোড করা যায়নি:`, err);
+                }
+            }
+            return false;
         }
 
         function normalizeRoll(inputStr) {
             const banglaDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
-            return inputStr.trim().replace(/[০-৯]/g, d => banglaDigits[d]);
+            return String(inputStr || '').trim().replace(/[০-৯]/g, d => banglaDigits[d]);
         }
 
-        function searchResult(event) {
+        function getPortalGrading(percentage) {
+            if (percentage >= 80) return { lg: 'A+', gp: 5.00 };
+            if (percentage >= 70) return { lg: 'A',  gp: 4.00 };
+            if (percentage >= 60) return { lg: 'A-', gp: 3.50 };
+            if (percentage >= 50) return { lg: 'B',  gp: 3.00 };
+            if (percentage >= 40) return { lg: 'C',  gp: 2.00 };
+            return { lg: 'F', gp: 0.00 };
+        }
+
+        function getLetterGradeFromGPA(gpa) {
+            if (gpa >= 5.00) return 'A+';
+            if (gpa >= 4.00) return 'A';
+            if (gpa >= 3.50) return 'A-';
+            if (gpa >= 3.00) return 'B';
+            if (gpa >= 2.00) return 'C';
+            return 'F';
+        }
+
+        function calculatePortalSubject(studentObj, cls, totalMarks) {
+            let etInput = parseFloat(studentObj[`${cls}et`]) || 0;
+            let tuInput = parseFloat(studentObj[`${cls}tu`]) || 0;
+
+            let et70 = Math.round(etInput * 0.70);
+            let tuVal = (cls === 'ict' || cls === 'agri' || cls === 'b2') ? Math.round(tuInput * 0.50) : tuInput;
+
+            let tot = et70 + tuVal;
+            if (tot > totalMarks) tot = totalMarks;
+
+            const percentage = (tot / totalMarks) * 100;
+            const grading = getPortalGrading(percentage);
+
+            return {
+                et70: et70,
+                tu: tuVal,
+                tot: tot,
+                lg: grading.lg,
+                gp: grading.gp
+            };
+        }
+
+        function getOrdinalSuffix(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        }
+
+        function evaluateStudentStats(st) {
+            let subRes = {};
+            portalSubjectsConfig.forEach(sub => {
+                subRes[sub.id] = calculatePortalSubject(st, sub.id, sub.max);
+            });
+
+            const banglaTotal = subRes.b1.tot + subRes.b2.tot;
+            const englishTotal = subRes.e1.tot + subRes.e2.tot;
+
+            const banglaRes = getPortalGrading((banglaTotal / 150) * 100);
+            const englishRes = getPortalGrading((englishTotal / 200) * 100);
+
+            const gpaSubjects = [
+                banglaRes, englishRes,
+                subRes.math, subRes.rel, subRes.arab,
+                subRes.bgs, subRes.sci, subRes.ict, subRes.agri
+            ];
+
+            let grandTotalMarks = banglaTotal + englishTotal;
+            ['math', 'rel', 'arab', 'bgs', 'sci', 'ict', 'agri', 'art', 'spoken', 'moral', 'drill'].forEach(id => {
+                grandTotalMarks += subRes[id].tot;
+            });
+
+            let totalGP = gpaSubjects.reduce((acc, sub) => acc + sub.gp, 0);
+            let finalGPA = parseFloat((totalGP / gpaSubjects.length).toFixed(2));
+            if (finalGPA > 5.00) finalGPA = 5.00;
+            if (gpaSubjects.some(sub => sub.gp === 0)) finalGPA = 0.00;
+
+            return {
+                subRes,
+                banglaTotal,
+                banglaRes,
+                englishTotal,
+                englishRes,
+                grandTotalMarks,
+                finalGPA
+            };
+        }
+
+        function calculateMeritPosition(allStudents, targetStudent) {
+            const statsList = allStudents.map(st => {
+                const ev = evaluateStudentStats(st);
+                return {
+                    st: st,
+                    gpa: ev.finalGPA,
+                    grandTotal: ev.grandTotalMarks,
+                    roll: parseInt(normalizeRoll(st.roll)) || 0
+                };
+            });
+
+            statsList.sort((a, b) => {
+                if (b.gpa !== a.gpa) return b.gpa - a.gpa;
+                if (b.grandTotal !== a.grandTotal) return b.grandTotal - a.grandTotal;
+                return a.roll - b.roll;
+            });
+
+            const idx = statsList.findIndex(item => item.st === targetStudent);
+            return idx !== -1 ? getOrdinalSuffix(idx + 1) : '-';
+        }
+
+        async function searchResult(event) {
             event.preventDefault();
             const rawRoll = document.getElementById('rollInput').value;
             const searchRoll = normalizeRoll(rawRoll);
 
             const errorBox = document.getElementById('errorBox');
             const resultCard = document.getElementById('resultViewCard');
+            const searchBtn = document.getElementById('portalSearchBtn');
 
             errorBox.style.display = 'none';
             resultCard.style.display = 'none';
 
-            const student = resultsData.find(item => String(normalizeRoll(String(item.roll))) === String(searchRoll));
+            if (resultsData.length === 0) {
+                searchBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ডেটা লোড হচ্ছে...`;
+                await loadPortalResultsJSON();
+                searchBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন`;
+            }
+
+            if (resultsData.length === 0) {
+                errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ফলাফলের ডেটা ফাইল (<b>ITSC_Result_Backup_Eight_B_2026.json</b>) গিটহাবে পাওয়া যায়নি! ফাইলটির নাম ঠিক আছে কি না যাচাই করুন।`;
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            const student = resultsData.find(item => normalizeRoll(item.roll) === searchRoll);
 
             if (!student) {
                 errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> দুঃখিত! ৮ম শ্রেণী (শাখা B)-তে রোল নম্বর <b>${rawRoll}</b> এর কোনো ফলাফল পাওয়া যায়নি।`;
@@ -2226,42 +2387,84 @@
                 return;
             }
 
-            document.getElementById('examTitleDisplay').innerText = student.exam || "বার্ষিক পরীক্ষা - ২০২৬";
+            const ev = evaluateStudentStats(student);
+            const meritPos = calculateMeritPosition(resultsData, student);
+            const overallGrade = getLetterGradeFromGPA(ev.finalGPA);
+            const isFail = ev.finalGPA === 0;
+
+            const examYear = globalPortalInfo.year || '২০২৬';
+            const shiftName = globalPortalInfo.shift ? ` | শিফট: ${globalPortalInfo.shift}` : '';
+
+            document.getElementById('examTitleDisplay').innerText = `বার্ষিক পরীক্ষা - ${examYear}`;
+            document.getElementById('examSubTitleDisplay').innerText = `একাডেমিক ট্রান্সক্রিপ্ট / বিস্তারিত নম্বরপত্র (শ্রেণী: ৮ম | শাখা: B${shiftName})`;
+
             document.getElementById('resName').innerText = student.name || "-";
-            document.getElementById('resRoll').innerText = student.roll;
-            document.getElementById('resTotal').innerText = student.total ?? "-";
-            document.getElementById('resGPA').innerText = student.gpa ?? "-";
+            document.getElementById('resFName').innerText = student.fname || "-";
+            document.getElementById('resMName').innerText = student.mname || "-";
+            document.getElementById('resRoll').innerText = student.roll || "-";
+            document.getElementById('resAtt').innerText = student.att ? `${student.att} দিন` : "-";
+            document.getElementById('resTotal').innerText = ev.grandTotalMarks;
+            document.getElementById('resGPA').innerText = ev.finalGPA.toFixed(2);
 
             const gradeEl = document.getElementById('resGrade');
-            const isFail = String(student.grade).toUpperCase() === 'F' || parseFloat(student.gpa) === 0;
-            gradeEl.innerText = `${student.grade || '-'} (${isFail ? 'অকৃতকার্য' : 'কৃতকার্য'})`;
+            gradeEl.innerText = `${overallGrade} (${isFail ? 'অকৃতকার্য' : 'কৃতকার্য'})`;
             gradeEl.className = 'value ' + (isFail ? 'status-fail' : 'status-pass');
 
-            document.getElementById('resMerit').innerText = student.merit || "-";
+            document.getElementById('resMerit').innerText = meritPos;
 
             const tbody = document.getElementById('subjectTableBody');
             tbody.innerHTML = '';
 
-            if (Array.isArray(student.subjects)) {
-                student.subjects.forEach(sub => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="subj-name">${sub.name || '-'}</td>
-                        <td>${sub.cq ?? '-'}</td>
-                        <td>${sub.mcq ?? '-'}</td>
-                        <td>${sub.tutorial ?? '-'}</td>
-                        <td><b>${sub.total ?? '-'}</b></td>
-                        <td>${sub.grade ?? '-'}</td>
-                        <td>${sub.gp ?? '-'}</td>
+            portalSubjectsConfig.forEach(sub => {
+                const r = ev.subRes[sub.id];
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="subj-name">${sub.name}</td>
+                    <td>${sub.max}</td>
+                    <td>${r.et70 || 0}</td>
+                    <td>${r.tu || 0}</td>
+                    <td><b>${r.tot || 0}</b></td>
+                    <td style="color:${r.lg === 'F' ? '#ef4444' : 'inherit'}; font-weight:700;">${r.lg}</td>
+                    <td>${r.gp.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+
+                // বাংলা ২য় পত্রের পর বাংলা ১ম+২য় (একত্রে) সারি দেখানো
+                if (sub.id === 'b2') {
+                    const bTr = document.createElement('tr');
+                    bTr.className = 'combined-row';
+                    bTr.innerHTML = `
+                        <td class="subj-name" style="color:#0077b6;">বাংলা ১ম ও ২য় পত্র (একত্রে)</td>
+                        <td>150</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><b>${ev.banglaTotal}</b></td>
+                        <td style="color:${ev.banglaRes.lg === 'F' ? '#ef4444' : '#0077b6'};">${ev.banglaRes.lg}</td>
+                        <td>${ev.banglaRes.gp.toFixed(2)}</td>
                     `;
-                    tbody.appendChild(tr);
-                });
-            }
+                    tbody.appendChild(bTr);
+                }
+
+                // ইংরেজি ২য় পত্রের পর ইংরেজি ১ম+২য় (একত্রে) সারি দেখানো
+                if (sub.id === 'e2') {
+                    const eTr = document.createElement('tr');
+                    eTr.className = 'combined-row';
+                    eTr.innerHTML = `
+                        <td class="subj-name" style="color:#0077b6;">ইংরেজি ১ম ও ২য় পত্র (একত্রে)</td>
+                        <td>200</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><b>${ev.englishTotal}</b></td>
+                        <td style="color:${ev.englishRes.lg === 'F' ? '#ef4444' : '#0077b6'};">${ev.englishRes.lg}</td>
+                        <td>${ev.englishRes.gp.toFixed(2)}</td>
+                    `;
+                    tbody.appendChild(eTr);
+                }
+            });
 
             resultCard.style.display = 'block';
             resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
     </script>
 
 </body>
