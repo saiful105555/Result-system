@@ -18,6 +18,9 @@
             --heading-color: #0f172a;
             --nav-bg: #ffffff;
             --nav-hover: #f8fafc;
+            --input-bg: #f1f5f9;
+            --border-color: #cbd5e1;
+            --table-stripe: #f8fafc;
         }
 
         [data-theme="dark"] {
@@ -28,6 +31,9 @@
             --heading-color: #ffffff;
             --nav-bg: #1e293b;
             --nav-hover: #334155;
+            --input-bg: #0f172a;
+            --border-color: #475569;
+            --table-stripe: #1e293b;
         }
 
         * {
@@ -48,6 +54,15 @@
             color: var(--text-color);
             padding: 20px 15px;
             position: relative;
+        }
+
+        .page-view {
+            width: 100%;
+            min-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
         }
 
         /* Preloader Styles */
@@ -696,7 +711,8 @@
         .btn-3 { border-left-color: #10b981; }
         .btn-4 { border-left-color: #f59e0b; }
         .btn-5 { border-left-color: #8b5cf6; }
-        .btn-6 { border-left-color: #ec4899; } 
+        .btn-6 { border-left-color: #ec4899; }
+        .btn-7 { border-left-color: #06b6d4; }
 
         .btn-icon {
             font-size: 1.8rem;
@@ -715,7 +731,8 @@
         .btn-3 .btn-icon { background: linear-gradient(135deg, #10b981, #059669); }
         .btn-4 .btn-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .btn-5 .btn-icon { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-        .btn-6 .btn-icon { background: linear-gradient(135deg, #ec4899, #be185d); } 
+        .btn-6 .btn-icon { background: linear-gradient(135deg, #ec4899, #be185d); }
+        .btn-7 .btn-icon { background: linear-gradient(135deg, #06b6d4, #0284c7); }
 
         .btn-text h3 {
             font-size: 1.15rem;
@@ -1147,9 +1164,363 @@
         .shift-shapla { background: linear-gradient(135deg, #059669, #047857); }
         .shift-bokul { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
 
+        /* =========================================
+           Online Result Portal Page Styles
+           ========================================= */
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        #portalPageView .top-header-wrapper {
+            margin-top: 45px;
+        }
+
+        #portalPageView .top-left-logo-container {
+            width: 130px;
+            height: 130px;
+        }
+
+        #portalPageView .header .subtitle {
+            background: linear-gradient(135deg, #ffb703, #fb8500);
+            padding: 5px 18px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .special-eligibility-banner {
+            width: 100%;
+            max-width: 850px;
+            background: linear-gradient(135deg, #e63946 0%, #d62828 100%);
+            color: #ffffff;
+            padding: 14px 20px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(230, 57, 70, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            animation: bannerPulse 2s infinite alternate;
+        }
+
+        @keyframes bannerPulse {
+            0% { transform: scale(1); box-shadow: 0 5px 20px rgba(230, 57, 70, 0.4); }
+            100% { transform: scale(1.01); box-shadow: 0 8px 30px rgba(255, 183, 3, 0.7); }
+        }
+
+        .portal-card {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 30px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 183, 3, 0.4);
+            position: relative;
+        }
+
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #0d3b66, #ffb703, #e63946);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .portal-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .portal-title i {
+            color: #0077b6;
+        }
+
+        .search-form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--heading-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-group label i {
+            color: #0077b6;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            background: var(--nav-bg);
+            color: var(--text-color);
+            font-size: 1.05rem;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #0077b6;
+            box-shadow: 0 0 0 4px rgba(0, 119, 182, 0.15);
+        }
+
+        .form-control.locked {
+            background: var(--input-bg);
+            color: var(--sub-text);
+            cursor: not-allowed;
+            border-style: dashed;
+        }
+
+        .search-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0d3b66 0%, #0077b6 50%, #00b4d8 100%);
+            background-size: 200% 200%;
+            color: #ffffff;
+            border: none;
+            padding: 15px;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(0, 119, 182, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 119, 182, 0.5);
+        }
+
+        .error-box {
+            display: none;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .result-view-card {
+            display: none;
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 30px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            border: 2px solid #0077b6;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .marksheet-header {
+            text-align: center;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .marksheet-header h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+        }
+
+        .marksheet-header p {
+            color: var(--sub-text);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .student-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .info-item {
+            background: var(--input-bg);
+            padding: 12px 15px;
+            border-radius: 12px;
+            border-left: 4px solid #0077b6;
+        }
+
+        .info-item span.label {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--sub-text);
+            margin-bottom: 2px;
+        }
+
+        .info-item span.value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--heading-color);
+        }
+
+        .status-pass { color: #10b981 !important; }
+        .status-fail { color: #ef4444 !important; }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .marks-table th {
+            background: linear-gradient(135deg, #0d3b66, #0077b6);
+            color: #ffffff;
+            padding: 12px 10px;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .marks-table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .marks-table tr:nth-child(even) {
+            background: var(--table-stripe);
+        }
+
+        .marks-table td.subj-name {
+            text-align: left;
+            font-weight: 700;
+            color: var(--heading-color);
+        }
+
+        .action-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .print-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        #portalPageView .copyright-footer {
+            margin-top: auto;
+        }
+
+        /* Print Media Styles for Marksheet */
+        @media print {
+            body { background: #ffffff; color: #000000; padding: 0; }
+            #homePageView, .home-btn, .theme-toggle, .clock-bar, .portal-card, .copyright-footer, .action-btns, .special-eligibility-banner {
+                display: none !important;
+            }
+            #portalPageView .top-header-wrapper { margin-top: 0; color: #000; }
+            #portalPageView .header h1, #portalPageView .header p.address { color: #000 !important; text-shadow: none; }
+            .result-view-card {
+                display: block !important;
+                box-shadow: none;
+                border: 2px solid #000;
+                max-width: 100%;
+            }
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .top-header-wrapper { flex-direction: column; text-align: center; gap: 15px; }
+            #portalPageView .top-header-wrapper { gap: 12px; margin-top: 60px; }
             .header { text-align: center; }
             .header h1 { font-size: 1.5rem; }
             .header p.address { font-size: 0.9rem; }
@@ -1165,6 +1536,8 @@
             .support-buttons { flex-direction: column; }
             .support-btn { width: 100%; justify-content: center; }
             .shift-btn { font-size: 1rem; padding: 12px 15px; }
+            .search-form-grid { grid-template-columns: 1fr; }
+            .special-eligibility-banner { font-size: 1rem; padding: 12px; }
         }
     </style>
 </head>
@@ -1179,208 +1552,365 @@
         <i class="fa-solid fa-moon" id="themeIcon"></i>
     </button>
 
-    <div class="top-header-wrapper">
-        <div class="top-left-logo-container">
-            <img src="https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&sz=w1000" alt="School Logo" class="top-left-logo">
+    <!-- =========================================
+         1. HOMEPAGE VIEW (অপরিবর্তিত হোমপেজ)
+         ========================================= -->
+    <div id="homePageView" class="page-view">
+
+        <div class="top-header-wrapper">
+            <div class="top-left-logo-container">
+                <img src="https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&sz=w1000" alt="School Logo" class="top-left-logo">
+            </div>
+
+            <header class="header">
+                <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
+                <p class="address"><i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</p>
+                <div class="subtitle"><i class="fa-solid fa-calculator"></i> অটোমেটিক রেজাল্ট প্রস্তুতকরণ</div>
+            </header>
         </div>
 
-        <header class="header">
-            <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
-            <p class="address"><i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</p>
-            <div class="subtitle"><i class="fa-solid fa-calculator"></i> অটোমেটিক রেজাল্ট প্রস্তুতকরণ</div>
-        </header>
-    </div>
-
-    <div class="clock-bar">
-        <div class="date-box"><i class="fa-solid fa-calendar-days"></i> <span id="currentDate">তারিখ লোড হচ্ছে...</span></div>
-        <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="currentTime">00:00:00</span></div>
-    </div>
-
-    <div class="notice-board">
-        <div class="notice-badge">
-            <i class="fa-solid fa-bullhorn"></i> জরুরি বিজ্ঞপ্তি:
+        <div class="clock-bar">
+            <div class="date-box"><i class="fa-solid fa-calendar-days"></i> <span id="currentDate">তারিখ লোড হচ্ছে...</span></div>
+            <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="currentTime">00:00:00</span></div>
         </div>
-        <div class="notice-text-wrapper">
-            <div class="scrolling-text" id="noticeDisplay">
-                সকল বিষয়ের নাম্বারফর্দ এবং অটোমেটিক মার্কশীট তৈরির কাজ নির্দিষ্ট সময়ের মধ্যে সম্পন্ন করার জন্য সম্মানিত শিক্ষকদের অনুরোধ করা যাচ্ছে।
+
+        <div class="notice-board">
+            <div class="notice-badge">
+                <i class="fa-solid fa-bullhorn"></i> জরুরি বিজ্ঞপ্তি:
+            </div>
+            <div class="notice-text-wrapper">
+                <div class="scrolling-text" id="noticeDisplay">
+                    সকল বিষয়ের নাম্বারফর্দ এবং অটোমেটিক মার্কশীট তৈরির কাজ নির্দিষ্ট সময়ের মধ্যে সম্পন্ন করার জন্য সম্মানিত শিক্ষকদের অনুরোধ করা যাচ্ছে।
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="image-slider-container">
-        <div class="slider-wrapper" id="sliderWrapper">
-            <div class="slide active">
-                <img src="https://lh3.googleusercontent.com/d/1wK00G0c0jw8YpqT_i-H_zbKe_tAk7zIq" alt="Banner 1">
+        <div class="image-slider-container">
+            <div class="slider-wrapper" id="sliderWrapper">
+                <div class="slide active">
+                    <img src="https://lh3.googleusercontent.com/d/1wK00G0c0jw8YpqT_i-H_zbKe_tAk7zIq" alt="Banner 1">
+                </div>
+                <div class="slide">
+                    <img src="https://lh3.googleusercontent.com/d/1C8azr1CtJuOsVx74a7UlgYWKoyXS51ku" alt="Banner 2">
+                </div>
+                <div class="slide">
+                    <img src="https://lh3.googleusercontent.com/d/1JFgc3DnG7h0uscQndI7vydfO9PwGkS1e" alt="Banner 3">
+                </div>
             </div>
-            <div class="slide">
-                <img src="https://lh3.googleusercontent.com/d/1C8azr1CtJuOsVx74a7UlgYWKoyXS51ku" alt="Banner 2">
-            </div>
-            <div class="slide">
-                <img src="https://lh3.googleusercontent.com/d/1JFgc3DnG7h0uscQndI7vydfO9PwGkS1e" alt="Banner 3">
-            </div>
-        </div>
-        <div class="slider-dots" id="sliderDots">
-            <span class="dot active" onclick="currentSlide(0)"></span>
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-        </div>
-    </div>
-
-    <section class="principal-message-card">
-        <div class="principal-img-container">
-            <!-- Updated Principal Image Source using thumbnail URL -->
-            <img src="https://drive.google.com/thumbnail?id=1dCF3FHhrMLlDYnnHQ4XYTcFBJFwIv1l9&sz=w1000" alt="Principal Message" class="principal-img">
-        </div>
-        <div class="principal-title-badge">
-            <i class="fa-solid fa-quote-left"></i> প্রিন্সিপাল মহোদয়ের বাণী <i class="fa-solid fa-quote-right"></i>
-        </div>
-        <p class="principal-text">
-            "Ibn Taimiya School & College is one of the best institutions all over the country. Friendly learning environment is the quality of it. The teaching stuff and management of Ibn Taimiya School & College is excellent and favorite to the students."
-        </p>
-
-        <div class="animated-author-name">
-            Professor Dr. Md. Shafiqul Alam Helal.
-        </div>
-    </section>
-
-    <div class="mega-eknojor-container">
-        <a href="eknojor.html" class="mega-eknojor-btn">
-            <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
-            <span>এক নজরে সকলের রেজাল্ট এবং এক নজরে রেজাল্ট তৈরী (৬ষ্ঠ শ্রেণী থেকে অষ্টম শ্রেণী)</span>
-            <div class="btn-shine-icon"><i class="fa-solid fa-angles-right"></i></div>
-        </a>
-
-        <a href="notice.html" class="mega-eknojor-btn-2">
-            <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
-            <span>এক নজরে সকলের রেজাল্ট এবং এক নজরে রেজাল্ট তৈরী (৯ম শ্রেণী থেকে দশম শ্রেণী)</span>
-            <div class="btn-shine-icon"><i class="fa-solid fa-angles-right"></i></div>
-        </a>
-    </div>
-
-    <main class="main-container">
-        <a href="marksheet-6-8.html" class="nav-btn btn-2">
-            <div class="btn-icon"><i class="fa-solid fa-file-signature"></i></div>
-            <div class="btn-text">
-                <h3>বিষয়ভিত্তিক নাম্বারফর্দ তৈরী</h3>
-                <p>বিষয়ভিত্তিক শিক্ষক (শ্রেণী ৬ষ্ঠ - ৮ম)</p>
-            </div>
-        </a>
-
-        <a href="marksheet-9-10.html" class="nav-btn btn-3">
-            <div class="btn-icon"><i class="fa-solid fa-file-pen"></i></div>
-            <div class="btn-text">
-                <h3>বিষয়ভিত্তিক নাম্বারফর্দ তৈরী</h3>
-                <p>বিষয়ভিত্তিক শিক্ষক (শ্রেণী ৯ম - ১০ম)</p>
-            </div>
-        </a>
-
-        <a href="tutorial-all.html" class="nav-btn btn-4">
-            <div class="btn-icon"><i class="fa-solid fa-list-check"></i></div>
-            <div class="btn-text">
-                <h3>শুধু টিউটোরিয়াল নাম্বারফর্দ</h3>
-                <p>বিষয়ভিত্তিক শিক্ষকদের জন্য</p>
-            </div>
-        </a>
-
-        <a href="#" onclick="openRosterModal(event)" class="nav-btn btn-5">
-            <div class="btn-icon"><i class="fa-solid fa-calendar-check"></i></div>
-            <div class="btn-text">
-                <h3>ডিউটি রোস্টার জেনারেটর</h3>
-                <p>পরীক্ষার ডিউটি ও শিফট ব্যবস্থাপনা</p>
-            </div>
-        </a>
-
-        <a href="idcard.html" class="nav-btn btn-6">
-            <div class="btn-icon"><i class="fa-solid fa-id-badge"></i></div>
-            <div class="btn-text">
-                <h3>শিক্ষক আইডি কার্ড জেনারেটর</h3>
-                <p>অটোমেটিক প্রফেশনাল আইডি কার্ড তৈরি</p>
-            </div>
-        </a>
-
-        <a href="#" onclick="openTeacherListModal(event)" class="nav-btn btn-1">
-            <div class="btn-icon"><i class="fa-solid fa-users-rectangle"></i></div>
-            <div class="btn-text">
-                <h3>শিফটভিত্তিক শিক্ষক তালিকা</h3>
-                <p>সকল শিফটের শিক্ষকদের তালিকা</p>
-            </div>
-        </a>
-    </main>
-
-    <div class="admin-panel-container">
-        <button class="admin-toggle-btn" onclick="openAdminPanel()">
-            <i class="fa-solid fa-lock"></i> Admin Panel
-        </button>
-
-        <div class="notice-control-box" id="adminControlBox">
-            <h4><i class="fa-solid fa-pen-to-square"></i> নোটিশ আপডেট প্যানেল</h4>
-            <div class="notice-input-group">
-                <input type="text" id="noticeInput" placeholder="নতুন নোটিশ এখানে লিখুন...">
-                <button onclick="updateNotice()"><i class="fa-solid fa-floppy-disk"></i> সেভ করুন</button>
+            <div class="slider-dots" id="sliderDots">
+                <span class="dot active" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
             </div>
         </div>
-    </div>
 
-    <section class="support-section">
-        <h3 class="support-title"><i class="fa-solid fa-headset"></i> টেকনিক্যাল সাপোর্ট ও যোগাযোগ</h3>
-        <p class="support-desc">সিস্টেম ব্যবহারে কোনো সমস্যা হলে বা নতুন ফিচার প্রয়োজন হলে সরাসরি আমাদের সাথে যোগাযোগ করুন।</p>
-        <div class="support-buttons">
-            <a href="mailto:Saiful.cou10@gmail.com" class="support-btn email">
-                <i class="fa-solid fa-envelope"></i> ইমেইল করুন
+        <section class="principal-message-card">
+            <div class="principal-img-container">
+                <!-- Updated Principal Image Source using thumbnail URL -->
+                <img src="https://drive.google.com/thumbnail?id=1dCF3FHhrMLlDYnnHQ4XYTcFBJFwIv1l9&sz=w1000" alt="Principal Message" class="principal-img">
+            </div>
+            <div class="principal-title-badge">
+                <i class="fa-solid fa-quote-left"></i> প্রিন্সিপাল মহোদয়ের বাণী <i class="fa-solid fa-quote-right"></i>
+            </div>
+            <p class="principal-text">
+                "Ibn Taimiya School & College is one of the best institutions all over the country. Friendly learning environment is the quality of it. The teaching stuff and management of Ibn Taimiya School & College is excellent and favorite to the students."
+            </p>
+
+            <div class="animated-author-name">
+                Professor Dr. Md. Shafiqul Alam Helal.
+            </div>
+        </section>
+
+        <div class="mega-eknojor-container">
+            <a href="eknojor.html" class="mega-eknojor-btn">
+                <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+                <span>এক নজরে সকলের রেজাল্ট এবং এক নজরে রেজাল্ট তৈরী (৬ষ্ঠ শ্রেণী থেকে অষ্টম শ্রেণী)</span>
+                <div class="btn-shine-icon"><i class="fa-solid fa-angles-right"></i></div>
             </a>
-            <a href="https://wa.me/8801622186812" class="support-btn whatsapp" target="_blank">
-                <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ
+
+            <a href="notice.html" class="mega-eknojor-btn-2">
+                <div class="btn-shine-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+                <span>এক নজরে সকলের রেজাল্ট এবং এক নজরে রেজাল্ট তৈরী (৯ম শ্রেণী থেকে দশম শ্রেণী)</span>
+                <div class="btn-shine-icon"><i class="fa-solid fa-angles-right"></i></div>
             </a>
         </div>
-    </section>
 
-    <footer class="developer-card">
-        <div class="supervisor-title">সার্বিক তত্ত্বাবধানে</div>
-
-        <div class="developers-wrapper">
-            <div class="dev-profile-box">
-                <div class="profile-frame">
-                    <img src="https://lh3.googleusercontent.com/d/1VT8Sn4JUUQdq3NIk9pNb4a4Id-SdcPSP" alt="Saiful Islam" class="profile-img">
+        <main class="main-container">
+            <a href="marksheet-6-8.html" class="nav-btn btn-2">
+                <div class="btn-icon"><i class="fa-solid fa-file-signature"></i></div>
+                <div class="btn-text">
+                    <h3>বিষয়ভিত্তিক নাম্বারফর্দ তৈরী</h3>
+                    <p>বিষয়ভিত্তিক শিক্ষক (শ্রেণী ৬ষ্ঠ - ৮ম)</p>
                 </div>
+            </a>
 
-                <h2 class="dev-name">সাইফুল ইসলাম</h2>
-                <div class="dev-degree">এমএসসি, বিএসসি (ইঞ্জি:) কম্পিউটার সাইন্স, কুবি</div>
-
-                <div class="dev-details">
-                    <p><i class="fa-solid fa-chalkboard-user"></i> সহকারী শিক্ষক: ইবনে তাইমিয়া স্কুল এন্ড কলেজ</p>
-                    <p><i class="fa-solid fa-award"></i> জেলা মাস্টার ট্রেইনার - কুমিল্লা বিভাগীয় অঞ্চল</p>
+            <a href="marksheet-9-10.html" class="nav-btn btn-3">
+                <div class="btn-icon"><i class="fa-solid fa-file-pen"></i></div>
+                <div class="btn-text">
+                    <h3>বিষয়ভিত্তিক নাম্বারফর্দ তৈরী</h3>
+                    <p>বিষয়ভিত্তিক শিক্ষক (শ্রেণী ৯ম - ১০ম)</p>
                 </div>
+            </a>
 
-                <div class="badge-container">
-                    <span class="badge"><i class="fa-solid fa-code"></i> ফুল স্ট্যাক ডেভেলপার</span>
-                    <span class="badge"><i class="fa-solid fa-trophy"></i> প্রোগ্রামিং রানার্সআপ</span>
+            <a href="tutorial-all.html" class="nav-btn btn-4">
+                <div class="btn-icon"><i class="fa-solid fa-list-check"></i></div>
+                <div class="btn-text">
+                    <h3>শুধু টিউটোরিয়াল নাম্বারফর্দ</h3>
+                    <p>বিষয়ভিত্তিক শিক্ষকদের জন্য</p>
                 </div>
-            </div>
+            </a>
 
-            <div class="dev-profile-box">
-                <div class="profile-frame">
-                    <img src="https://lh3.googleusercontent.com/d/1YZMgZOfJ0MJEFzjdlkeG7Y7wwe-9scoL" alt="Engr. Imdadul Haque Imran" class="profile-img">
+            <a href="#" onclick="openRosterModal(event)" class="nav-btn btn-5">
+                <div class="btn-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="btn-text">
+                    <h3>ডিউটি রোস্টার জেনারেটর</h3>
+                    <p>পরীক্ষার ডিউটি ও শিফট ব্যবস্থাপনা</p>
                 </div>
+            </a>
 
-                <h2 class="dev-name">ইঞ্জিঃ ইমদাদুল হক ইমরান</h2>
-                <div class="dev-degree">B.Sc in CSE (DIU), M.Sc in CSE (CoU)</div>
-
-                <div class="dev-details">
-                    <p><i class="fa-solid fa-chalkboard-user"></i> সহঃ শিক্ষক, ইবনে তাইমিয়া স্কুল এন্ড কলেজ</p>
+            <a href="idcard.html" class="nav-btn btn-6">
+                <div class="btn-icon"><i class="fa-solid fa-id-badge"></i></div>
+                <div class="btn-text">
+                    <h3>শিক্ষক আইডি কার্ড জেনারেটর</h3>
+                    <p>অটোমেটিক প্রফেশনাল আইডি কার্ড তৈরি</p>
                 </div>
+            </a>
 
-                <div class="badge-container">
-                    <span class="badge"><i class="fa-solid fa-laptop-code"></i> সফটওয়্যার ডেভেলপার</span>
+            <a href="#" onclick="openTeacherListModal(event)" class="nav-btn btn-1">
+                <div class="btn-icon"><i class="fa-solid fa-users-rectangle"></i></div>
+                <div class="btn-text">
+                    <h3>শিফটভিত্তিক শিক্ষক তালিকা</h3>
+                    <p>সকল শিফটের শিক্ষকদের তালিকা</p>
+                </div>
+            </a>
+
+            <!-- নতুন যুক্ত করা অনলাইন রেজাল্ট পোর্টাল বাটন -->
+            <a href="#" onclick="openResultPortal(event)" class="nav-btn btn-7">
+                <div class="btn-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
+                <div class="btn-text">
+                    <h3>অনলাইন রেজাল্ট পোর্টাল</h3>
+                    <p>শুধুমাত্র ৮ম B শাখার ছাত্রদের ফলাফল</p>
+                </div>
+            </a>
+        </main>
+
+        <div class="admin-panel-container">
+            <button class="admin-toggle-btn" onclick="openAdminPanel()">
+                <i class="fa-solid fa-lock"></i> Admin Panel
+            </button>
+
+            <div class="notice-control-box" id="adminControlBox">
+                <h4><i class="fa-solid fa-pen-to-square"></i> নোটিশ আপডেট প্যানেল</h4>
+                <div class="notice-input-group">
+                    <input type="text" id="noticeInput" placeholder="নতুন নোটিশ এখানে লিখুন...">
+                    <button onclick="updateNotice()"><i class="fa-solid fa-floppy-disk"></i> সেভ করুন</button>
                 </div>
             </div>
         </div>
-    </footer>
 
-    <div class="copyright-footer">
-        © ২০২৪ - ২০২৬ ইবনে তাইমিয়া স্কুল এন্ড কলেজ। সর্বস্বত্ব সংরক্ষিত। | Developed by IT Department.
+        <section class="support-section">
+            <h3 class="support-title"><i class="fa-solid fa-headset"></i> টেকনিক্যাল সাপোর্ট ও যোগাযোগ</h3>
+            <p class="support-desc">সিস্টেম ব্যবহারে কোনো সমস্যা হলে বা নতুন ফিচার প্রয়োজন হলে সরাসরি আমাদের সাথে যোগাযোগ করুন।</p>
+            <div class="support-buttons">
+                <a href="mailto:Saiful.cou10@gmail.com" class="support-btn email">
+                    <i class="fa-solid fa-envelope"></i> ইমেইল করুন
+                </a>
+                <a href="https://wa.me/8801622186812" class="support-btn whatsapp" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ
+                </a>
+            </div>
+        </section>
+
+        <footer class="developer-card">
+            <div class="supervisor-title">সার্বিক তত্ত্বাবধানে</div>
+
+            <div class="developers-wrapper">
+                <div class="dev-profile-box">
+                    <div class="profile-frame">
+                        <img src="https://lh3.googleusercontent.com/d/1VT8Sn4JUUQdq3NIk9pNb4a4Id-SdcPSP" alt="Saiful Islam" class="profile-img">
+                    </div>
+
+                    <h2 class="dev-name">সাইফুল ইসলাম</h2>
+                    <div class="dev-degree">এমএসসি, বিএসসি (ইঞ্জি:) কম্পিউটার সাইন্স, কুবি</div>
+
+                    <div class="dev-details">
+                        <p><i class="fa-solid fa-chalkboard-user"></i> সহকারী শিক্ষক: ইবনে তাইমিয়া স্কুল এন্ড কলেজ</p>
+                        <p><i class="fa-solid fa-award"></i> জেলা মাস্টার ট্রেইনার - কুমিল্লা বিভাগীয় অঞ্চল</p>
+                    </div>
+
+                    <div class="badge-container">
+                        <span class="badge"><i class="fa-solid fa-code"></i> ফুল স্ট্যাক ডেভেলপার</span>
+                        <span class="badge"><i class="fa-solid fa-trophy"></i> প্রোগ্রামিং রানার্সআপ</span>
+                    </div>
+                </div>
+
+                <div class="dev-profile-box">
+                    <div class="profile-frame">
+                        <img src="https://lh3.googleusercontent.com/d/1YZMgZOfJ0MJEFzjdlkeG7Y7wwe-9scoL" alt="Engr. Imdadul Haque Imran" class="profile-img">
+                    </div>
+
+                    <h2 class="dev-name">ইঞ্জিঃ ইমদাদুল হক ইমরান</h2>
+                    <div class="dev-degree">B.Sc in CSE (DIU), M.Sc in CSE (CoU)</div>
+
+                    <div class="dev-details">
+                        <p><i class="fa-solid fa-chalkboard-user"></i> সহঃ শিক্ষক, ইবনে তাইমিয়া স্কুল এন্ড কলেজ</p>
+                    </div>
+
+                    <div class="badge-container">
+                        <span class="badge"><i class="fa-solid fa-laptop-code"></i> সফটওয়্যার ডেভেলপার</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div class="copyright-footer">
+            © ২০২৪ - ২০২৬ ইবনে তাইমিয়া স্কুল এন্ড কলেজ। সর্বস্বত্ব সংরক্ষিত। | Developed by IT Department.
+        </div>
+
     </div>
 
 
+    <!-- =========================================
+         2. ONLINE RESULT PORTAL VIEW (যুক্ত করা পেইজ)
+         ========================================= -->
+    <div id="portalPageView" class="page-view" style="display: none;">
+
+        <!-- Back to Homepage -->
+        <a href="#" onclick="closeResultPortal(event)" class="home-btn">
+            <i class="fa-solid fa-house"></i> হোমপেজ
+        </a>
+
+        <!-- Header Section -->
+        <div class="top-header-wrapper">
+            <div class="top-left-logo-container">
+                <img src="https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&sz=w1000" alt="School Logo" class="top-left-logo">
+            </div>
+
+            <header class="header">
+                <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
+                <p class="address"><i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</p>
+                <div class="subtitle"><i class="fa-solid fa-square-poll-vertical"></i> অনলাইন রেজাল্ট পোর্টাল</div>
+            </header>
+        </div>
+
+        <!-- Live Clock Bar -->
+        <div class="clock-bar">
+            <div class="date-box"><i class="fa-solid fa-calendar-days"></i> <span id="portalCurrentDate">তারিখ লোড হচ্ছে...</span></div>
+            <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="portalCurrentTime">00:00:00</span></div>
+        </div>
+
+        <!-- Special Notice Banner -->
+        <div class="special-eligibility-banner">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span>শুধুমাত্র ৮ম B শাখার ছাত্রদের জন্য প্রযোজ্য</span>
+        </div>
+
+        <!-- Search Box Card -->
+        <section class="portal-card">
+            <h2 class="portal-title">
+                <i class="fa-solid fa-magnifying-glass-chart"></i> শিক্ষার্থীর ফলাফল অনুসন্ধান
+            </h2>
+
+            <form id="resultSearchForm" onsubmit="searchResult(event)">
+                <div class="search-form-grid">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-graduation-cap"></i> শ্রেণী (ডিফল্ট)</label>
+                        <input type="text" class="form-control locked" value="৮ম শ্রেণী (Eight)" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-layer-group"></i> শাখা (ডিফল্ট)</label>
+                        <input type="text" class="form-control locked" value="B (ছাত্র)" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rollInput"><i class="fa-solid fa-id-card-clip"></i> রোল নম্বর দিন *</label>
+                        <input type="text" id="rollInput" class="form-control" placeholder="যেমন: 101 বা ১০১" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="search-btn">
+                    <i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন
+                </button>
+            </form>
+
+            <div id="errorBox" class="error-box"></div>
+        </section>
+
+        <!-- Detailed Result Marksheet View -->
+        <section class="result-view-card" id="resultViewCard">
+            <div class="marksheet-header">
+                <h2 id="examTitleDisplay">বার্ষিক পরীক্ষা - ২০২৬</h2>
+                <p>একাডেমিক ট্রান্সক্রিপ্ট / বিস্তারিত নম্বরপত্র (শ্রেণী: ৮ম | শাখা: B)</p>
+            </div>
+
+            <div class="student-info-grid">
+                <div class="info-item">
+                    <span class="label">শিক্ষার্থীর নাম</span>
+                    <span class="value" id="resName">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">রোল নম্বর</span>
+                    <span class="value" id="resRoll">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">শ্রেণী ও শাখা</span>
+                    <span class="value">৮ম (B)</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">মোট প্রাপ্ত নম্বর</span>
+                    <span class="value" id="resTotal">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">জিপিএ (GPA)</span>
+                    <span class="value" id="resGPA">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">লেটার গ্রেড ও স্ট্যাটাস</span>
+                    <span class="value" id="resGrade">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">মেধাস্থান (Merit)</span>
+                    <span class="value" id="resMerit">-</span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>বিষয়ের নাম</th>
+                            <th>লিখিত (CQ)</th>
+                            <th>এমসিকিউ (MCQ)</th>
+                            <th>টিউটোরিয়াল</th>
+                            <th>মোট নম্বর</th>
+                            <th>লেটার গ্রেড</th>
+                            <th>গ্রেড পয়েন্ট</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subjectTableBody">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="action-btns">
+                <button class="print-btn" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> মার্কশিট প্রিন্ট / PDF ডাউনলোড করুন
+                </button>
+            </div>
+        </section>
+
+        <div class="copyright-footer">
+            © ২০২৪ - ২০২৬ ইবনে তাইমিয়া স্কুল এন্ড কলেজ। সর্বস্বত্ব সংরক্ষিত।
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         MODALS (অপরিবর্তিত পপ-আপ)
+         ========================================= -->
     <div id="rosterModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -1439,6 +1969,8 @@
         const MASTER_KEY = "$2a$10$TWz.OzRyzXF60E/1W/sGU.2237MZoNS0LIz/IbxEYeaSIaZL16Bt6";
         const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
+        let resultsData = [];
+
         // Preloader Logic
         window.addEventListener('load', function() {
             const preloader = document.getElementById('preloader');
@@ -1448,6 +1980,7 @@
             }, 500);
 
             fetchNotice();
+            loadPortalResultsJSON();
         });
 
         // Fetch Notice from JSONBin
@@ -1488,6 +2021,7 @@
             const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
             const dateStr = now.toLocaleDateString('bn-BD', options);
             document.getElementById('currentDate').innerText = dateStr;
+            document.getElementById('portalCurrentDate').innerText = dateStr;
 
             let hours = now.getHours();
             let minutes = now.getMinutes();
@@ -1501,6 +2035,7 @@
 
             const timeStr = `${hours}:${minutes}:${seconds} ${ampm}`;
             document.getElementById('currentTime').innerText = timeStr;
+            document.getElementById('portalCurrentTime').innerText = timeStr;
         }
         setInterval(updateClock, 1000);
         updateClock();
@@ -1629,6 +2164,103 @@
                 closeTeacherListModal();
             }
         });
+
+        // =========================================
+        // Online Result Portal Navigation & Logic
+        // =========================================
+        function openResultPortal(event) {
+            if (event) event.preventDefault();
+            document.getElementById('homePageView').style.display = 'none';
+            document.getElementById('portalPageView').style.display = 'flex';
+            document.title = 'অনলাইন রেজাল্ট পোর্টাল - ইবনে তাইমিয়া স্কুল এন্ড কলেজ';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+                const rollInput = document.getElementById('rollInput');
+                if (rollInput) rollInput.focus();
+            }, 100);
+        }
+
+        function closeResultPortal(event) {
+            if (event) event.preventDefault();
+            document.getElementById('portalPageView').style.display = 'none';
+            document.getElementById('homePageView').style.display = 'flex';
+            document.title = 'ইবনে তাইমিয়া স্কুল এন্ড কলেজ - অটোমেটিক রেজাল্ট সিস্টেম';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function loadPortalResultsJSON() {
+            fetch('result.json')
+                .then(response => {
+                    if (!response.ok) throw new Error("result.json পাওয়া যায়নি");
+                    return response.json();
+                })
+                .then(data => {
+                    resultsData = Array.isArray(data) ? data : (data.students || data.results || []);
+                })
+                .catch(error => {
+                    console.error("JSON লোড করতে সমস্যা হয়েছে:", error);
+                });
+        }
+
+        function normalizeRoll(inputStr) {
+            const banglaDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+            return inputStr.trim().replace(/[০-৯]/g, d => banglaDigits[d]);
+        }
+
+        function searchResult(event) {
+            event.preventDefault();
+            const rawRoll = document.getElementById('rollInput').value;
+            const searchRoll = normalizeRoll(rawRoll);
+
+            const errorBox = document.getElementById('errorBox');
+            const resultCard = document.getElementById('resultViewCard');
+
+            errorBox.style.display = 'none';
+            resultCard.style.display = 'none';
+
+            const student = resultsData.find(item => String(normalizeRoll(String(item.roll))) === String(searchRoll));
+
+            if (!student) {
+                errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> দুঃখিত! ৮ম শ্রেণী (শাখা B)-তে রোল নম্বর <b>${rawRoll}</b> এর কোনো ফলাফল পাওয়া যায়নি।`;
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            document.getElementById('examTitleDisplay').innerText = student.exam || "বার্ষিক পরীক্ষা - ২০২৬";
+            document.getElementById('resName').innerText = student.name || "-";
+            document.getElementById('resRoll').innerText = student.roll;
+            document.getElementById('resTotal').innerText = student.total ?? "-";
+            document.getElementById('resGPA').innerText = student.gpa ?? "-";
+
+            const gradeEl = document.getElementById('resGrade');
+            const isFail = String(student.grade).toUpperCase() === 'F' || parseFloat(student.gpa) === 0;
+            gradeEl.innerText = `${student.grade || '-'} (${isFail ? 'অকৃতকার্য' : 'কৃতকার্য'})`;
+            gradeEl.className = 'value ' + (isFail ? 'status-fail' : 'status-pass');
+
+            document.getElementById('resMerit').innerText = student.merit || "-";
+
+            const tbody = document.getElementById('subjectTableBody');
+            tbody.innerHTML = '';
+
+            if (Array.isArray(student.subjects)) {
+                student.subjects.forEach(sub => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="subj-name">${sub.name || '-'}</td>
+                        <td>${sub.cq ?? '-'}</td>
+                        <td>${sub.mcq ?? '-'}</td>
+                        <td>${sub.tutorial ?? '-'}</td>
+                        <td><b>${sub.total ?? '-'}</b></td>
+                        <td>${sub.grade ?? '-'}</td>
+                        <td>${sub.gp ?? '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            resultCard.style.display = 'block';
+            resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
     </script>
 
