@@ -143,6 +143,8 @@
     .btn-import-json:hover { background: #0f766e; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3); }
     .btn-cloud-push { background: #7c3aed; }
     .btn-cloud-push:hover { background: #6d28d9; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3); }
+    .btn-cloud-names { background: #ea580c; }
+    .btn-cloud-names:hover { background: #c2410c; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(234, 88, 12, 0.3); }
     .btn-cloud-pull { background: #16a34a; }
     .btn-cloud-pull:hover { background: #15803d; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3); }
     .btn-clear-cache { background: #ef4444; margin-left: auto; }
@@ -365,6 +367,7 @@
       <input type="file" id="jsonImportInput" accept=".json" style="display:none;" onchange="importDataFromJson(event)">
       <button class="btn-custom btn-import-json" onclick="document.getElementById('jsonImportInput').click()"><i class="fa-solid fa-file-import"></i> JSON ফাইল লোড (Import)</button>
       <button class="btn-custom btn-cloud-push" onclick="pushToGoogleSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> ছাত্র তালিকা ক্লাউডে পাঠান</button>
+      <button class="btn-custom btn-cloud-names" id="syncNamesBtn" onclick="pullNamesFromGoogleSheet()"><i class="fa-solid fa-users"></i> ক্লাউড থেকে নাম আনুন (Sync Names)</button>
       <button class="btn-custom btn-cloud-pull" onclick="pullFromGoogleSheet()"><i class="fa-solid fa-cloud-arrow-down"></i> অনলাইন থেকে সব নম্বর আনুন (Sync)</button>
       <button class="btn-custom btn-clear-cache" onclick="clearCacheData()"><i class="fa-solid fa-trash-can"></i> ক্যাশ মেমোরি রিসেট</button>
     </div>
@@ -519,6 +522,127 @@
     } catch (err) {
       console.error(err);
       alert("ক্লাউডে পাঠাতে সমস্যা হয়েছে! ইন্টারনেট যাচাই করুন।");
+    }
+  }
+
+  async function pullNamesFromGoogleSheet() {
+    const cls = document.getElementById('globalClass').value.trim();
+    const sec = document.getElementById('globalSection').value.trim();
+    const shift = document.getElementById('globalShift').value.trim();
+    const year = document.getElementById('globalExamYear').value.trim();
+
+    if (!confirm(`${cls} (${sec} - ${shift}, ${year}) এর ক্লাউডে সংরক্ষিত শিক্ষার্থীদের নাম (রোল, নাম, পিতা ও মাতার নাম) সিঙ্ক করবেন?\n\n(টেবিলে আগে থেকে বসানো কোনো নম্বর পরিবর্তন হবে না)`)) return;
+
+    const btn = document.getElementById('syncNamesBtn');
+    const originalHTML = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> নাম সিঙ্ক হচ্ছে...';
+    }
+
+    try {
+      const url = `${SCRIPT_URL}?action=getAll&cls=${encodeURIComponent(cls)}&sec=${encodeURIComponent(sec)}&shift=${encodeURIComponent(shift)}&year=${encodeURIComponent(year)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.status !== 'ok') {
+        alert(data.message || "ক্লাউড থেকে নাম আনা যায়নি।");
+        return;
+      }
+
+      if (!Array.isArray(data.students) || data.students.length === 0) {
+        alert("ক্লাউডে এই শ্রেণি/শাখার কোনো শিক্ষার্থীর নাম পাওয়া যায়নি।");
+        return;
+      }
+
+      // বর্তমানে টেবিলে থাকা লোকাল ডেটা (রোল অনুযায়ী) সংরক্ষণ করা হচ্ছে যাতে নম্বর অক্ষত থাকে
+      const existingRows = Array.from(document.querySelectorAll('#mainTableBody tr'));
+      const localDataByRoll = new Map();
+      const extraLocalStudents = [];
+
+      existingRows.forEach(row => {
+        const rollVal = (row.querySelector('.in-roll').value || '').trim();
+        const nameVal = (row.querySelector('.in-name').value || '').trim();
+        const fnameVal = (row.querySelector('.in-fname').value || '').trim();
+        const mnameVal = (row.querySelector('.in-mname').value || '').trim();
+        const attVal = (row.querySelector('.in-att').value || '').trim();
+
+        let studentObj = {
+          roll: rollVal,
+          name: nameVal,
+          fname: fnameVal,
+          mname: mnameVal,
+          att: attVal
+        };
+
+        let hasAnyMark = false;
+        subjectsConfig.forEach(sub => {
+          const et = row.querySelector(`.${sub.id}-et`).value;
+          const tu = row.querySelector(`.${sub.id}-tu`).value;
+          studentObj[`${sub.id}et`] = et;
+          studentObj[`${sub.id}tu`] = tu;
+          if (et !== '' || tu !== '') hasAnyMark = true;
+        });
+
+        const hasMeaningfulData = nameVal !== '' || fnameVal !== '' || mnameVal !== '' || attVal !== '' || hasAnyMark;
+        if (hasMeaningfulData && rollVal !== '') {
+          localDataByRoll.set(rollVal, studentObj);
+        }
+      });
+
+      const matchedRolls = new Set();
+      const mergedStudents = [];
+
+      data.students.forEach(cloudSt => {
+        const rollKey = (cloudSt.roll !== undefined && cloudSt.roll !== null) ? String(cloudSt.roll).trim() : '';
+        const localSt = localDataByRoll.get(rollKey);
+
+        const cloudName = cloudSt.name ?? '';
+        const cloudFname = cloudSt.fname ?? '';
+        const cloudMname = cloudSt.mname ?? '';
+
+        if (localSt) {
+          matchedRolls.add(rollKey);
+          mergedStudents.push({
+            ...localSt,
+            roll: rollKey !== '' ? rollKey : localSt.roll,
+            name: cloudName !== '' ? cloudName : localSt.name,
+            fname: cloudFname !== '' ? cloudFname : localSt.fname,
+            mname: cloudMname !== '' ? cloudMname : localSt.mname
+          });
+        } else {
+          mergedStudents.push({
+            roll: rollKey,
+            name: cloudName,
+            fname: cloudFname,
+            mname: cloudMname,
+            att: ''
+          });
+        }
+      });
+
+      localDataByRoll.forEach((st, rollKey) => {
+        if (!matchedRolls.has(rollKey)) {
+          extraLocalStudents.push(st);
+        }
+      });
+
+      const finalStudents = [...mergedStudents, ...extraLocalStudents];
+
+      const tbody = document.getElementById('mainTableBody');
+      tbody.innerHTML = '';
+      finalStudents.forEach(st => addStudentRow(st));
+      saveDataToCache();
+
+      alert(`✅ সফলভাবে ক্লাউড থেকে ${data.students.length} জন শিক্ষার্থীর নাম সিঙ্ক হয়েছে! (লোকাল নম্বরসমূহ অক্ষত আছে)`);
+    } catch (err) {
+      console.error(err);
+      alert("ক্লাউড থেকে নাম আনতে সমস্যা হয়েছে! ইন্টারনেট যাচাই করুন।");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+      }
     }
   }
 
