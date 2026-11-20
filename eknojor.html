@@ -71,23 +71,42 @@
     .section-title { font-size: 17px; font-weight: 700; color: #3730a3; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
 
     .multi-table-container { width: 100%; overflow-x: auto; max-height: 520px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); position: relative; }
-    .multi-input-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 2500px; }
-    .multi-input-table th, .multi-input-table td { border: 1px solid #cbd5e1; padding: 10px 8px; text-align: center; vertical-align: middle; }
+    .multi-input-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; min-width: 2500px; }
+    .multi-input-table th, .multi-input-table td { border-right: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1; padding: 10px 8px; text-align: center; vertical-align: middle; }
     .border-right-thick { border-right: 3px solid #6366f1 !important; }
-    .multi-input-table th { background: #1e1b4b; color: white; position: sticky; top: 0; z-index: 2; font-size: 13px; letter-spacing: 0.3px; }
+
+    /* Sticky Header Rows (Subject Names + ET/Tu/Tot/Gr) */
+    .multi-input-table th {
+      background: #1e1b4b;
+      color: white;
+      position: sticky;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+    }
+    .multi-input-table thead tr:first-child th {
+      top: 0;
+      height: 42px;
+      z-index: 4;
+    }
+    .multi-input-table thead tr:nth-child(2) th {
+      top: 42px;
+      z-index: 3;
+      background: #312e81;
+    }
 
     /* Sticky Roll Column */
     .multi-input-table thead tr:first-child th:first-child {
       position: sticky;
       left: 0;
-      z-index: 5;
+      top: 0;
+      z-index: 6;
       background: #1e1b4b;
       box-shadow: 3px 0 6px rgba(0, 0, 0, 0.25);
     }
     .multi-input-table tbody td:first-child {
       position: sticky;
       left: 0;
-      z-index: 3;
+      z-index: 2;
       background: #eef2ff;
       box-shadow: 3px 0 6px rgba(0, 0, 0, 0.1);
     }
@@ -122,6 +141,10 @@
     .btn-export-json:hover { background: #0e7490; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(8, 145, 178, 0.3); }
     .btn-import-json { background: #0d9488; }
     .btn-import-json:hover { background: #0f766e; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3); }
+    .btn-cloud-push { background: #7c3aed; }
+    .btn-cloud-push:hover { background: #6d28d9; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3); }
+    .btn-cloud-pull { background: #16a34a; }
+    .btn-cloud-pull:hover { background: #15803d; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3); }
     .btn-clear-cache { background: #ef4444; margin-left: auto; }
     .btn-clear-cache:hover { background: #dc2626; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3); }
 
@@ -341,6 +364,8 @@
       <button class="btn-custom btn-export-json" onclick="exportDataToJson()"><i class="fa-solid fa-file-export"></i> JSON ব্যাকআপ সেভ (Export)</button>
       <input type="file" id="jsonImportInput" accept=".json" style="display:none;" onchange="importDataFromJson(event)">
       <button class="btn-custom btn-import-json" onclick="document.getElementById('jsonImportInput').click()"><i class="fa-solid fa-file-import"></i> JSON ফাইল লোড (Import)</button>
+      <button class="btn-custom btn-cloud-push" onclick="pushToGoogleSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> ছাত্র তালিকা ক্লাউডে পাঠান</button>
+      <button class="btn-custom btn-cloud-pull" onclick="pullFromGoogleSheet()"><i class="fa-solid fa-cloud-arrow-down"></i> অনলাইন থেকে সব নম্বর আনুন (Sync)</button>
       <button class="btn-custom btn-clear-cache" onclick="clearCacheData()"><i class="fa-solid fa-trash-can"></i> ক্যাশ মেমোরি রিসেট</button>
     </div>
   </div>
@@ -368,6 +393,8 @@
 <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" crossorigin="anonymous" style="width:1px; height:1px; opacity:0; position:fixed; pointer-events:none;" alt="preload-logo">
 
 <script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9KSjyhSkoLNVwKWfp6aT2J06QPX08Fp-OQJqFC7Utm9jgmdC3IlDLgJN6FDi7b0v6hw/exec";
+
   window.onload = function() {
     loadDataFromCache();
   };
@@ -457,7 +484,75 @@
   }
 
   /* =======================================================
-     JSON FILE EXPORT & IMPORT FUNCTIONS (স্থায়ী ডেটা সংরক্ষণ)
+     GOOGLE SHEETS CLOUD SYNC FUNCTIONS
+     ======================================================= */
+  async function pushToGoogleSheet() {
+    saveDataToCache();
+    const pin = "9999";
+
+    const globalData = JSON.parse(localStorage.getItem('itsc_global_info_v5') || '{}');
+    const studentsData = JSON.parse(localStorage.getItem('itsc_students_data_v5') || '[]');
+
+    if (studentsData.length === 0) {
+      alert("টেবিলে কোনো শিক্ষার্থী নেই!");
+      return;
+    }
+
+    if (!confirm(`${globalData.cls} (${globalData.sec} - ${globalData.shift}, ${globalData.year}) এর ${studentsData.length} জন শিক্ষার্থীর তথ্য ক্লাউডে পাঠাতে চান?`)) return;
+
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'syncAll',
+          pin: pin,
+          cls: globalData.cls,
+          sec: globalData.sec,
+          shift: globalData.shift,
+          year: globalData.year,
+          students: studentsData
+        })
+      });
+      const data = await res.json();
+      alert(data.message || "সম্পন্ন হয়েছে!");
+    } catch (err) {
+      console.error(err);
+      alert("ক্লাউডে পাঠাতে সমস্যা হয়েছে! ইন্টারনেট যাচাই করুন।");
+    }
+  }
+
+  async function pullFromGoogleSheet() {
+    const cls = document.getElementById('globalClass').value.trim();
+    const sec = document.getElementById('globalSection').value.trim();
+    const shift = document.getElementById('globalShift').value.trim();
+    const year = document.getElementById('globalExamYear').value.trim();
+
+    if (!confirm(`${cls} (${sec} - ${shift}, ${year}) এর সব শিক্ষকের ইনপুট করা নম্বর অনলাইন থেকে লোড করবেন?`)) return;
+
+    try {
+      const url = `${SCRIPT_URL}?action=getAll&cls=${encodeURIComponent(cls)}&sec=${encodeURIComponent(sec)}&shift=${encodeURIComponent(shift)}&year=${encodeURIComponent(year)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.status !== 'ok') {
+        alert(data.message || "ডেটা আনা যায়নি।");
+        return;
+      }
+
+      const tbody = document.getElementById('mainTableBody');
+      tbody.innerHTML = '';
+      data.students.forEach(st => addStudentRow(st));
+      saveDataToCache();
+      alert(`✅ সফলভাবে ${data.students.length} জন শিক্ষার্থীর সর্বশেষ নম্বর সিঙ্ক হয়েছে!`);
+    } catch (err) {
+      console.error(err);
+      alert("অনলাইন থেকে ডেটা আনতে সমস্যা হয়েছে!");
+    }
+  }
+
+  /* =======================================================
+     JSON FILE EXPORT & IMPORT FUNCTIONS
      ======================================================= */
   function exportDataToJson() {
     saveDataToCache();
@@ -603,11 +698,11 @@
     let etInput = parseFloat(etEl.value) || 0;
     let tuInput = parseFloat(tuEl.value) || 0;
 
-    let et70 = Math.round(etInput * 0.70);
+    let et70 = Math.round(Number((etInput * 0.70).toFixed(4)));
 
     let tuVal = tuInput;
     if (cls === 'ict' || cls === 'agri' || cls === 'b2') {
-      tuVal = Math.round(tuInput * 0.50);
+      tuVal = Math.round(Number((tuInput * 0.50).toFixed(4)));
     }
 
     let tot = et70 + tuVal;
@@ -1020,7 +1115,6 @@
       };
     });
 
-    // Sort: Passed first (by GPA desc, GrandTotal desc, Roll asc), then Failed (by failedCount asc [F1, F2...], GrandTotal desc, Roll asc)
     studentsList.sort((a, b) => {
       const aPass = a.failedCount === 0 ? 1 : 0;
       const bPass = b.failedCount === 0 ? 1 : 0;
@@ -1050,24 +1144,20 @@
     });
 
     const totalCount = studentsList.length;
-    // ১ম পেইজ সম্পূর্ণ পরিপূর্ণ করে অবশিষ্ট অংশ ২য় পেইজে নেওয়া হবে
     const useTwoPages = totalCount > 50;
     const maxPages = useTwoPages ? 2 : 1;
-
-    // ১০৮ জনের বেশি হলে প্রতি পেইজে ২টি করে কলাম হবে
     const useDualColumnPerPage = totalCount > 108;
 
     let pagesData = [];
     if (!useTwoPages) {
       pagesData = [studentsList];
     } else if (useDualColumnPerPage) {
-      const firstPageCap = 112; // ১ম পেইজে ২ কলামে ৫৬+৫৬ = ১১২ জন পূর্ণ থাকবে
+      const firstPageCap = 112;
       pagesData = [
         studentsList.slice(0, firstPageCap),
         studentsList.slice(firstPageCap)
       ];
     } else {
-      // ১ম পেইজে ৫৬ জন (অথবা ৫০-৫৬ জনের ক্ষেত্রে ৫০ জন) দিয়ে ১ম পেইজ পরিপূর্ণ করে বাকিগুলো ২য় পেইজে যাবে
       const firstPageCap = totalCount > 56 ? 56 : 50;
       pagesData = [
         studentsList.slice(0, firstPageCap),
@@ -1077,7 +1167,6 @@
 
     const maxRowsInAnyPage = Math.max(...pagesData.map(p => useDualColumnPerPage ? Math.ceil(p.length / 2) : p.length));
 
-    // ১ম পেইজ যেন নিচ পর্যন্ত পরিপূর্ণ থাকে তার জন্য মাপ নির্ধারণ
     let fontSizePx = 15;
     let cellPadV = 6;
     if (maxRowsInAnyPage >= 54) { fontSizePx = 13; cellPadV = 3.1; }
@@ -1121,7 +1210,6 @@
 
     pagesData.forEach((pageStudents, pIdx) => {
       const isLastPage = (pIdx === pagesData.length - 1);
-      // ২ পেইজের ক্ষেত্রে ১ম পেইজটি নিচ পর্যন্ত ১০০% পরিপূর্ণ থাকবে এবং ২য় পেইজে যতটুকু ডাটা ততটুকুই থাকবে (বাকি অংশ খালি থাকবে)
       const shouldFillFullPage = (useTwoPages && pIdx === 0);
       let bodyContent = '';
 
@@ -1400,7 +1488,7 @@
   }
 
   /* =====================================================================
-     FULL-PAGE FITTED A4 RESULT SUMMARY SHEET (পুরো ১ পেইজ জুড়ে ফিট এবং ডান পাশ কাটা মুক্ত)
+     FULL-PAGE FITTED A4 RESULT SUMMARY SHEET
      ===================================================================== */
   function openResultSummarySheet() {
     const rows = Array.from(document.querySelectorAll('#mainTableBody tr'));
