@@ -366,7 +366,7 @@
       <button class="btn-custom btn-export-json" onclick="exportDataToJson()"><i class="fa-solid fa-file-export"></i> JSON ব্যাকআপ সেভ (Export)</button>
       <input type="file" id="jsonImportInput" accept=".json" style="display:none;" onchange="importDataFromJson(event)">
       <button class="btn-custom btn-import-json" onclick="document.getElementById('jsonImportInput').click()"><i class="fa-solid fa-file-import"></i> JSON ফাইল লোড (Import)</button>
-      <button class="btn-custom btn-cloud-push" onclick="pushToGoogleSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> ছাত্র তালিকা ক্লাউডে পাঠান</button>
+      <button class="btn-custom btn-cloud-push" id="cloudPushBtn" onclick="pushToGoogleSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> ছাত্র তালিকা ক্লাউডে পাঠান</button>
       <button class="btn-custom btn-cloud-names" id="syncNamesBtn" onclick="pullNamesFromGoogleSheet()"><i class="fa-solid fa-users"></i> ক্লাউড থেকে নাম আনুন (Sync Names)</button>
       <button class="btn-custom btn-cloud-pull" onclick="pullFromGoogleSheet()"><i class="fa-solid fa-cloud-arrow-down"></i> অনলাইন থেকে সব নম্বর আনুন (Sync)</button>
       <button class="btn-custom btn-clear-cache" onclick="clearCacheData()"><i class="fa-solid fa-trash-can"></i> ক্যাশ মেমোরি রিসেট</button>
@@ -397,6 +397,19 @@
 
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9KSjyhSkoLNVwKWfp6aT2J06QPX08Fp-OQJqFC7Utm9jgmdC3IlDLgJN6FDi7b0v6hw/exec";
+
+  /* =======================================================
+     শাখাভিত্তিক পিন কোড ও অ্যাডমিন পিন (এখান থেকে প্রয়োজনমতো পিন পরিবর্তন করতে পারবেন)
+     ======================================================= */
+  const MASTER_PIN = "9999"; // অ্যাডমিন / মাস্টার পিন (যেকোনো শাখার জন্য কাজ করবে)
+  const SECTION_PINS = {
+    "A": "1111",
+    "B": "2222",
+    "C": "3333",
+    "D": "4444",
+    "E": "5555",
+    "F": "6666"
+  };
 
   window.onload = function() {
     loadDataFromCache();
@@ -487,41 +500,121 @@
   }
 
   /* =======================================================
-     GOOGLE SHEETS CLOUD SYNC FUNCTIONS
+     GOOGLE SHEETS CLOUD SYNC FUNCTIONS (WITH SECTION PIN & OVERWRITE WARNING)
      ======================================================= */
   async function pushToGoogleSheet() {
     saveDataToCache();
-    const pin = "9999";
 
     const globalData = JSON.parse(localStorage.getItem('itsc_global_info_v5') || '{}');
     const studentsData = JSON.parse(localStorage.getItem('itsc_students_data_v5') || '[]');
+
+    const cls = (globalData.cls || '').trim();
+    const sec = (globalData.sec || '').trim();
+    const shift = (globalData.shift || '').trim();
+    const year = (globalData.year || '').trim();
+
+    if (!cls || !sec || !shift || !year) {
+      alert("⚠️ অনুগ্রহ করে উপরের শ্রেণি (Class), শাখা (Section), শিফট (Shift) এবং পরীক্ষার সাল সঠিকভাবে পূরণ করুন!");
+      return;
+    }
 
     if (studentsData.length === 0) {
       alert("টেবিলে কোনো শিক্ষার্থী নেই!");
       return;
     }
 
-    if (!confirm(`${globalData.cls} (${globalData.sec} - ${globalData.shift}, ${globalData.year}) এর ${studentsData.length} জন শিক্ষার্থীর তথ্য ক্লাউডে পাঠাতে চান?`)) return;
+    // ১. শাখাভিত্তিক পিন যাচাই
+    const secKey = sec.toUpperCase();
+    const expectedSectionPin = SECTION_PINS[secKey];
+    const enteredPin = prompt(
+      `🔒 নিরাপত্তা যাচাই (${cls} | শাখা: ${sec} | শিফট: ${shift} | ${year})\n\n` +
+      `ক্লাউডে ডেটা পাঠাতে "${sec}" শাখার পিন নম্বর (অথবা অ্যাডমিন পিন) দিন:`
+    );
+
+    if (enteredPin === null) return; // Cancel চাপলে বন্ধ হবে
+
+    const cleanPin = enteredPin.trim();
+    const isPinValid = (cleanPin === MASTER_PIN) || (expectedSectionPin && cleanPin === expectedSectionPin);
+
+    if (!isPinValid) {
+      alert(`❌ ভুল পিন নম্বর!\n\nএটি "${sec}" শাখার সঠিক পিন নয়। দয়া করে উপরের শাখা (Section) সঠিকভাবে সিলেক্ট করা আছে কি না যাচাই করুন অথবা অ্যাডমিনের সাথে যোগাযোগ করুন।`);
+      return;
+    }
+
+    const btn = document.getElementById('cloudPushBtn');
+    const originalHTML = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ক্লাউড যাচাই হচ্ছে...';
+    }
 
     try {
+      // ২. ক্লাউডে আগে থেকেই এই শাখার ডেটা আছে কি না তা যাচাই (Overwrite Pre-Check)
+      let existingStudents = [];
+      try {
+        const checkUrl = `${SCRIPT_URL}?action=getAll&cls=${encodeURIComponent(cls)}&sec=${encodeURIComponent(sec)}&shift=${encodeURIComponent(shift)}&year=${encodeURIComponent(year)}`;
+        const checkRes = await fetch(checkUrl);
+        const checkData = await checkRes.json();
+        if (checkData && checkData.status === 'ok' && Array.isArray(checkData.students)) {
+          existingStudents = checkData.students;
+        }
+      } catch (checkErr) {
+        console.warn("Pre-check skipped due to fetch warning:", checkErr);
+      }
+
+      if (existingStudents.length > 0) {
+        const sampleList = existingStudents
+          .slice(0, 3)
+          .map(st => `  • রোল ${st.roll || '-'}: ${st.name || '(নাম নেই)'}`)
+          .join('\n');
+
+        const confirmKeyword = `YES ${secKey}`;
+        const userConfirmation = prompt(
+          `⚠️ সাবধান! ওভাররাইট সতর্কবার্তা (OVERWRITE WARNING)!\n\n` +
+          `${cls} (শাখা: ${sec} | শিফট: ${shift} | ${year}) এ ক্লাউডে ইতিমধ্যেই ${existingStudents.length} জন শিক্ষার্থীর তথ্য সংরক্ষিত আছে!\n\n` +
+          `ক্লাউডে থাকা প্রথম কয়েকজন শিক্ষার্থী:\n${sampleList}\n\n` +
+          `নতুন করে ${studentsData.length} জনের তালিকা পাঠালে ক্লাউডের আগের নাম/তথ্য পরিবর্তন হয়ে যাবে।\n` +
+          `আপনি যদি ১০০% নিশ্চিত হন যে এটি সঠিক শাখা, তবে নিচের ঘরে হুবহু লিখুন:\n${confirmKeyword}`
+        );
+
+        if (userConfirmation === null || userConfirmation.trim().toUpperCase() !== confirmKeyword) {
+          alert("⛔ ডেটা পাঠানো বাতিল করা হয়েছে! ক্লাউডের আগের তথ্য সম্পূর্ণ নিরাপদ আছে।");
+          return;
+        }
+      } else {
+        if (!confirm(`✨ ক্লাউডে ${cls} (শাখা: ${sec} - ${shift}, ${year}) এর আগে কোনো তালিকা নেই।\n\nনতুন করে ${studentsData.length} জন শিক্ষার্থীর তথ্য ক্লাউডে পাঠাতে চান?`)) {
+          return;
+        }
+      }
+
+      // ৩. নিশ্চিত হওয়ার পর ক্লাউডে ডেটা পাঠানো
+      if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ক্লাউডে পাঠানো হচ্ছে...';
+      }
+
       const res = await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
           action: 'syncAll',
-          pin: pin,
-          cls: globalData.cls,
-          sec: globalData.sec,
-          shift: globalData.shift,
-          year: globalData.year,
+          pin: MASTER_PIN,
+          cls: cls,
+          sec: sec,
+          shift: shift,
+          year: year,
           students: studentsData
         })
       });
       const data = await res.json();
-      alert(data.message || "সম্পন্ন হয়েছে!");
+      alert(data.message || "✅ সম্পন্ন হয়েছে!");
     } catch (err) {
       console.error(err);
       alert("ক্লাউডে পাঠাতে সমস্যা হয়েছে! ইন্টারনেট যাচাই করুন।");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+      }
     }
   }
 
