@@ -56,12 +56,15 @@
     }
     .global-info-bar > div { display: flex; flex-direction: column; gap: 5px; }
     .global-info-bar label { font-weight: 700; font-size: 13px; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; }
-    .global-info-bar input {
+    .global-info-bar input,
+    .global-info-bar select {
       padding: 8px 12px; border: 2px solid #cbd5e1; border-radius: 8px;
       font-size: 15px; font-weight: 700; width: 150px; color: #0f172a;
       background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .global-info-bar input:focus { border-color: #4f46e5; outline: none; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); }
+    .global-info-bar select { cursor: pointer; }
+    .global-info-bar input:focus,
+    .global-info-bar select:focus { border-color: #4f46e5; outline: none; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); }
 
     .running-text-wrapper { width: 100%; overflow: hidden; margin-top: 8px; background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 6px 0; }
     .running-text { display: inline-block; white-space: nowrap; padding-left: 100%; animation: marqueeText 12s linear infinite; color: #dc2626; font-size: 14px; font-weight: 700; }
@@ -279,11 +282,19 @@
   <div class="global-info-bar">
     <div>
       <label for="globalClass">শ্রেণি (Class)</label>
-      <input type="text" id="globalClass" value="Eight" oninput="saveDataToCache()">
+      <select id="globalClass" onchange="saveDataToCache()">
+        <option value="Six">Six</option>
+        <option value="Seven">Seven</option>
+        <option value="Eight" selected>Eight</option>
+      </select>
     </div>
     <div>
       <label for="globalSection">শাখা (Section)</label>
-      <input type="text" id="globalSection" value="A" oninput="saveDataToCache()">
+      <select id="globalSection" onchange="saveDataToCache()">
+        <option value="A" selected>A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      </select>
     </div>
     <div>
       <label for="globalShift">শিফট (Shift)</label>
@@ -476,12 +487,19 @@
     localStorage.setItem('itsc_students_data_v5', JSON.stringify(studentsData));
   }
 
+  function setSelectValueSafely(selectId, value, fallback) {
+    const el = document.getElementById(selectId);
+    if (!el) return;
+    const hasOption = Array.from(el.options).some(opt => opt.value === value);
+    el.value = hasOption ? value : fallback;
+  }
+
   function loadDataFromCache() {
     const savedGlobal = localStorage.getItem('itsc_global_info_v5');
     if (savedGlobal) {
       const gData = JSON.parse(savedGlobal);
-      document.getElementById('globalClass').value = gData.cls || '';
-      document.getElementById('globalSection').value = gData.sec || '';
+      setSelectValueSafely('globalClass', gData.cls, 'Eight');
+      setSelectValueSafely('globalSection', gData.sec, 'A');
       document.getElementById('globalShift').value = gData.shift || '';
       document.getElementById('globalExamYear').value = gData.year || '2026';
       document.getElementById('globalWorkingDays').value = gData.workingDays || '';
@@ -814,8 +832,8 @@
           localStorage.setItem('itsc_global_info_v5', JSON.stringify(backup.global));
           localStorage.setItem('itsc_students_data_v5', JSON.stringify(backup.students));
 
-          document.getElementById('globalClass').value = backup.global.cls || '';
-          document.getElementById('globalSection').value = backup.global.sec || '';
+          setSelectValueSafely('globalClass', backup.global.cls, 'Eight');
+          setSelectValueSafely('globalSection', backup.global.sec, 'A');
           document.getElementById('globalShift').value = backup.global.shift || '';
           document.getElementById('globalExamYear').value = backup.global.year || '2026';
           document.getElementById('globalWorkingDays').value = backup.global.workingDays || '';
