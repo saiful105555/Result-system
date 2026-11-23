@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সীট স্লিপ — ইবনে তাইমিয়া স্কুল এন্ড কলেজ</title>
+
+  <!-- Kalpurush বাংলা ফন্ট -->
+  <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Kalpurush', 'Noto Serif Bengali', sans-serif;
+      background: #dfe6ee;
+      color: #0f172a;
+    }
+
+    /* ================= মিনিমাল টপ বার (প্রিন্টে দেখা যাবে না) ================= */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #0b2545 0%, #133c68 100%);
+      color: #ffffff;
+      padding: 12px 18px;
+      border-bottom: 3px solid #c99700;
+      box-shadow: 0 4px 18px rgba(11, 37, 69, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      background: #ffffff;
+      border-radius: 50%;
+      padding: 2px;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-status {
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .controls select {
+      padding: 7px 11px;
+      border-radius: 7px;
+      border: 1px solid #355c85;
+      background: #ffffff;
+      color: #0f172a;
+      font-family: 'Kalpurush', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-print {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 7px;
+      background: #e0a800;
+      color: #0b2545;
+      font-family: 'Kalpurush', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-print:hover {
+      background: #f5bc16;
+    }
+
+    /* ================= এরর/নির্দেশনা বক্স ================= */
+    .notice-box {
+      max-width: 560px;
+      margin: 24px 16px;
+      background: #ffffff;
+      border-left: 5px solid #dc2626;
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .notice-box h3 {
+      color: #b91c1c;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    /* ================= A4 প্রিভিউ ও প্রিন্ট কন্টেইনার ================= */
+    #previewContainer {
+      width: 100%;
+      overflow-x: auto;
+      padding: 20px 10px 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: safe center;
+      gap: 22px;
+    }
+
+    .a4-page {
+      width: 210mm;
+      min-width: 210mm;
+      height: 296mm;
+      padding: 5.5mm;
+      background: #ffffff;
+      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.16);
+      display: grid;
+      gap: 3mm;
+      align-content: stretch;
+      overflow: hidden;
+    }
+
+    /* ================= প্রফেশনাল সীট স্লিপ কার্ড ================= */
+    .slip-card {
+      position: relative;
+      border: 2px solid #0b2545;
+      outline: 0.8px dashed #94a3b8;
+      outline-offset: 1.5px;
+      border-radius: 5px;
+      background: #ffffff;
+      padding: 2px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .slip-inner {
+      position: relative;
+      border: 1px solid #c99700;
+      border-radius: 3px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    /* ব্যাকগ্রাউন্ড হালকা লোগো ওয়াটারমার্ক */
+    .watermark {
+      position: absolute;
+      top: 58%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 78px;
+      height: 78px;
+      object-fit: contain;
+      opacity: 0.065;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* উপরের চিকন রয়্যাল অ্যাকসেন্ট বার */
+    .top-accent {
+      height: 3px;
+      background: linear-gradient(90deg, #0b2545 0%, #c99700 50%, #0b2545 100%);
+      flex-shrink: 0;
+    }
+
+    /* হেডার: লোগো + স্কুলের নাম + পরীক্ষার নাম */
+    .slip-header {
+      position: relative;
+      z-index: 1;
+      background: #f4f7fb;
+      border-bottom: 1.4px solid #0b2545;
+      padding: 4px 7px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .school-logo {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+    }
+
+    .header-text {
+      text-align: center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .school-name {
+      font-size: 19.5px;
+      font-weight: 700;
+      color: #0b2545;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .exam-name {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.15;
+      margin-top: 2px;
+    }
+
+    /* সেন্টার্ড 'সীট স্লিপ' রিবন ব্যাজ */
+    .badge-divider {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      margin-top: -11px;
+      margin-bottom: 1px;
+    }
+
+    .slip-badge {
+      background: #0b2545;
+      color: #ffffff;
+      border: 1px solid #c99700;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 0 18px;
+      border-radius: 999px;
+      letter-spacing: 0.4px;
+      line-height: 1.35;
+      box-shadow: 0 1px 3px rgba(11, 37, 69, 0.18);
+    }
+
+    /* মূল তথ্য বডি */
+    .slip-body {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      padding: 3px 8px 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      background: rgba(244, 247, 251, 0.78);
+      border-left: 3px solid #0b2545;
+      border-bottom: 1px dotted #94a3b8;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 18.5px;
+      line-height: 1.2;
+    }
+
+    .name-row.name-long { font-size: 16.5px; }
+    .name-row.name-xlong { font-size: 15px; }
+
+    .name-val {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    .bottom-row {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .meta-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+      font-size: 17.5px;
+      line-height: 1.2;
+      padding-left: 2px;
+    }
+
+    .meta-line {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      white-space: nowrap;
+    }
+
+    .lbl {
+      font-weight: 600;
+      color: #334155;
+      flex-shrink: 0;
+    }
+
+    .val {
+      font-weight: 700;
+      color: #000000;
+    }
+
+    /* প্রফেশনাল বড় রোল বক্স */
+    .roll-box {
+      min-width: 72px;
+      border: 1.8px solid #0b2545;
+      border-radius: 5px;
+      overflow: hidden;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      box-shadow: 0 1px 2px rgba(11, 37, 69, 0.1);
+    }
+
+    .roll-lbl {
+      background: #0b2545;
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-align: center;
+      padding: 1px 6px;
+      line-height: 1.15;
+    }
+
+    .roll-val {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #0b2545;
+      padding: 0 6px;
+      line-height: 1.05;
+    }
+
+    /* ================= লেআউট অনুযায়ী একদম বড় ফন্ট সাইজ ================= */
+
+    /* অতি বড় সাইজ (২×৩ = ৬টি) */
+    .a4-page.layout-2x3 .school-logo { width: 56px; height: 56px; }
+    .a4-page.layout-2x3 .watermark { width: 115px; height: 115px; }
+    .a4-page.layout-2x3 .slip-header { padding: 10px 10px 16px; gap: 10px; }
+    .a4-page.layout-2x3 .school-name { font-size: 22.5px; }
+    .a4-page.layout-2x3 .exam-name { font-size: 20px; }
+    .a4-page.layout-2x3 .badge-divider { margin-top: -15px; }
+    .a4-page.layout-2x3 .slip-badge { font-size: 19px; padding: 1px 28px; }
+    .a4-page.layout-2x3 .slip-body { padding: 12px 14px 14px; gap: 14px; }
+    .a4-page.layout-2x3 .name-row { font-size: 24.5px; padding: 6px 10px; }
+    .a4-page.layout-2x3 .name-row.name-long { font-size: 21.5px; }
+    .a4-page.layout-2x3 .name-row.name-xlong { font-size: 19px; }
+    .a4-page.layout-2x3 .meta-col { font-size: 23.5px; gap: 10px; }
+    .a4-page.layout-2x3 .roll-box { min-width: 98px; border-width: 2.2px; }
+    .a4-page.layout-2x3 .roll-lbl { font-size: 16.5px; padding: 3px 8px; }
+    .a4-page.layout-2x3 .roll-val { font-size: 44px; }
+
+    /* আরও বড় সাইজ (২×৪ = ৮টি) */
+    .a4-page.layout-2x4 .school-logo { width: 48px; height: 48px; }
+    .a4-page.layout-2x4 .watermark { width: 96px; height: 96px; }
+    .a4-page.layout-2x4 .slip-header { padding: 7px 10px 13px; gap: 9px; }
+    .a4-page.layout-2x4 .school-name { font-size: 21.5px; }
+    .a4-page.layout-2x4 .exam-name { font-size: 18.5px; }
+    .a4-page.layout-2x4 .badge-divider { margin-top: -13px; }
+    .a4-page.layout-2x4 .slip-badge { font-size: 17px; padding: 0.5px 24px; }
+    .a4-page.layout-2x4 .slip-body { padding: 8px 12px 10px; gap: 10px; }
+    .a4-page.layout-2x4 .name-row { font-size: 22.5px; padding: 4px 8px; }
+    .a4-page.layout-2x4 .name-row.name-long { font-size: 19.5px; }
+    .a4-page.layout-2x4 .name-row.name-xlong { font-size: 17.5px; }
+    .a4-page.layout-2x4 .meta-col { font-size: 21.5px; gap: 7px; }
+    .a4-page.layout-2x4 .roll-box { min-width: 88px; border-width: 2px; }
+    .a4-page.layout-2x4 .roll-lbl { font-size: 15px; padding: 2px 8px; }
+    .a4-page.layout-2x4 .roll-val { font-size: 38px; }
+
+    /* বড় সাইজ — আদর্শ (২×৫ = ১০টি) */
+    .a4-page.layout-2x5 .school-logo { width: 43px; height: 43px; }
+    .a4-page.layout-2x5 .watermark { width: 84px; height: 84px; }
+    .a4-page.layout-2x5 .slip-header { padding: 5px 8px 11px; gap: 8px; }
+    .a4-page.layout-2x5 .school-name { font-size: 20.5px; }
+    .a4-page.layout-2x5 .exam-name { font-size: 17px; }
+    .a4-page.layout-2x5 .badge-divider { margin-top: -12px; }
+    .a4-page.layout-2x5 .slip-badge { font-size: 15.5px; padding: 0 20px; }
+    .a4-page.layout-2x5 .slip-body { padding: 5px 10px 7px; gap: 7px; }
+    .a4-page.layout-2x5 .name-row { font-size: 20.5px; padding: 3px 7px; }
+    .a4-page.layout-2x5 .name-row.name-long { font-size: 18px; }
+    .a4-page.layout-2x5 .name-row.name-xlong { font-size: 16px; }
+    .a4-page.layout-2x5 .meta-col { font-size: 19.5px; gap: 5px; }
+    .a4-page.layout-2x5 .roll-box { min-width: 80px; }
+    .a4-page.layout-2x5 .roll-lbl { font-size: 14px; padding: 1.5px 6px; }
+    .a4-page.layout-2x5 .roll-val { font-size: 33px; }
+
+    /* ৩ কলাম (৩×৫ বা ৩×৬ = ১৫ বা ১৮টি) */
+    .a4-page.cols-3 { gap: 2.4mm; padding: 5mm; }
+    .a4-page.cols-3 .top-accent { height: 2px; }
+    .a4-page.cols-3 .slip-header { padding: 3px 4px 7px; gap: 4px; }
+    .a4-page.cols-3 .school-logo { width: 27px; height: 27px; }
+    .a4-page.cols-3 .watermark { width: 54px; height: 54px; }
+    .a4-page.cols-3 .school-name { font-size: 13.5px; }
+    .a4-page.cols-3 .exam-name { font-size: 11.5px; }
+    .a4-page.cols-3 .badge-divider { margin-top: -8px; }
+    .a4-page.cols-3 .slip-badge { font-size: 11px; padding: 0 11px; }
+    .a4-page.cols-3 .slip-body { padding: 3px 5px 4px; gap: 3px; }
+    .a4-page.cols-3 .name-row { font-size: 13.5px; padding: 1.5px 4px; }
+    .a4-page.cols-3 .name-row.name-long { font-size: 12px; }
+    .a4-page.cols-3 .name-row.name-xlong { font-size: 11px; }
+    .a4-page.cols-3 .bottom-row { gap: 4px; }
+    .a4-page.cols-3 .meta-col { font-size: 12.8px; gap: 2px; }
+    .a4-page.cols-3 .meta-line { gap: 6px; }
+    .a4-page.cols-3 .roll-box { min-width: 48px; border-width: 1.4px; }
+    .a4-page.cols-3 .roll-lbl { font-size: 9.5px; padding: 0.5px 3px; }
+    .a4-page.cols-3 .roll-val { font-size: 19px; padding: 0 3px; }
+
+    /* ================= প্রিন্ট সেটিংস ================= */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    @media print {
+      body { background: #ffffff; }
+      .no-print { display: none !important; }
+      #previewContainer {
+        display: block;
+        overflow: visible;
+        padding: 0;
+        gap: 0;
+      }
+      .a4-page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+        break-after: page;
+      }
+      .a4-page:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar no-print">
+    <div class="brand-wrap">
+      <img class="brand-logo"
+           src="https://lh3.googleusercontent.com/d/15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR=w200"
+           onerror="this.onerror=null;this.src='https://drive.google.com/thumbnail?id=15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR&sz=w200';"
+           alt="লোগো">
+      <div>
+        <div class="brand-title">ইবনে তাইমিয়া স্কুল এন্ড কলেজ — অটো সীট স্লিপ</div>
+        <div class="brand-status" id="statusText">ক্লাউড শিট থেকে ডাটা লোড হচ্ছে...</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <select id="sheetSelect" onchange="loadSelectedSheet()"></select>
+
+      <select id="layoutSelect" onchange="renderSlips()">
+        <option value="2x3">পেজে ৬টি (অতি বড়)</option>
+        <option value="2x4">পেজে ৮টি (আরও বড়)</option>
+        <option value="2x5" selected>পেজে ১০টি (বড় ফন্ট)</option>
+        <option value="2x6">পেজে ১২টি</option>
+        <option value="3x5">পেজে ১৫টি</option>
+        <option value="3x6">পেজে ১৮টি</option>
+      </select>
+
+      <button class="btn-print" onclick="window.print()">প্রিন্ট / PDF</button>
+    </div>
+  </div>
+
+  <div id="previewContainer"></div>
+
+  <script>
+    // ক্লাউড গুগল শিট ও স্কুল লোগোর লিংক
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1on1OA5XNO5VGk8EB9wq2_1o-ikKGW1C9AuFYMByfUw8/edit';
+    const LOGO_PRIMARY = 'https://lh3.googleusercontent.com/d/15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR=w300';
+    const LOGO_FALLBACK = 'https://drive.google.com/thumbnail?id=15W9KPuuMR2OPfe0sELc2clmqWxIC8JGR&sz=w300';
+
+    // শিটের ট্যাবগুলোর তালিকা
+    const SHEET_TABS = [
+      'Seven_A_Joba_2026',
+      'Seven_B_Joba_2026',
+      'Eight_A_Joba_2026',
+      'Eight_B_Joba_2026'
+    ];
+
+    const SCHOOL_NAME = 'ইবনে তাইমিয়া স্কুল এন্ড কলেজ';
+    const EXAM_NAME = 'বার্ষিক পরীক্ষা-২০২৬';
+    const SLIP_HEADER = 'সীট স্লিপ';
+
+    let currentStudents = [];
+    let currentMeta = { cls: '', sec: '', shift: '' };
+    let activeScriptTag = null;
+    let loadTimer = null;
+
+    const CLASS_MAP = {
+      'one': '১ম', '1': '১ম',
+      'two': '২য়', '2': '২য়',
+      'three': '৩য়', '3': '৩য়',
+      'four': '৪র্থ', '4': '৪র্থ',
+      'five': '৫ম', '5': '৫ম',
+      'six': '৬ষ্ঠ', '6': '৬ষ্ঠ',
+      'seven': '৭ম', '7': '৭ম',
+      'eight': '৮ম', '8': '৮ম',
+      'nine': '৯ম', '9': '৯ম',
+      'ten': '১০ম', '10': '১০ম'
+    };
+
+    const SHIFT_MAP = {
+      'joba': 'জবা',
+      'beli': 'বেলি',
+      'bokul': 'বকুল',
+      'shapla': 'শাপলা',
+      'golap': 'গোলাপ',
+      'morning': 'প্রভাতী',
+      'day': 'দিবা'
+    };
+
+    function getSheetKey(url) {
+      const m = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+      return m ? m[1] : '';
+    }
+
+    function toBn(str) {
+      const d = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+      return String(str).replace(/\d/g, m => d[m]);
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function parseSheetMeta(sheetName) {
+      const parts = sheetName.split(/[_\-\s]+/);
+      const clsKey = (parts[0] || '').toLowerCase();
+      const secVal = parts[1] || '';
+      const shKey = (parts[2] || '').toLowerCase();
+      return {
+        cls: CLASS_MAP[clsKey] || parts[0] || '',
+        sec: secVal,
+        shift: SHIFT_MAP[shKey] || parts[2] || ''
+      };
+    }
+
+    function formatTabLabel(sheetName) {
+      const m = parseSheetMeta(sheetName);
+      return (m.cls && m.sec && m.shift)
+        ? `${m.cls} শ্রেণী (${m.sec}) — ${m.shift}`
+        : sheetName;
+    }
+
+    function initDropdown() {
+      const select = document.getElementById('sheetSelect');
+      select.innerHTML = '';
+      SHEET_TABS.forEach(tab => {
+        const opt = document.createElement('option');
+        opt.value = tab;
+        opt.textContent = formatTabLabel(tab);
+        select.appendChild(opt);
+      });
+      loadSelectedSheet();
+    }
+
+    function showAccessError() {
+      document.getElementById('statusText').textContent = 'শিট থেকে ডাটা লোড করা যায়নি।';
+      document.getElementById('previewContainer').innerHTML = `
+        <div class="notice-box no-print">
+          <h3>ক্লাউড শিট অ্যাক্সেস করা যায়নি</h3>
+          <p>গুগল শিটের <strong>Share</strong> বাটনে গিয়ে <strong>General access</strong>-এ <strong>Anyone with the link → Viewer</strong> সেট করে আবার <strong>RUN</strong> দিন।</p>
+        </div>
+      `;
+    }
+
+    function loadSelectedSheet() {
+      const sheetName = document.getElementById('sheetSelect').value;
+      const sheetKey = getSheetKey(SHEET_URL);
+      if (!sheetName || !sheetKey) return;
+
+      currentMeta = parseSheetMeta(sheetName);
+      document.getElementById('statusText').textContent = 'ক্লাউড থেকে নাম লোড হচ্ছে...';
+
+      if (activeScriptTag) activeScriptTag.remove();
+      if (loadTimer) clearTimeout(loadTimer);
+
+      const cbName = 'handleGviz_' + Date.now();
+      let done = false;
+
+      window[cbName] = function(res) {
+        done = true;
+        clearTimeout(loadTimer);
+        delete window[cbName];
+
+        if (!res || res.status === 'error' || !res.table) {
+          showAccessError();
+          return;
+        }
+
+        const cols = res.table.cols || [];
+        const rows = res.table.rows || [];
+
+        let rollIdx = cols.findIndex(c => c && c.label && /roll|রোল/i.test(c.label));
+        let nameIdx = cols.findIndex(c => c && c.label && /name|নাম|student/i.test(c.label));
+        if (rollIdx === -1) rollIdx = 0;
+        if (nameIdx === -1) nameIdx = 1;
+
+        const students = [];
+        rows.forEach(r => {
+          const cells = r.c || [];
+          const rCell = cells[rollIdx];
+          const nCell = cells[nameIdx];
+
+          const roll = rCell && rCell.v !== null && rCell.v !== undefined
+            ? String(rCell.f || rCell.v).trim() : '';
+          const name = nCell && nCell.v !== null && nCell.v !== undefined
+            ? String(nCell.f || nCell.v).trim() : '';
+
+          if (!name || name === '*' || /^name$|^নাম$/i.test(name) || /absence|\btc\b/i.test(name)) {
+            return;
+          }
+          students.push({ roll, name });
+        });
+
+        currentStudents = students;
+        renderSlips();
+      };
+
+      const script = document.createElement('script');
+      script.src = `https://docs.google.com/spreadsheets/d/${sheetKey}/gviz/tq?tqx=responseHandler:${cbName}&headers=1&sheet=${encodeURIComponent(sheetName)}`;
+      script.onerror = function() {
+        if (!done) {
+          done = true;
+          clearTimeout(loadTimer);
+          delete window[cbName];
+          showAccessError();
+        }
+      };
+
+      loadTimer = setTimeout(() => {
+        if (!done) {
+          done = true;
+          delete window[cbName];
+          showAccessError();
+        }
+      }, 7000);
+
+      activeScriptTag = script;
+      document.body.appendChild(script);
+    }
+
+    function renderSlips() {
+      const layoutVal = document.getElementById('layoutSelect').value;
+      const [cols, rows] = layoutVal.split('x').map(Number);
+      const perPage = cols * rows;
+
+      const container = document.getElementById('previewContainer');
+      container.innerHTML = '';
+
+      const totalPages = Math.ceil(currentStudents.length / perPage);
+      document.getElementById('statusText').textContent =
+        `${currentMeta.cls} শ্রেণী (${currentMeta.sec}, ${currentMeta.shift}) • মোট ${toBn(currentStudents.length)} জন • ${toBn(totalPages)} পেজ (A4)`;
+
+      for (let p = 0; p < currentStudents.length; p += perPage) {
+        const chunk = currentStudents.slice(p, p + perPage);
+        const pageDiv = document.createElement('div');
+        pageDiv.className = `a4-page cols-${cols} layout-${layoutVal}`;
+        pageDiv.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+        pageDiv.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+        chunk.forEach(st => {
+          const nameLen = st.name.length;
+          const nameSizeClass = nameLen > 30 ? ' name-xlong' : (nameLen > 23 ? ' name-long' : '');
+
+          const card = document.createElement('div');
+          card.className = 'slip-card';
+          card.innerHTML = `
+            <div class="slip-inner">
+              <div class="top-accent"></div>
+              <img class="watermark"
+                   src="${LOGO_PRIMARY}"
+                   onerror="this.onerror=null;this.src='${LOGO_FALLBACK}';"
+                   alt="">
+              <div class="slip-header">
+                <img class="school-logo"
+                     src="${LOGO_PRIMARY}"
+                     onerror="this.onerror=null;this.src='${LOGO_FALLBACK}';"
+                     alt="লোগো">
+                <div class="header-text">
+                  <div class="school-name">${SCHOOL_NAME}</div>
+                  <div class="exam-name">${EXAM_NAME}</div>
+                </div>
+              </div>
+              <div class="badge-divider">
+                <span class="slip-badge">${SLIP_HEADER}</span>
+              </div>
+              <div class="slip-body">
+                <div class="name-row${nameSizeClass}">
+                  <span class="lbl">নাম :</span>
+                  <span class="name-val">${escapeHtml(st.name)}</span>
+                </div>
+                <div class="bottom-row">
+                  <div class="meta-col">
+                    <div class="meta-line">
+                      <span class="meta-item"><span class="lbl">শ্রেণী :</span> <span class="val">${escapeHtml(currentMeta.cls)}</span></span>
+                      <span class="meta-item"><span class="lbl">শাখা :</span> <span class="val">${escapeHtml(currentMeta.sec)}</span></span>
+                    </div>
+                    <div class="meta-line">
+                      <span class="meta-item"><span class="lbl">শিফট :</span> <span class="val">${escapeHtml(currentMeta.shift)}</span></span>
+                    </div>
+                  </div>
+                  <div class="roll-box">
+                    <div class="roll-lbl">রোল নং</div>
+                    <div class="roll-val">${escapeHtml(toBn(st.roll))}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          pageDiv.appendChild(card);
+        });
+
+        container.appendChild(pageDiv);
+      }
+    }
+
+    window.onload = initDropdown;
+  </script>
+</body>
+</html>
