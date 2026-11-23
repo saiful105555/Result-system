@@ -180,13 +180,22 @@
             background: var(--input-bg); color: var(--sub-text);
             cursor: not-allowed; border-style: dashed;
         }
+        .search-actions-row {
+            display: flex; gap: 12px; align-items: center;
+        }
         .search-btn {
-            width: 100%; background: linear-gradient(135deg, #0d3b66 0%, #0077b6 50%, #00b4d8 100%);
+            flex: 1; background: linear-gradient(135deg, #0d3b66 0%, #0077b6 50%, #00b4d8 100%);
             color: #ffffff; border: none; padding: 15px; border-radius: 14px; font-size: 1.2rem;
             font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
             gap: 10px; box-shadow: 0 8px 20px rgba(0, 119, 182, 0.35); transition: transform 0.2s ease;
         }
         .search-btn:hover { transform: translateY(-2px); }
+        .refresh-btn {
+            background: var(--input-bg); color: var(--heading-color); border: 2px solid var(--border-color);
+            padding: 15px 18px; border-radius: 14px; font-size: 1rem; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 6px;
+        }
+        .refresh-btn:hover { border-color: #0077b6; color: #0077b6; }
         .error-box {
             display: none; background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444;
             color: #ef4444; padding: 14px; border-radius: 12px; text-align: center;
@@ -396,6 +405,8 @@
 
         @media (max-width: 480px) {
             .search-form-grid { grid-template-columns: 1fr; }
+            .search-actions-row { flex-direction: column; }
+            .search-btn, .refresh-btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -476,15 +487,20 @@
                     </div>
                 </div>
 
-                <button type="submit" class="search-btn" id="portalSearchBtn">
-                    <i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন
-                </button>
+                <div class="search-actions-row">
+                    <button type="submit" class="search-btn" id="portalSearchBtn">
+                        <i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন
+                    </button>
+                    <button type="button" class="refresh-btn" onclick="clearSheetCache()" title="গুগল শিট থেকে নতুন ডাটা লোড করুন">
+                        <i class="fa-solid fa-rotate"></i> রিফ্রেশ
+                    </button>
+                </div>
             </form>
 
             <div id="errorBox" class="error-box"></div>
         </section>
 
-        <!-- স্মার্ট ১ পেইজ A4 প্রোগ্রেস রিপোর্ট ভিউ (ডাউনলোড অপশন ব্যতীত) -->
+        <!-- স্মার্ট ১ পেইজ A4 প্রোগ্রেস রিপোর্ট ভিউ -->
         <section id="resultViewSection">
             <div class="a4-action-toolbar">
                 <div class="a4-toolbar-title">
@@ -510,6 +526,16 @@
     </div>
 
     <script>
+        // আপনার আগের Google Apps Script Web App URL (Sheet ID: 1on1OA5XNO5VGk8EB9wq2_1o-ikKGW1C9AuFYMByfUw8)
+        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycby9KSjyhSkoLNVwKWfp6aT2J06QPX08Fp-OQJqFC7Utm9jgmdC3IlDLgJN6FDi7b0v6hw/exec";
+
+        // পোর্টালের ডিফল্ট তথ্য (শিট থেকে আলাদা global info না এলে এগুলো বসবে)
+        const PORTAL_DEFAULTS = {
+            shift: "Joba",
+            year: "2026",
+            workingDays: "-"
+        };
+
         const classDataCache = {};
 
         const portalSubjectsConfig = [
@@ -583,40 +609,51 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        async function loadClassSectionJSON(cls, sec) {
-            const cacheKey = `${cls}_${sec}`;
+        function clearSheetCache() {
+            for (const key in classDataCache) {
+                delete classDataCache[key];
+            }
+            document.getElementById('errorBox').style.display = 'none';
+            alert("ক্যাশ ক্লিয়ার হয়েছে! এখন সার্চ করলে গুগল শিট থেকে নতুন ডাটা লোড হবে।");
+        }
+
+        // আপনার আগের Code.gs (action=getAll) থেকে সরাসরি ডাটা লোড
+        async function loadClassSectionFromGoogleSheet(cls, sec) {
+            const cacheKey = `${cls}_${sec}_${PORTAL_DEFAULTS.shift}_${PORTAL_DEFAULTS.year}`;
             if (classDataCache[cacheKey]) {
                 return classDataCache[cacheKey];
             }
 
-            const clsLower = cls.toLowerCase();
-            const secLower = sec.toLowerCase();
+            const params = new URLSearchParams({
+                action: 'getAll',
+                cls: cls,
+                sec: sec,
+                shift: PORTAL_DEFAULTS.shift,
+                year: PORTAL_DEFAULTS.year,
+                t: Date.now().toString()
+            });
 
-            const candidateFiles = [
-                `ITSC_Result_Backup_${cls}_${sec}_2026.json`,
-                `ITSC_Result_Backup_${cls}_${sec}_2025.json`,
-                `ITSC_Result_Backup_${cls}_${sec}.json`,
-                `${cls}_${sec}_2026.json`,
-                `${cls}_${sec}.json`,
-                `${clsLower}_${secLower}.json`
-            ];
-
-            for (const fileName of candidateFiles) {
-                try {
-                    const response = await fetch(`./${fileName}?t=${Date.now()}`);
-                    if (response.ok) {
-                        const data = await response.json();
-                        const globalInfo = data.global || {};
-                        const studentsList = Array.isArray(data) ? data : (data.students || data.results || []);
-                        if (studentsList.length > 0) {
-                            const resultObj = { global: globalInfo, students: studentsList, fileName };
-                            classDataCache[cacheKey] = resultObj;
-                            return resultObj;
-                        }
-                    }
-                } catch (err) {}
+            const response = await fetch(`${GOOGLE_SHEET_API_URL}?${params.toString()}`);
+            if (!response.ok) {
+                throw new Error("গুগল শিট সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।");
             }
-            return null;
+
+            const data = await response.json();
+
+            if (data.status && data.status !== 'ok' && data.status !== 'success') {
+                throw new Error(data.message || "গুগল শিট থেকে ফলাফল লোড করা যায়নি।");
+            }
+
+            const studentsList = Array.isArray(data) ? data : (data.students || data.results || []);
+            const resultObj = {
+                global: data.global || {},
+                students: studentsList
+            };
+
+            if (studentsList.length > 0) {
+                classDataCache[cacheKey] = resultObj;
+            }
+            return resultObj;
         }
 
         function normalizeRoll(inputStr) {
@@ -721,16 +758,25 @@
             errorBox.style.display = 'none';
             viewSection.style.display = 'none';
 
-            searchBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ফলাফল খোঁজা হচ্ছে...`;
+            searchBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> গুগল শিট থেকে ফলাফল খোঁজা হচ্ছে...`;
             searchBtn.disabled = true;
 
-            const loadedData = await loadClassSectionJSON(selectedClass, selectedSection);
+            let loadedData = null;
+            try {
+                loadedData = await loadClassSectionFromGoogleSheet(selectedClass, selectedSection);
+            } catch (err) {
+                errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${err.message}`;
+                errorBox.style.display = 'block';
+                searchBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন`;
+                searchBtn.disabled = false;
+                return;
+            }
 
             searchBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন`;
             searchBtn.disabled = false;
 
             if (!loadedData || !loadedData.students || loadedData.students.length === 0) {
-                errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> দুঃখিত! <b>${classBanglaMap[selectedClass]} (শাখা ${selectedSection})</b>-এর রেজাল্ট ফাইল (<code>ITSC_Result_Backup_${selectedClass}_${selectedSection}_2026.json</code>) গিটহাবে পাওয়া যায়নি!`;
+                errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> দুঃখিত! গুগল শিটে <b>${classBanglaMap[selectedClass]} (শাখা ${selectedSection})</b>-এর কোনো ফলাফল পাওয়া যায়নি।`;
                 errorBox.style.display = 'block';
                 return;
             }
@@ -751,12 +797,18 @@
             const overallGrade = getLetterGradeFromGPA(ev.finalGPA);
             const isFail = ev.finalGPA === 0;
 
+            // Highest Attendance অটো হিসাব (যদি শিটে globalInfo না থাকে)
+            const attList = resultsData
+                .map(s => parseInt(normalizeRoll(s.att), 10))
+                .filter(n => !isNaN(n) && n > 0);
+            const autoHighestAtt = attList.length > 0 ? Math.max(...attList) : '-';
+
             const clsName = globalPortalInfo.cls || selectedClass;
             const secName = globalPortalInfo.sec || selectedSection;
-            const shiftName = globalPortalInfo.shift || 'Joba';
-            const examYear = globalPortalInfo.year || '2026';
-            const workingDays = globalPortalInfo.workingDays || '-';
-            const highestAtt = globalPortalInfo.highestAtt || '-';
+            const shiftName = globalPortalInfo.shift || PORTAL_DEFAULTS.shift;
+            const examYear = globalPortalInfo.year || PORTAL_DEFAULTS.year;
+            const workingDays = globalPortalInfo.workingDays || PORTAL_DEFAULTS.workingDays;
+            const highestAtt = globalPortalInfo.highestAtt || autoHighestAtt;
 
             const renderSubjectRow = (id, name, max, pass) => `
                 <tr>
