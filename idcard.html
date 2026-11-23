@@ -6,11 +6,11 @@
     <title>প্রফেশনাল শিক্ষক আইডি কার্ড জেনারেটর - ইবনে তাইমিয়া স্কুল এন্ড কলেজ</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Tiro+Bangla:ital@0;1&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- html2canvas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Local CORS-Free QR Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
     <style>
         :root {
@@ -49,16 +49,16 @@
             font-family: 'Hind Siliguri', sans-serif;
             background: linear-gradient(135deg, #e8eef3 0%, #dce5ec 100%);
             min-height: 100vh;
-            padding: 28px 16px 50px;
+            padding: 24px 14px 50px;
             color: #1e293b;
         }
 
         .app-header {
             max-width: 1120px;
-            margin: 0 auto 24px;
+            margin: 0 auto 22px;
             background: #ffffff;
             border-radius: 16px;
-            padding: 18px 24px;
+            padding: 16px 22px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -69,7 +69,7 @@
         }
 
         .app-header-title h1 {
-            font-size: 1.45rem;
+            font-size: 1.4rem;
             color: var(--card-primary-dark);
             display: flex;
             align-items: center;
@@ -116,14 +116,14 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: 420px 1fr;
-            gap: 30px;
+            gap: 28px;
             align-items: start;
         }
 
         /* Form Panel */
         .form-section {
             background: #ffffff;
-            padding: 24px;
+            padding: 22px;
             border-radius: 18px;
             box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
             border: 1px solid #e2e8f0;
@@ -131,7 +131,7 @@
         .form-section h2 {
             font-size: 1.15rem;
             color: var(--card-primary-dark);
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             padding-bottom: 10px;
             border-bottom: 2px solid #f1f5f9;
             display: flex;
@@ -145,7 +145,7 @@
             gap: 12px;
         }
 
-        .input-group { margin-bottom: 13px; }
+        .input-group { margin-bottom: 12px; }
         .input-group label {
             display: block;
             margin-bottom: 5px;
@@ -153,7 +153,7 @@
             color: #334155;
             font-size: 0.9rem;
         }
-        .input-group input, .input-group select {
+        .input-group input {
             width: 100%;
             padding: 10px 12px;
             border: 1.5px solid #cbd5e1;
@@ -162,9 +162,8 @@
             font-family: 'Hind Siliguri', sans-serif;
             background: #f8fafc;
             color: #0f172a;
-            transition: all 0.2s;
         }
-        .input-group input:focus, .input-group select:focus {
+        .input-group input:focus {
             border-color: var(--card-primary);
             background: #ffffff;
             outline: none;
@@ -176,7 +175,7 @@
             border: 1px dashed #cbd5e1;
             border-radius: 12px;
             padding: 12px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         .slider-row {
             display: flex;
@@ -187,11 +186,27 @@
             color: #475569;
             font-weight: 600;
         }
-        .slider-row span { width: 78px; flex-shrink: 0; }
+        .slider-row span { width: 74px; flex-shrink: 0; }
         .slider-row input[type="range"] {
             flex: 1;
             accent-color: var(--card-primary);
             cursor: pointer;
+        }
+
+        .optional-uploads {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.88rem;
+        }
+        .optional-uploads summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #475569;
+        }
+        .optional-uploads .inner {
+            margin-top: 10px;
         }
 
         /* Preview Panel */
@@ -208,7 +223,7 @@
             border-radius: 14px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
             border: 1px solid #e2e8f0;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             gap: 6px;
         }
         .side-tab-btn {
@@ -232,515 +247,21 @@
             box-shadow: 0 4px 12px rgba(15, 81, 39, 0.28);
         }
 
-        /* Scale stage prevents blank space below scaled card */
-        .card-stage {
-            position: relative;
-            margin: 0 auto 20px;
-            transition: width 0.2s, height 0.2s;
-        }
-
-        .card-pane { display: none; }
-        .card-pane.active { display: block; }
-
-        /* =========================================================
-           EXACT CR80 RATIO ID CARD (540px x 860px)
-           ========================================================= */
-        .id-card-wrapper {
-            width: 540px;
-            height: 860px;
-            background-color: #ffffff;
-            background-image:
-                radial-gradient(rgba(15, 81, 39, 0.045) 1.2px, transparent 1.2px),
-                linear-gradient(160deg, #ffffff 0%, var(--card-soft-bg) 100%);
-            background-size: 18px 18px, 100% 100%;
-            position: relative;
-            overflow: hidden;
-            border-radius: 18px;
-            border: 1px solid #d1d5db;
-            box-shadow: 0 24px 55px rgba(15, 23, 42, 0.22);
-            transform-origin: top left;
-        }
-
-        /* Subtle Inner Gold Frame */
-        .card-inner-frame {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 1.5px solid rgba(200, 157, 67, 0.35);
-            border-radius: 12px;
-            pointer-events: none;
-            z-index: 6;
-        }
-
-        /* Background Watermark */
-        .card-watermark {
-            position: absolute;
-            top: 54%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 330px;
-            height: 330px;
-            object-fit: contain;
-            opacity: 0.055;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* SVG Header Area */
-        .front-header {
-            position: relative;
-            width: 540px;
-            height: 238px;
-            z-index: 2;
-            text-align: center;
-            padding-top: 18px;
-        }
-        .header-wave-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 540px;
-            height: 238px;
-            z-index: 0;
-        }
-        .header-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .header-logo-ring {
-            width: 82px;
-            height: 82px;
-            border-radius: 50%;
-            background: #ffffff;
-            padding: 4px;
-            border: 2.5px solid var(--card-accent-light);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .header-logo {
+        /* Live HD Canvas Preview Stage */
+        .preview-canvas-wrap {
             width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: contain;
-        }
-
-        .school-name-bn {
-            color: #ffffff;
-            font-family: 'Tiro Bangla', serif;
-            font-size: 32px;
-            font-weight: 700;
-            line-height: 1.15;
-            letter-spacing: 0.3px;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-        }
-
-        .school-name-en {
-            color: var(--card-accent-light);
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            margin-top: 3px;
-        }
-
-        /* Photo Box */
-        .photo-wrapper {
-            position: relative;
-            z-index: 4;
-            width: 174px;
-            height: 204px;
-            margin: -50px auto 0;
-            padding: 5px;
-            background: linear-gradient(135deg, var(--card-accent-light), var(--card-accent));
+            max-width: 390px;
+            margin-bottom: 18px;
             border-radius: 16px;
-            box-shadow: 0 12px 26px rgba(15, 23, 42, 0.24);
-        }
-        .photo-inner {
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 3px;
             overflow: hidden;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.22);
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
         }
-        .photo-inner img {
+        .preview-canvas-wrap canvas {
             width: 100%;
-            height: 100%;
-            border-radius: 9px;
+            height: auto;
             display: block;
-            object-fit: cover;
-        }
-
-        /* Name & Designation */
-        .title-area {
-            text-align: center;
-            margin-top: 12px;
-            padding: 0 26px;
-            position: relative;
-            z-index: 3;
-        }
-        .title-area h1 {
-            font-size: 30px;
-            color: var(--card-primary-dark);
-            font-weight: 700;
-            line-height: 1.18;
-            margin-bottom: 6px;
-        }
-        .badge-strip {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .desig-pill {
-            display: inline-block;
-            font-size: 16.5px;
-            color: #ffffff;
-            font-weight: 600;
-            background: linear-gradient(135deg, var(--card-primary) 0%, var(--card-primary-light) 100%);
-            padding: 4px 20px;
-            border-radius: 30px;
-            border: 1.5px solid var(--card-accent);
-            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.14);
-        }
-        .id-pill {
-            display: inline-block;
-            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--card-primary-dark);
-            background: #ffffff;
-            padding: 5px 14px;
-            border-radius: 30px;
-            border: 1.5px solid var(--card-accent);
-        }
-
-        /* Structured Info Box */
-        .details-box {
-            margin: 14px 36px 0;
-            background: rgba(255, 255, 255, 0.92);
-            border: 1.5px solid var(--card-border-soft);
-            border-radius: 14px;
-            padding: 12px 18px;
-            position: relative;
-            z-index: 3;
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
-        }
-        .detail-row {
-            display: grid;
-            grid-template-columns: 32px 110px 14px 1fr;
-            align-items: center;
-            padding: 6.5px 0;
-            border-bottom: 1px dashed #e2e8f0;
-            font-size: 18px;
-        }
-        .detail-row:last-child {
-            border-bottom: none;
-            padding-bottom: 2px;
-        }
-        .detail-row:first-child {
-            padding-top: 2px;
-        }
-        .detail-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 7px;
-            background: var(--card-soft-bg);
-            color: var(--card-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-        }
-        .detail-icon.blood {
-            background: #fef2f2;
-            color: #dc2626;
-        }
-        .detail-label {
-            color: #475569;
-            font-weight: 600;
-        }
-        .detail-colon {
-            text-align: center;
-            color: #94a3b8;
-            font-weight: 700;
-        }
-        .detail-value {
-            color: #0f172a;
-            font-weight: 700;
-        }
-        .blood-badge {
-            display: inline-block;
-            background: #fef2f2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-            padding: 1px 12px;
-            border-radius: 20px;
-            font-size: 16.5px;
-            font-weight: 700;
-        }
-
-        /* Front Footer (Signature + QR) */
-        .card-footer {
-            position: absolute;
-            bottom: 46px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding: 0 38px;
-            z-index: 3;
-        }
-
-        .signature-area {
-            text-align: center;
-            width: 220px;
-        }
-        .signature-img-wrap {
-            height: 76px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .signature-area img {
-            width: 195px;
-            height: 82px;
-            object-fit: contain;
-            margin-bottom: -10px;
-            mix-blend-mode: multiply;
-            filter: contrast(1.4);
-        }
-        .signature-line {
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--card-primary-dark), var(--card-primary-dark), transparent);
-            margin: 2px auto 4px;
-        }
-        .signature-area p {
-            font-size: 16.5px;
-            font-weight: 700;
-            color: var(--card-primary-dark);
-            line-height: 1.1;
-        }
-        .signature-area span {
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .qr-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-        }
-        .qr-frame {
-            width: 96px;
-            height: 96px;
-            background: #ffffff;
-            padding: 5px;
-            border-radius: 10px;
-            border: 2px solid var(--card-accent);
-            box-shadow: 0 5px 14px rgba(15, 23, 42, 0.12);
-        }
-        .qr-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
-        .qr-caption {
-            font-size: 11px;
-            font-weight: 700;
-            color: #64748b;
-            letter-spacing: 0.4px;
-        }
-
-        /* Official Bottom Strip */
-        .card-bottom-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 36px;
-            background: linear-gradient(90deg, var(--card-primary-dark) 0%, var(--card-primary) 50%, var(--card-primary-dark) 100%);
-            border-top: 3px solid var(--card-accent);
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 13.5px;
-            font-weight: 600;
-            z-index: 5;
-        }
-        .card-bottom-bar span.sep { color: var(--card-accent-light); }
-
-        /* =========================================================
-           BACK SIDE DESIGN (540px x 860px)
-           ========================================================= */
-        .back-header {
-            background: linear-gradient(135deg, var(--card-primary-dark) 0%, var(--card-primary) 100%);
-            padding: 24px 30px 20px;
-            text-align: center;
-            border-bottom: 5px solid var(--card-accent);
-            position: relative;
-            z-index: 2;
-        }
-        .back-header h3 {
-            color: #ffffff;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .back-header p {
-            color: var(--card-accent-light);
-            font-family: 'Poppins', sans-serif;
-            font-size: 12.5px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            margin-top: 2px;
-        }
-
-        .back-body {
-            position: relative;
-            z-index: 2;
-            padding: 24px 36px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .back-qr-card {
-            background: #ffffff;
-            border: 1.5px solid var(--card-border-soft);
-            border-radius: 16px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
-        }
-        .back-qr-img {
-            width: 126px;
-            height: 126px;
-            padding: 6px;
-            border: 2px solid var(--card-accent);
-            border-radius: 12px;
-            background: #ffffff;
-            flex-shrink: 0;
-        }
-        .back-qr-img img { width: 100%; height: 100%; object-fit: contain; display: block; }
-        .back-qr-info h4 {
-            font-size: 19px;
-            color: var(--card-primary-dark);
-            margin-bottom: 5px;
-        }
-        .back-qr-info p {
-            font-size: 14.5px;
-            color: #475569;
-            line-height: 1.45;
-        }
-
-        .back-rules-box {
-            background: rgba(255, 255, 255, 0.94);
-            border: 1.5px solid var(--card-border-soft);
-            border-left: 5px solid var(--card-accent);
-            border-radius: 12px;
-            padding: 16px 20px;
-        }
-        .back-rules-box h4 {
-            font-size: 18px;
-            color: var(--card-primary-dark);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .back-rules-box ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 15.5px;
-            color: #334155;
-            line-height: 1.4;
-        }
-        .back-rules-box li {
-            display: flex;
-            gap: 8px;
-            align-items: flex-start;
-        }
-        .back-rules-box li i {
-            color: var(--card-primary);
-            margin-top: 4px;
-            font-size: 13px;
-        }
-
-        .validity-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .validity-pill {
-            background: #ffffff;
-            border: 1.5px solid var(--card-border-soft);
-            border-radius: 12px;
-            padding: 11px 14px;
-            text-align: center;
-        }
-        .validity-pill span {
-            display: block;
-            font-size: 13px;
-            color: #64748b;
-            font-weight: 600;
-        }
-        .validity-pill strong {
-            font-size: 17px;
-            color: var(--card-primary-dark);
-        }
-
-        .school-contact-card {
-            background: linear-gradient(135deg, var(--card-primary-dark), var(--card-primary));
-            color: #ffffff;
-            border-radius: 14px;
-            padding: 18px 20px;
-            text-align: center;
-            border: 2px solid var(--card-accent);
-        }
-        .school-contact-card .sc-title {
-            font-family: 'Tiro Bangla', serif;
-            font-size: 23px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .school-contact-card .sc-eiin {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.14);
-            color: var(--card-accent-light);
-            font-family: 'Poppins', sans-serif;
-            font-size: 12.5px;
-            font-weight: 700;
-            padding: 2px 12px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-        }
-        .school-contact-card p {
-            font-size: 14.5px;
-            line-height: 1.65;
-            color: #f1f5f9;
         }
 
         /* Action Buttons */
@@ -767,9 +288,10 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, opacity 0.2s;
         }
         .btn-action:hover { transform: translateY(-2px); }
+        .btn-action:active { transform: translateY(0); }
         .btn-dl-front {
             background: linear-gradient(135deg, #0f5127, #1b723b);
             box-shadow: 0 6px 16px rgba(15, 81, 39, 0.3);
@@ -779,15 +301,55 @@
             box-shadow: 0 6px 16px rgba(29, 78, 216, 0.3);
         }
 
+        /* Download Ready Box */
+        .download-ready-box {
+            display: none;
+            width: 100%;
+            max-width: 520px;
+            margin-top: 16px;
+            background: #ffffff;
+            border: 2px solid #10b981;
+            border-radius: 14px;
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.14);
+        }
+        .download-ready-box p {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 10px;
+        }
+        .manual-dl-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #059669;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 9px 18px;
+            border-radius: 10px;
+            font-size: 0.94rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .saved-img-preview {
+            display: block;
+            max-width: 185px;
+            margin: 8px auto 6px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+        }
+        .save-hint {
+            font-size: 0.8rem !important;
+            color: #64748b !important;
+            font-weight: 500 !important;
+            margin-bottom: 0 !important;
+        }
+
         @media (max-width: 960px) {
-            .workspace {
-                grid-template-columns: 1fr;
-            }
-            .form-section {
-                max-width: 540px;
-                margin: 0 auto;
-                width: 100%;
-            }
+            .workspace { grid-template-columns: 1fr; }
+            .form-section { max-width: 520px; margin: 0 auto; width: 100%; }
         }
         @media (max-width: 480px) {
             .form-row-2 { grid-template-columns: 1fr; gap: 0; }
@@ -800,7 +362,7 @@
     <header class="app-header">
         <div class="app-header-title">
             <h1><i class="fa-solid fa-id-card-clip"></i> প্রফেশনাল শিক্ষক আইডি কার্ড জেনারেটর</h1>
-            <p>ইবনে তাইমিয়া স্কুল এন্ড কলেজ • প্রিন্ট-রেডি HD (ফ্রন্ট ও ব্যাক সাইড)</p>
+            <p>ইবনে তাইমিয়া স্কুল এন্ড কলেজ • CR80 প্রিন্ট-রেডি HD (ফ্রন্ট ও ব্যাক)</p>
         </div>
         <div class="theme-switcher">
             <span>কার্ড থিম:</span>
@@ -819,67 +381,81 @@
             <form id="idForm" onsubmit="return false;">
                 <div class="input-group">
                     <label>শিক্ষকের পূর্ণ নাম:</label>
-                    <input type="text" id="inpName" value="সাইফুল ইসলাম" oninput="generateCard()">
+                    <input type="text" id="inpName" value="সাইফুল ইসলাম" oninput="renderPreview()">
                 </div>
 
                 <div class="form-row-2">
                     <div class="input-group">
                         <label>পদবী:</label>
-                        <input type="text" id="inpDesig" value="সহকারী শিক্ষক" oninput="generateCard()">
+                        <input type="text" id="inpDesig" value="সহকারী শিক্ষক" oninput="renderPreview()">
                     </div>
                     <div class="input-group">
                         <label>আইডি নং:</label>
-                        <input type="text" id="inpIdNo" value="ITSC-2026-19" oninput="generateCard()">
+                        <input type="text" id="inpIdNo" value="ITSC-2026-19" oninput="renderPreview()">
                     </div>
                 </div>
 
                 <div class="form-row-2">
                     <div class="input-group">
                         <label>ডিপার্টমেন্ট / বিষয়:</label>
-                        <input type="text" id="inpDept" value="আইসিটি" oninput="generateCard()">
+                        <input type="text" id="inpDept" value="আইসিটি" oninput="renderPreview()">
                     </div>
                     <div class="input-group">
                         <label>শিফট:</label>
-                        <input type="text" id="inpShift" value="জবা" oninput="generateCard()">
+                        <input type="text" id="inpShift" value="জবা" oninput="renderPreview()">
                     </div>
                 </div>
 
                 <div class="form-row-2">
                     <div class="input-group">
                         <label>মোবাইল নম্বর:</label>
-                        <input type="text" id="inpPhone" value="০১৬২২১৮৬৮১২" oninput="generateCard()">
+                        <input type="text" id="inpPhone" value="০১৬২২১৮৬৮১২" oninput="renderPreview()">
                     </div>
                     <div class="input-group">
                         <label>রক্তের গ্রুপ:</label>
-                        <input type="text" id="inpBlood" value="এ পজেটিভ (A+)" oninput="generateCard()">
+                        <input type="text" id="inpBlood" value="এ পজেটিভ (A+)" oninput="renderPreview()">
                     </div>
                 </div>
 
                 <div class="form-row-2">
                     <div class="input-group">
                         <label>ইস্যু তারিখ:</label>
-                        <input type="text" id="inpIssue" value="নভেম্বর ২০২৬" oninput="generateCard()">
+                        <input type="text" id="inpIssue" value="নভেম্বর ২০২৬" oninput="renderPreview()">
                     </div>
                     <div class="input-group">
                         <label>মেয়াদ (Valid Till):</label>
-                        <input type="text" id="inpValid" value="ডিসেম্বর ২০২৮" oninput="generateCard()">
+                        <input type="text" id="inpValid" value="ডিসেম্বর ২০২৮" oninput="renderPreview()">
                     </div>
                 </div>
 
                 <div class="photo-controls">
                     <div class="input-group" style="margin-bottom: 6px;">
                         <label><i class="fa-solid fa-camera"></i> শিক্ষকের ছবি আপলোড করুন:</label>
-                        <input type="file" id="inpPhoto" accept="image/*" onchange="handlePhotoUpload(this)">
+                        <input type="file" id="inpPhoto" accept="image/*" onchange="handleLocalImage(this, 'photo')">
                     </div>
                     <div class="slider-row">
                         <span>জুম:</span>
-                        <input type="range" id="photoZoom" min="1" max="2.2" step="0.05" value="1" oninput="renderCroppedPhoto()">
+                        <input type="range" id="photoZoom" min="1" max="2.2" step="0.05" value="1" oninput="renderPreview()">
                     </div>
                     <div class="slider-row">
                         <span>উপর-নিচ:</span>
-                        <input type="range" id="photoPosY" min="-40" max="40" step="1" value="0" oninput="renderCroppedPhoto()">
+                        <input type="range" id="photoPosY" min="-40" max="40" step="1" value="0" oninput="renderPreview()">
                     </div>
                 </div>
+
+                <details class="optional-uploads">
+                    <summary><i class="fa-solid fa-gear"></i> লোগো বা স্বাক্ষর পরিবর্তন করতে চাইলে (ঐচ্ছিক)</summary>
+                    <div class="inner">
+                        <div class="input-group">
+                            <label>কাস্টম লোগো আপলোড:</label>
+                            <input type="file" accept="image/*" onchange="handleLocalImage(this, 'logo')">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label>অধ্যক্ষের স্বাক্ষর আপলোড:</label>
+                            <input type="file" accept="image/*" onchange="handleLocalImage(this, 'sign')">
+                        </div>
+                    </div>
+                </details>
             </form>
         </section>
 
@@ -894,203 +470,9 @@
                 </button>
             </div>
 
-            <div class="card-stage" id="cardStage">
-
-                <!-- ================= FRONT SIDE ================= -->
-                <div class="card-pane active" id="paneFront">
-                    <div class="id-card-wrapper" id="idCardFront">
-                        <div class="card-inner-frame"></div>
-
-                        <!-- Watermark -->
-                        <img class="card-watermark"
-                             src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD"
-                             crossorigin="anonymous"
-                             onerror="handleLogoFallback(this)"
-                             alt="Watermark">
-
-                        <!-- Layered SVG Wave Header -->
-                        <div class="front-header">
-                            <svg class="header-wave-svg" viewBox="0 0 540 238" preserveAspectRatio="none">
-                                <defs>
-                                    <linearGradient id="hdrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" id="gradStop1" stop-color="#073317" />
-                                        <stop offset="55%" id="gradStop2" stop-color="#0f5127" />
-                                        <stop offset="100%" id="gradStop3" stop-color="#1b723b" />
-                                    </linearGradient>
-                                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stop-color="#a87c28" />
-                                        <stop offset="50%" stop-color="#f3dba0" />
-                                        <stop offset="100%" stop-color="#a87c28" />
-                                    </linearGradient>
-                                </defs>
-                                <!-- Gold Bottom Curve Accent -->
-                                <path d="M0,0 L540,0 L540,206 Q270,248 0,206 Z" fill="url(#goldGrad)" />
-                                <!-- Primary Curve -->
-                                <path d="M0,0 L540,0 L540,198 Q270,240 0,198 Z" fill="url(#hdrGrad)" />
-                                <!-- Subtle Decorative Highlight -->
-                                <path d="M0,0 L540,0 L540,95 Q360,145 0,70 Z" fill="rgba(255,255,255,0.06)" />
-                            </svg>
-
-                            <div class="header-content">
-                                <div class="header-logo-ring">
-                                    <img class="header-logo"
-                                         src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD"
-                                         crossorigin="anonymous"
-                                         onerror="handleLogoFallback(this)"
-                                         alt="Logo">
-                                </div>
-                                <div class="school-name-bn">ইবনে তাইমিয়া স্কুল এন্ড কলেজ</div>
-                                <div class="school-name-en">IBN TAIMIYA SCHOOL &amp; COLLEGE • EIIN: 105751</div>
-                            </div>
-                        </div>
-
-                        <!-- Teacher Photo -->
-                        <div class="photo-wrapper">
-                            <div class="photo-inner">
-                                <img id="cardPhoto" alt="Teacher Photo">
-                            </div>
-                        </div>
-
-                        <!-- Name, Designation & ID -->
-                        <div class="title-area">
-                            <h1 id="outName">সাইফুল ইসলাম</h1>
-                            <div class="badge-strip">
-                                <span class="desig-pill" id="outDesig">সহকারী শিক্ষক</span>
-                                <span class="id-pill">ID: <span id="outIdNo">ITSC-2026-19</span></span>
-                            </div>
-                        </div>
-
-                        <!-- Structured Details Box -->
-                        <div class="details-box">
-                            <div class="detail-row">
-                                <div class="detail-icon"><i class="fa-solid fa-building-columns"></i></div>
-                                <div class="detail-label">ডিপার্টমেন্ট</div>
-                                <div class="detail-colon">:</div>
-                                <div class="detail-value" id="outDept">আইসিটি</div>
-                            </div>
-                            <div class="detail-row">
-                                <div class="detail-icon"><i class="fa-solid fa-sun"></i></div>
-                                <div class="detail-label">শিফট</div>
-                                <div class="detail-colon">:</div>
-                                <div class="detail-value" id="outShift">জবা</div>
-                            </div>
-                            <div class="detail-row">
-                                <div class="detail-icon"><i class="fa-solid fa-phone"></i></div>
-                                <div class="detail-label">ফোন</div>
-                                <div class="detail-colon">:</div>
-                                <div class="detail-value" id="outPhone">০১৬২২১৮৬৮১২</div>
-                            </div>
-                            <div class="detail-row">
-                                <div class="detail-icon blood"><i class="fa-solid fa-droplet"></i></div>
-                                <div class="detail-label">রক্তের গ্রুপ</div>
-                                <div class="detail-colon">:</div>
-                                <div class="detail-value"><span class="blood-badge" id="outBlood">এ পজেটিভ (A+)</span></div>
-                            </div>
-                        </div>
-
-                        <!-- Footer (Signature + QR) -->
-                        <div class="card-footer">
-                            <div class="signature-area">
-                                <div class="signature-img-wrap">
-                                    <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c"
-                                         onerror="this.onerror=null; this.removeAttribute('crossorigin'); this.src='https://drive.google.com/thumbnail?id=1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c&sz=w1000';"
-                                         crossorigin="anonymous"
-                                         alt="Signature">
-                                </div>
-                                <div class="signature-line"></div>
-                                <p>অধ্যক্ষ</p>
-                                <span>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</span>
-                            </div>
-
-                            <div class="qr-box">
-                                <div class="qr-frame">
-                                    <img id="qrCodeFront" src="" alt="QR Code" crossorigin="anonymous">
-                                </div>
-                                <div class="qr-caption">স্ক্যান করুন</div>
-                            </div>
-                        </div>
-
-                        <!-- Official Bottom Strip -->
-                        <div class="card-bottom-bar">
-                            <span>১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</span>
-                            <span class="sep">•</span>
-                            <span>www.itsc.edu.bd</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= BACK SIDE ================= -->
-                <div class="card-pane" id="paneBack">
-                    <div class="id-card-wrapper" id="idCardBack">
-                        <div class="card-inner-frame"></div>
-
-                        <!-- Watermark -->
-                        <img class="card-watermark"
-                             src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD"
-                             crossorigin="anonymous"
-                             onerror="handleLogoFallback(this)"
-                             alt="Watermark">
-
-                        <div class="back-header">
-                            <h3>শিক্ষক পরিচয়পত্র • নির্দেশনাবলী</h3>
-                            <p>OFFICIAL TEACHER IDENTITY CARD</p>
-                        </div>
-
-                        <div class="back-body">
-                            <!-- QR Verification Card -->
-                            <div class="back-qr-card">
-                                <div class="back-qr-img">
-                                    <img id="qrCodeBack" src="" alt="Verification QR" crossorigin="anonymous">
-                                </div>
-                                <div class="back-qr-info">
-                                    <h4>ডিজিটাল ভেরিফিকেশন</h4>
-                                    <p>এই QR কোডটি স্ক্যান করলে শিক্ষকের নাম, পদবী, আইডি নম্বর, জরুরি ফোন নম্বর ও রক্তের গ্রুপ তাৎক্ষণিক দেখা যাবে।</p>
-                                </div>
-                            </div>
-
-                            <!-- Rules -->
-                            <div class="back-rules-box">
-                                <h4><i class="fa-solid fa-shield-halved"></i> ব্যবহারের শর্তাবলী</h4>
-                                <ul>
-                                    <li><i class="fa-solid fa-circle-check"></i><span>এই পরিচয়পত্রটি প্রতিষ্ঠানের সম্পত্তি এবং কোনো অবস্থাতেই হস্তান্তরযোগ্য নয়।</span></li>
-                                    <li><i class="fa-solid fa-circle-check"></i><span>প্রতিষ্ঠান চলাকালীন সময়ে এই কার্ডটি দৃশ্যমানভাবে সাথে রাখা আবশ্যক।</span></li>
-                                    <li><i class="fa-solid fa-circle-check"></i><span>কার্ডটি হারিয়ে গেলে দ্রুত অধ্যক্ষ কার্যালয়ে অবহিত করার অনুরোধ করা হলো।</span></li>
-                                    <li><i class="fa-solid fa-circle-check"></i><span>কেউ কার্ডটি খুঁজে পেলে অনুগ্রহ করে নিচের ঠিকানায় জমা দিন।</span></li>
-                                </ul>
-                            </div>
-
-                            <!-- Issue & Validity -->
-                            <div class="validity-grid">
-                                <div class="validity-pill">
-                                    <span>ইস্যু তারিখ (Issue Date)</span>
-                                    <strong id="outIssue">নভেম্বর ২০২৬</strong>
-                                </div>
-                                <div class="validity-pill">
-                                    <span>মেয়াদ উত্তীর্ণ (Valid Till)</span>
-                                    <strong id="outValid">ডিসেম্বর ২০২৮</strong>
-                                </div>
-                            </div>
-
-                            <!-- School Contact Box -->
-                            <div class="school-contact-card">
-                                <div class="sc-title">ইবনে তাইমিয়া স্কুল এন্ড কলেজ</div>
-                                <div class="sc-eiin">EIIN: 105751 • স্থাপিত: ১৯৭৯</div>
-                                <p>
-                                    <i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা<br>
-                                    <i class="fa-solid fa-phone"></i> ০২৩৩৪৪০৫৭৪৪ &nbsp;|&nbsp; <i class="fa-solid fa-globe"></i> www.itsc.edu.bd<br>
-                                    <i class="fa-solid fa-envelope"></i> ibntaimia1979@gmail.com
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="card-bottom-bar">
-                            <span>শিক্ষা • শৃঙ্খলা • নৈতিকতা</span>
-                            <span class="sep">•</span>
-                            <span>IT Department</span>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- Live HD Canvas (Exact CR80 ratio 1080 x 1720) -->
+            <div class="preview-canvas-wrap">
+                <canvas id="cardCanvas" width="1080" height="1720"></canvas>
             </div>
 
             <!-- Download Buttons -->
@@ -1102,240 +484,875 @@
                     <i class="fa-solid fa-download"></i> ব্যাক সাইড HD ডাউনলোড
                 </button>
             </div>
+
+            <!-- Backup Save Box -->
+            <div id="downloadReadyBox" class="download-ready-box"></div>
         </section>
 
     </div>
 
     <script>
-        // লোগো অটো-ফলব্যাক (কখনো মিস না হওয়ার জন্য)
-        const LOGO_FALLBACKS = [
-            "https://wsrv.nl/?url=https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD%26sz=w1000",
-            "https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&sz=w1000",
-            "https://lh3.googleusercontent.com/d/1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD"
+        const THEMES = {
+            green: {
+                dark: "#073317",
+                main: "#0f5127",
+                light: "#1b723b",
+                accent: "#c89d43",
+                accentLight: "#f0d796",
+                softBg: "#f3f8f5",
+                borderSoft: "#d5e5db",
+                dot: "rgba(15, 81, 39, 0.06)"
+            },
+            navy: {
+                dark: "#0b1f3a",
+                main: "#143766",
+                light: "#1e4f8f",
+                accent: "#c89d43",
+                accentLight: "#f0d796",
+                softBg: "#f2f6fb",
+                borderSoft: "#d2dfee",
+                dot: "rgba(20, 55, 102, 0.06)"
+            },
+            maroon: {
+                dark: "#4a0d17",
+                main: "#731625",
+                light: "#961f33",
+                accent: "#c89d43",
+                accentLight: "#f3dba0",
+                softBg: "#fbf4f5",
+                borderSoft: "#edd6d9",
+                dot: "rgba(115, 22, 37, 0.06)"
+            }
+        };
+
+        const LOGO_URLS = [
+            "https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&w=600&output=png",
+            "https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD%26sz%3Dw1000&output=png",
+            "https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&output=png"
         ];
 
-        function handleLogoFallback(imgEl) {
-            const step = parseInt(imgEl.dataset.fallbackStep || "0", 10);
-            if (step < LOGO_FALLBACKS.length) {
-                imgEl.dataset.fallbackStep = String(step + 1);
-                if (step >= 1) imgEl.removeAttribute("crossorigin");
-                imgEl.src = LOGO_FALLBACKS[step];
-            } else {
-                imgEl.onerror = null;
+        const SIGN_URLS = [
+            "https://wsrv.nl/?url=https%3A%2F%2Flh3.googleusercontent.com%2Fd%2F1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c&w=600&output=png",
+            "https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fthumbnail%3Fid%3D1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c%26sz%3Dw1000&output=png",
+            "https://wsrv.nl/?url=https%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c&output=png"
+        ];
+
+        let currentTheme = "green";
+        let currentSide = "front";
+        let logoImg = null;
+        let signImg = null;
+        let photoImg = null;
+        let lastBlobUrl = null;
+
+        // CORS-নিরাপদ ছবি লোডার (কখনো ক্যানভাস ব্লক করবে না)
+        function loadCorsImage(urlList) {
+            return new Promise(async (resolve) => {
+                for (const url of urlList) {
+                    try {
+                        const img = await new Promise((res, rej) => {
+                            const el = new Image();
+                            el.crossOrigin = "anonymous";
+                            const t = setTimeout(() => rej(new Error("timeout")), 4500);
+                            el.onload = () => { clearTimeout(t); res(el); };
+                            el.onerror = () => { clearTimeout(t); rej(new Error("error")); };
+                            el.src = url;
+                        });
+                        if (img && img.naturalWidth > 0) {
+                            return resolve(img);
+                        }
+                    } catch (e) {}
+                }
+                resolve(null);
+            });
+        }
+
+        // স্বাক্ষরের সাদা ব্যাকগ্রাউন্ড রিমুভ করে ট্রান্সপারেন্ট করা
+        function cleanSignatureBackground(img) {
+            try {
+                const c = document.createElement("canvas");
+                c.width = img.naturalWidth || img.width;
+                c.height = img.naturalHeight || img.height;
+                const ctx = c.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                const imgData = ctx.getImageData(0, 0, c.width, c.height);
+                const d = imgData.data;
+                for (let i = 0; i < d.length; i += 4) {
+                    const r = d[i], g = d[i + 1], b = d[i + 2];
+                    if (r > 215 && g > 215 && b > 215) {
+                        d[i + 3] = 0;
+                    } else {
+                        d[i] = Math.max(0, r - 45);
+                        d[i + 1] = Math.max(0, g - 45);
+                        d[i + 2] = Math.max(0, b - 45);
+                    }
+                }
+                ctx.putImageData(imgData, 0, 0);
+                return c;
+            } catch (e) {
+                return img;
             }
         }
 
-        // CORS-মুক্ত ডিফল্ট প্লেসহোল্ডার ছবি
-        const DEFAULT_PHOTO_SVG = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" width="340" height="400" viewBox="0 0 340 400">
-                <rect width="340" height="400" fill="#eef4f0"/>
-                <circle cx="170" cy="145" r="62" fill="#b8cec0"/>
-                <path d="M55,365 C55,275 105,235 170,235 C235,235 285,275 285,365 Z" fill="#b8cec0"/>
-                <text x="170" y="388" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="#476654">ছবি আপলোড করুন</text>
-            </svg>
-        `);
-
-        let uploadedPhotoImage = null;
-        let qrTimer = null;
-
-        // থিম পরিবর্তন ও SVG হেডার গ্রেডিয়েন্ট আপডেট
-        const THEME_SVG_COLORS = {
-            green:  ["#073317", "#0f5127", "#1b723b"],
-            navy:   ["#0b1f3a", "#143766", "#1e4f8f"],
-            maroon: ["#4a0d17", "#731625", "#961f33"]
-        };
-
-        function setCardTheme(themeName, btnEl) {
-            document.body.setAttribute('data-card-theme', themeName);
-            document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
-            if (btnEl) btnEl.classList.add('active');
-
-            const cols = THEME_SVG_COLORS[themeName] || THEME_SVG_COLORS.green;
-            document.getElementById('gradStop1').setAttribute('stop-color', cols[0]);
-            document.getElementById('gradStop2').setAttribute('stop-color', cols[1]);
-            document.getElementById('gradStop3').setAttribute('stop-color', cols[2]);
-        }
-
-        // ফ্রন্ট ও ব্যাক সাইড সুইচ
-        function switchSide(side) {
-            document.getElementById('tabFront').classList.toggle('active', side === 'front');
-            document.getElementById('tabBack').classList.toggle('active', side === 'back');
-            document.getElementById('paneFront').classList.toggle('active', side === 'front');
-            document.getElementById('paneBack').classList.toggle('active', side === 'back');
-            updatePreviewScale();
-        }
-
-        // মোবাইল ও ডেস্কটপে কার্ডের অটো স্কেলিং (নিচে বাড়তি ফাঁকা জায়গা থাকবে না)
-        function updatePreviewScale() {
-            const stage = document.getElementById('cardStage');
-            const maxAvailable = Math.min(window.innerWidth - 36, 400);
-            const scale = Math.min(maxAvailable / 540, 0.74);
-
-            stage.style.width = `${Math.round(540 * scale)}px`;
-            stage.style.height = `${Math.round(860 * scale)}px`;
-
-            ['idCardFront', 'idCardBack'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.transform = `scale(${scale})`;
-            });
-        }
-        window.addEventListener('resize', updatePreviewScale);
-
-        // ছবি আপলোড ও HD অটো-ক্রপ (html2canvas-এ ছবি যাতে কখনো চ্যাপ্টা না হয়)
-        function handlePhotoUpload(input) {
+        function handleLocalImage(input, type) {
             if (!input.files || !input.files[0]) return;
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    uploadedPhotoImage = img;
-                    document.getElementById('photoZoom').value = 1;
-                    document.getElementById('photoPosY').value = 0;
-                    renderCroppedPhoto();
+                    if (type === "photo") {
+                        photoImg = img;
+                        document.getElementById("photoZoom").value = 1;
+                        document.getElementById("photoPosY").value = 0;
+                    } else if (type === "logo") {
+                        logoImg = img;
+                    } else if (type === "sign") {
+                        signImg = cleanSignatureBackground(img);
+                    }
+                    renderPreview();
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(input.files[0]);
         }
 
-        function renderCroppedPhoto() {
-            const photoEl = document.getElementById('cardPhoto');
-            if (!uploadedPhotoImage) {
-                photoEl.src = DEFAULT_PHOTO_SVG;
-                return;
-            }
-
-            const canvas = document.createElement('canvas');
-            const targetW = 522; // 3x HD resolution (174 * 3)
-            const targetH = 612; // 3x HD resolution (204 * 3)
-            canvas.width = targetW;
-            canvas.height = targetH;
-            const ctx = canvas.getContext('2d');
-
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, targetW, targetH);
-
-            const zoom = parseFloat(document.getElementById('photoZoom').value) || 1;
-            const posYPercent = parseFloat(document.getElementById('photoPosY').value) || 0;
-
-            const imgRatio = uploadedPhotoImage.width / uploadedPhotoImage.height;
-            const boxRatio = targetW / targetH;
-
-            let drawW, drawH;
-            if (imgRatio > boxRatio) {
-                drawH = targetH * zoom;
-                drawW = drawH * imgRatio;
-            } else {
-                drawW = targetW * zoom;
-                drawH = drawW / imgRatio;
-            }
-
-            const dx = (targetW - drawW) / 2;
-            const dy = (targetH - drawH) / 2 + (posYPercent / 100) * targetH;
-
-            ctx.drawImage(uploadedPhotoImage, dx, dy, drawW, drawH);
-            photoEl.src = canvas.toDataURL('image/jpeg', 0.95);
+        function setCardTheme(themeName, btnEl) {
+            currentTheme = themeName;
+            document.body.setAttribute("data-card-theme", themeName);
+            document.querySelectorAll(".theme-dot").forEach(d => d.classList.remove("active"));
+            if (btnEl) btnEl.classList.add("active");
+            renderPreview();
         }
 
-        // লাইভ কার্ড আপডেট
-        function generateCard() {
-            const name  = document.getElementById('inpName').value.trim();
-            const desig = document.getElementById('inpDesig').value.trim();
-            const idNo  = document.getElementById('inpIdNo').value.trim();
-            const dept  = document.getElementById('inpDept').value.trim();
-            const shift = document.getElementById('inpShift').value.trim();
-            const phone = document.getElementById('inpPhone').value.trim();
-            const blood = document.getElementById('inpBlood').value.trim();
-            const issue = document.getElementById('inpIssue').value.trim();
-            const valid = document.getElementById('inpValid').value.trim();
-
-            document.getElementById('outName').innerText  = name || 'শিক্ষকের নাম';
-            document.getElementById('outDesig').innerText = desig || 'পদবী';
-            document.getElementById('outIdNo').innerText  = idNo || '-';
-            document.getElementById('outDept').innerText  = dept || '-';
-            document.getElementById('outShift').innerText = shift || '-';
-            document.getElementById('outPhone').innerText = phone || '-';
-            document.getElementById('outBlood').innerText = blood || '-';
-            document.getElementById('outIssue').innerText = issue || '-';
-            document.getElementById('outValid').innerText = valid || '-';
-
-            // টাইপ করার সময় QR কোড ডিবাউন্স করে আপডেট করা
-            clearTimeout(qrTimer);
-            qrTimer = setTimeout(() => {
-                const qrText = `প্রতিষ্ঠান: ইবনে তাইমিয়া স্কুল এন্ড কলেজ\nনাম: ${name}\nপদবী: ${desig}\nআইডি: ${idNo}\nডিপার্টমেন্ট: ${dept}\nশিফট: ${shift}\nফোন: ${phone}\nরক্তের গ্রুপ: ${blood}`;
-                const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=1&data=" + encodeURIComponent(qrText);
-                document.getElementById('qrCodeFront').src = qrUrl;
-                document.getElementById('qrCodeBack').src = qrUrl;
-            }, 250);
+        function switchSide(side) {
+            currentSide = side;
+            document.getElementById("tabFront").classList.toggle("active", side === "front");
+            document.getElementById("tabBack").classList.toggle("active", side === "back");
+            renderPreview();
         }
 
-        // HD PNG ডাউনলোড ফাংশন (Front বা Back যেকোনো সাইড)
-        async function downloadCard(side) {
-            const btn = document.getElementById(side === 'front' ? 'btnDlFront' : 'btnDlBack');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> তৈরি হচ্ছে...`;
-            btn.disabled = true;
+        function getFormData() {
+            return {
+                name:  document.getElementById("inpName").value.trim()  || "শিক্ষকের নাম",
+                desig: document.getElementById("inpDesig").value.trim() || "পদবী",
+                idNo:  document.getElementById("inpIdNo").value.trim()  || "-",
+                dept:  document.getElementById("inpDept").value.trim()  || "-",
+                shift: document.getElementById("inpShift").value.trim() || "-",
+                phone: document.getElementById("inpPhone").value.trim() || "-",
+                blood: document.getElementById("inpBlood").value.trim() || "-",
+                issue: document.getElementById("inpIssue").value.trim() || "-",
+                valid: document.getElementById("inpValid").value.trim() || "-",
+                zoom:  parseFloat(document.getElementById("photoZoom").value) || 1,
+                posY:  parseFloat(document.getElementById("photoPosY").value) || 0
+            };
+        }
 
-            const currentActiveIsFront = document.getElementById('paneFront').classList.contains('active');
-            const targetPane = document.getElementById(side === 'front' ? 'paneFront' : 'paneBack');
-            const targetCard = document.getElementById(side === 'front' ? 'idCardFront' : 'idCardBack');
+        function drawRoundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
 
-            // যেই সাইড ডাউনলোড করা হবে তা সাময়িকভাবে ভিজিবল করে নেওয়া
-            const wasHidden = !targetPane.classList.contains('active');
-            if (wasHidden) {
-                targetPane.style.display = 'block';
-                targetPane.style.position = 'fixed';
-                targetPane.style.left = '-9999px';
-                targetPane.style.top = '0';
+        function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(" ");
+            let line = "";
+            let currY = y;
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + (line ? " " : "") + words[i];
+                if (ctx.measureText(testLine).width > maxWidth && line) {
+                    ctx.fillText(line, x, currY);
+                    line = words[i];
+                    currY += lineHeight;
+                } else {
+                    line = testLine;
+                }
             }
+            if (line) {
+                ctx.fillText(line, x, currY);
+                currY += lineHeight;
+            }
+            return currY;
+        }
 
-            // সব ছবি লোড নিশ্চিত করা
-            const images = Array.from(targetCard.querySelectorAll('img'));
-            await Promise.all(images.map(img => {
-                if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
-                return new Promise(res => {
-                    img.addEventListener('load', res, { once: true });
-                    img.addEventListener('error', res, { once: true });
+        function drawContainImage(ctx, img, x, y, w, h) {
+            const iw = img.naturalWidth || img.width;
+            const ih = img.naturalHeight || img.height;
+            if (!iw || !ih) return;
+            const scale = Math.min(w / iw, h / ih);
+            const dw = iw * scale;
+            const dh = ih * scale;
+            ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+        }
+
+        function createLocalQRCanvas(data) {
+            const qrText = `ITSC | ${data.name} | ${data.desig} | ID: ${data.idNo} | Dept: ${data.dept} | Shift: ${data.shift} | Tel: ${data.phone} | Blood: ${data.blood}`;
+            if (typeof QRious === "function") {
+                const qr = new QRious({
+                    value: qrText,
+                    size: 260,
+                    level: "M",
+                    background: "#ffffff",
+                    foreground: "#0f172a"
                 });
-            }));
+                return qr.canvas;
+            }
+            return null;
+        }
 
-            const prevTransform = targetCard.style.transform;
-            targetCard.style.transform = 'none';
+        function drawCardBase(ctx, theme) {
+            // মূল সাদা ও হালকা গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড
+            const bgGrad = ctx.createLinearGradient(0, 0, 540, 860);
+            bgGrad.addColorStop(0, "#ffffff");
+            bgGrad.addColorStop(1, theme.softBg);
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, 540, 860);
+
+            // সূক্ষ্ম ডট প্যাটার্ন
+            ctx.fillStyle = theme.dot;
+            for (let gx = 14; gx < 540; gx += 20) {
+                for (let gy = 14; gy < 860; gy += 20) {
+                    ctx.beginPath();
+                    ctx.arc(gx, gy, 1.3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // ওয়াটারমার্ক লোগো
+            if (logoImg) {
+                ctx.save();
+                ctx.globalAlpha = 0.055;
+                drawContainImage(ctx, logoImg, 105, 300, 330, 330);
+                ctx.restore();
+            }
+
+            // সূক্ষ্ম সোনালি ইনার বর্ডার
+            ctx.save();
+            drawRoundRect(ctx, 10, 10, 520, 840, 12);
+            ctx.strokeStyle = "rgba(200, 157, 67, 0.45)";
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawBottomBar(ctx, theme, text) {
+            const barGrad = ctx.createLinearGradient(0, 824, 540, 824);
+            barGrad.addColorStop(0, theme.dark);
+            barGrad.addColorStop(0.5, theme.main);
+            barGrad.addColorStop(1, theme.dark);
+            ctx.fillStyle = barGrad;
+            ctx.fillRect(0, 824, 540, 36);
+
+            ctx.fillStyle = theme.accent;
+            ctx.fillRect(0, 822, 540, 3);
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = '600 13.5px "Hind Siliguri", sans-serif';
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, 270, 843);
+        }
+
+        function drawFrontCard(ctx, data, theme) {
+            drawCardBase(ctx, theme);
+
+            // ১. ডুয়েল-লেয়ার গোল্ড + প্রাইমারি কার্ভ হেডার
+            const goldGrad = ctx.createLinearGradient(0, 0, 540, 0);
+            goldGrad.addColorStop(0, "#a87c28");
+            goldGrad.addColorStop(0.5, "#f3dba0");
+            goldGrad.addColorStop(1, "#a87c28");
+
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(540, 0);
+            ctx.lineTo(540, 206);
+            ctx.quadraticCurveTo(270, 248, 0, 206);
+            ctx.closePath();
+            ctx.fillStyle = goldGrad;
+            ctx.fill();
+
+            const hdrGrad = ctx.createLinearGradient(0, 0, 540, 230);
+            hdrGrad.addColorStop(0, theme.dark);
+            hdrGrad.addColorStop(0.55, theme.main);
+            hdrGrad.addColorStop(1, theme.light);
+
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(540, 0);
+            ctx.lineTo(540, 198);
+            ctx.quadraticCurveTo(270, 240, 0, 198);
+            ctx.closePath();
+            ctx.fillStyle = hdrGrad;
+            ctx.fill();
+
+            // হালকা ডেকোরেটিভ হাইলাইট
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(540, 0);
+            ctx.lineTo(540, 92);
+            ctx.quadraticCurveTo(350, 140, 0, 68);
+            ctx.closePath();
+            ctx.fillStyle = "rgba(255, 255, 255, 0.06)";
+            ctx.fill();
+
+            // ২. স্কুল লোগো রিং
+            ctx.save();
+            ctx.shadowColor = "rgba(0, 0, 0, 0.28)";
+            ctx.shadowBlur = 14;
+            ctx.shadowOffsetY = 5;
+            ctx.beginPath();
+            ctx.arc(270, 57, 40, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.restore();
+
+            ctx.beginPath();
+            ctx.arc(270, 57, 40, 0, Math.PI * 2);
+            ctx.strokeStyle = theme.accentLight;
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            if (logoImg) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(270, 57, 36, 0, Math.PI * 2);
+                ctx.clip();
+                drawContainImage(ctx, logoImg, 234, 21, 72, 72);
+                ctx.restore();
+            } else {
+                ctx.fillStyle = theme.main;
+                ctx.font = '700 20px "Poppins", sans-serif';
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("ITSC", 270, 58);
+            }
+
+            // ৩. স্কুলের নাম (বাংলা ও ইংরেজি)
+            ctx.save();
+            ctx.shadowColor = "rgba(0, 0, 0, 0.35)";
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetY = 2;
+            ctx.fillStyle = "#ffffff";
+            ctx.font = '700 31px "Tiro Bangla", "Hind Siliguri", sans-serif';
+            ctx.textAlign = "center";
+            ctx.textBaseline = "alphabetic";
+            ctx.fillText("ইবনে তাইমিয়া স্কুল এন্ড কলেজ", 270, 134);
+            ctx.restore();
+
+            ctx.fillStyle = theme.accentLight;
+            ctx.font = '700 12.8px "Poppins", Arial, sans-serif';
+            ctx.textAlign = "center";
+            ctx.fillText("IBN TAIMIYA SCHOOL & COLLEGE  •  EIIN: 105751", 270, 156);
+
+            // ৪. শিক্ষকের ছবির ফ্রেম
+            const px = 183, py = 186, pw = 174, ph = 204;
+            ctx.save();
+            ctx.shadowColor = "rgba(15, 23, 42, 0.24)";
+            ctx.shadowBlur = 22;
+            ctx.shadowOffsetY = 10;
+            drawRoundRect(ctx, px, py, pw, ph, 16);
+            const frameGrad = ctx.createLinearGradient(px, py, px + pw, py + ph);
+            frameGrad.addColorStop(0, theme.accentLight);
+            frameGrad.addColorStop(1, theme.accent);
+            ctx.fillStyle = frameGrad;
+            ctx.fill();
+            ctx.restore();
+
+            drawRoundRect(ctx, px + 5, py + 5, pw - 10, ph - 10, 12);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+
+            // ছবি ক্লিপ ও ড্র
+            const ix = px + 8, iy = py + 8, iw = pw - 16, ih = ph - 16;
+            ctx.save();
+            drawRoundRect(ctx, ix, iy, iw, ih, 9);
+            ctx.clip();
+            ctx.fillStyle = "#eef4f0";
+            ctx.fillRect(ix, iy, iw, ih);
+
+            if (photoImg) {
+                const imgRatio = photoImg.width / photoImg.height;
+                const boxRatio = iw / ih;
+                let drawW, drawH;
+                if (imgRatio > boxRatio) {
+                    drawH = ih * data.zoom;
+                    drawW = drawH * imgRatio;
+                } else {
+                    drawW = iw * data.zoom;
+                    drawH = drawW / imgRatio;
+                }
+                const dx = ix + (iw - drawW) / 2;
+                const dy = iy + (ih - drawH) / 2 + (data.posY / 100) * ih;
+                ctx.drawImage(photoImg, dx, dy, drawW, drawH);
+            } else {
+                // ক্লিন ভেক্টর প্লেসহোল্ডার
+                ctx.fillStyle = "#b8cec0";
+                ctx.beginPath();
+                ctx.arc(ix + iw / 2, iy + 68, 30, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(ix + iw / 2, iy + 178, 56, Math.PI, 0);
+                ctx.fill();
+                ctx.fillStyle = "#476654";
+                ctx.font = '600 13px "Hind Siliguri", sans-serif';
+                ctx.textAlign = "center";
+                ctx.fillText("ছবি আপলোড করুন", ix + iw / 2, iy + ih - 12);
+            }
+            ctx.restore();
+
+            // ৫. শিক্ষকের নাম
+            ctx.fillStyle = theme.dark;
+            ctx.font = '700 30px "Hind Siliguri", sans-serif';
+            ctx.textAlign = "center";
+            ctx.textBaseline = "alphabetic";
+            ctx.fillText(data.name, 270, 428);
+
+            // ৬. পদবী ও আইডি ব্যাজ (পাশাপাশি সেন্টার্ড)
+            ctx.font = '600 16px "Hind Siliguri", sans-serif';
+            const desigW = Math.max(120, ctx.measureText(data.desig).width + 38);
+            const idText = "ID: " + data.idNo;
+            ctx.font = '700 13.5px "Poppins", "Hind Siliguri", sans-serif';
+            const idW = Math.max(105, ctx.measureText(idText).width + 26);
+
+            const pillGap = 10;
+            const totalPillW = desigW + idW + pillGap;
+            const startX = (540 - totalPillW) / 2;
+            const pillY = 442;
+            const pillH = 33;
+
+            // পদবী পিল
+            const pillGrad = ctx.createLinearGradient(startX, pillY, startX + desigW, pillY + pillH);
+            pillGrad.addColorStop(0, theme.main);
+            pillGrad.addColorStop(1, theme.light);
+            drawRoundRect(ctx, startX, pillY, desigW, pillH, 17);
+            ctx.fillStyle = pillGrad;
+            ctx.fill();
+            ctx.strokeStyle = theme.accent;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = '600 16px "Hind Siliguri", sans-serif';
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(data.desig, startX + desigW / 2, pillY + pillH / 2 + 1);
+
+            // আইডি পিল
+            const idX = startX + desigW + pillGap;
+            drawRoundRect(ctx, idX, pillY, idW, pillH, 17);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.strokeStyle = theme.accent;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.fillStyle = theme.dark;
+            ctx.font = '700 13.5px "Poppins", "Hind Siliguri", sans-serif';
+            ctx.fillText(idText, idX + idW / 2, pillY + pillH / 2 + 1);
+
+            // ৭. তথ্যের কার্ড বক্স
+            const bx = 36, by = 492, bw = 468, bh = 188;
+            ctx.save();
+            ctx.shadowColor = "rgba(15, 23, 42, 0.06)";
+            ctx.shadowBlur = 16;
+            ctx.shadowOffsetY = 5;
+            drawRoundRect(ctx, bx, by, bw, bh, 14);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+            ctx.fill();
+            ctx.restore();
+
+            drawRoundRect(ctx, bx, by, bw, bh, 14);
+            ctx.strokeStyle = theme.borderSoft;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            const rows = [
+                { label: "ডিপার্টমেন্ট", val: data.dept,  isBlood: false },
+                { label: "শিফট",        val: data.shift, isBlood: false },
+                { label: "ফোন",         val: data.phone, isBlood: false },
+                { label: "রক্তের গ্রুপ", val: data.blood, isBlood: true  }
+            ];
+
+            rows.forEach((row, idx) => {
+                const ry = by + 28 + idx * 44;
+
+                // বিভাজক ড্যাশ লাইন
+                if (idx > 0) {
+                    ctx.save();
+                    ctx.setLineDash([4, 4]);
+                    ctx.strokeStyle = "#e2e8f0";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(bx + 18, ry - 22);
+                    ctx.lineTo(bx + bw - 18, ry - 22);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                // বাম আইকন বক্স
+                drawRoundRect(ctx, bx + 18, ry - 12, 24, 24, 6);
+                ctx.fillStyle = row.isBlood ? "#fef2f2" : theme.softBg;
+                ctx.fill();
+
+                ctx.fillStyle = row.isBlood ? "#dc2626" : theme.main;
+                ctx.beginPath();
+                ctx.arc(bx + 30, ry, 4.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                // লেবেল ও কোলন
+                ctx.textAlign = "left";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = "#475569";
+                ctx.font = '600 17.5px "Hind Siliguri", sans-serif';
+                ctx.fillText(row.label, bx + 54, ry + 1);
+
+                ctx.fillStyle = "#94a3b8";
+                ctx.font = '700 17.5px "Hind Siliguri", sans-serif';
+                ctx.fillText(":", bx + 162, ry + 1);
+
+                // ভ্যালু
+                if (row.isBlood) {
+                    ctx.font = '700 16.5px "Hind Siliguri", sans-serif';
+                    const bloodW = ctx.measureText(row.val).width + 24;
+                    drawRoundRect(ctx, bx + 180, ry - 13, bloodW, 27, 13);
+                    ctx.fillStyle = "#fef2f2";
+                    ctx.fill();
+                    ctx.strokeStyle = "#fecaca";
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    ctx.fillStyle = "#b91c1c";
+                    ctx.fillText(row.val, bx + 192, ry + 1);
+                } else {
+                    ctx.fillStyle = "#0f172a";
+                    ctx.font = '700 18px "Hind Siliguri", sans-serif';
+                    ctx.fillText(row.val, bx + 180, ry + 1);
+                }
+            });
+
+            // ৮. ফুটার (অধ্যক্ষের স্বাক্ষর + QR কোড)
+            if (signImg) {
+                drawContainImage(ctx, signImg, 54, 695, 190, 74);
+            }
+
+            const sigGrad = ctx.createLinearGradient(44, 772, 254, 772);
+            sigGrad.addColorStop(0, "rgba(7,51,23,0)");
+            sigGrad.addColorStop(0.2, theme.dark);
+            sigGrad.addColorStop(0.8, theme.dark);
+            sigGrad.addColorStop(1, "rgba(7,51,23,0)");
+            ctx.fillStyle = sigGrad;
+            ctx.fillRect(44, 772, 210, 2);
+
+            ctx.textAlign = "center";
+            ctx.textBaseline = "alphabetic";
+            ctx.fillStyle = theme.dark;
+            ctx.font = '700 16.5px "Hind Siliguri", sans-serif';
+            ctx.fillText("অধ্যক্ষ", 149, 793);
+            ctx.fillStyle = "#64748b";
+            ctx.font = '600 12px "Hind Siliguri", sans-serif';
+            ctx.fillText("ইবনে তাইমিয়া স্কুল এন্ড কলেজ", 149, 810);
+
+            // QR কোড ফ্রেম
+            const qx = 406, qy = 698, qs = 96;
+            ctx.save();
+            ctx.shadowColor = "rgba(15, 23, 42, 0.12)";
+            ctx.shadowBlur = 12;
+            ctx.shadowOffsetY = 4;
+            drawRoundRect(ctx, qx, qy, qs, qs, 10);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.restore();
+
+            drawRoundRect(ctx, qx, qy, qs, qs, 10);
+            ctx.strokeStyle = theme.accent;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            const qrCanvas = createLocalQRCanvas(data);
+            if (qrCanvas) {
+                ctx.drawImage(qrCanvas, qx + 6, qy + 6, qs - 12, qs - 12);
+            }
+
+            ctx.fillStyle = "#64748b";
+            ctx.font = '700 11px "Hind Siliguri", sans-serif';
+            ctx.textAlign = "center";
+            ctx.fillText("স্ক্যান করুন", qx + qs / 2, 810);
+
+            // ৯. অফিশিয়াল বটম বার
+            drawBottomBar(ctx, theme, "১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা   •   www.itsc.edu.bd");
+        }
+
+        function drawBackCard(ctx, data, theme) {
+            drawCardBase(ctx, theme);
+
+            // ১. ব্যাক হেডার
+            const hdrGrad = ctx.createLinearGradient(0, 0, 540, 95);
+            hdrGrad.addColorStop(0, theme.dark);
+            hdrGrad.addColorStop(1, theme.main);
+            ctx.fillStyle = hdrGrad;
+            ctx.fillRect(0, 0, 540, 96);
+
+            ctx.fillStyle = theme.accent;
+            ctx.fillRect(0, 96, 540, 5);
+
+            ctx.textAlign = "center";
+            ctx.textBaseline = "alphabetic";
+            ctx.fillStyle = "#ffffff";
+            ctx.font = '700 22px "Hind Siliguri", sans-serif';
+            ctx.fillText("শিক্ষক পরিচয়পত্র  •  নির্দেশনাবলী", 270, 46);
+
+            ctx.fillStyle = theme.accentLight;
+            ctx.font = '600 12px "Poppins", Arial, sans-serif';
+            ctx.fillText("OFFICIAL TEACHER IDENTITY CARD", 270, 72);
+
+            // ২. ডিজিটাল ভেরিফিকেশন QR কার্ড
+            const qbx = 36, qby = 122, qbw = 468, qbh = 152;
+            drawRoundRect(ctx, qbx, qby, qbw, qbh, 14);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.strokeStyle = theme.borderSoft;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            drawRoundRect(ctx, qbx + 16, qby + 15, 122, 122, 10);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.strokeStyle = theme.accent;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            const qrCanvas = createLocalQRCanvas(data);
+            if (qrCanvas) {
+                ctx.drawImage(qrCanvas, qbx + 22, qby + 21, 110, 110);
+            }
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = theme.dark;
+            ctx.font = '700 19px "Hind Siliguri", sans-serif';
+            ctx.fillText("ডিজিটাল ভেরিফিকেশন", qbx + 156, qby + 44);
+
+            ctx.fillStyle = "#475569";
+            ctx.font = '500 14.5px "Hind Siliguri", sans-serif';
+            drawWrappedText(
+                ctx,
+                "এই QR কোডটি স্ক্যান করলে শিক্ষকের নাম, পদবী, আইডি নম্বর, জরুরি ফোন নম্বর ও রক্তের গ্রুপ তাৎক্ষণিক দেখা যাবে।",
+                qbx + 156, qby + 72, 292, 22
+            );
+
+            // ৩. ব্যবহারের শর্তাবলী বক্স
+            const rbx = 36, rby = 294, rbw = 468, rbh = 224;
+            drawRoundRect(ctx, rbx, rby, rbw, rbh, 12);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+            ctx.fill();
+            ctx.strokeStyle = theme.borderSoft;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // বাম গোল্ড অ্যাক্সেন্ট বার
+            drawRoundRect(ctx, rbx, rby, 6, rbh, 3);
+            ctx.fillStyle = theme.accent;
+            ctx.fill();
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = theme.dark;
+            ctx.font = '700 18px "Hind Siliguri", sans-serif';
+            ctx.fillText("ব্যবহারের শর্তাবলী", rbx + 24, rby + 34);
+
+            const rules = [
+                "এই পরিচয়পত্রটি প্রতিষ্ঠানের সম্পত্তি এবং কোনো অবস্থাতেই হস্তান্তরযোগ্য নয়।",
+                "প্রতিষ্ঠান চলাকালীন সময়ে এই কার্ডটি দৃশ্যমানভাবে সাথে রাখা আবশ্যক।",
+                "কার্ডটি হারিয়ে গেলে দ্রুত অধ্যক্ষ কার্যালয়ে অবহিত করার অনুরোধ করা হলো।",
+                "কেউ কার্ডটি খুঁজে পেলে অনুগ্রহ করে নিচের ঠিকানায় জমা দিন।"
+            ];
+
+            let ruleY = rby + 64;
+            ctx.font = '500 14.5px "Hind Siliguri", sans-serif';
+            rules.forEach(rule => {
+                ctx.fillStyle = theme.main;
+                ctx.beginPath();
+                ctx.arc(rbx + 28, ruleY - 5, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "#334155";
+                ruleY = drawWrappedText(ctx, rule, rbx + 42, ruleY, 408, 20) + 6;
+            });
+
+            // ৪. ইস্যু ও মেয়াদ বক্স
+            const vy = 538, vh = 68;
+            const drawValidityBox = (x, title, val) => {
+                drawRoundRect(ctx, x, vy, 228, vh, 12);
+                ctx.fillStyle = "#ffffff";
+                ctx.fill();
+                ctx.strokeStyle = theme.borderSoft;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                ctx.textAlign = "center";
+                ctx.fillStyle = "#64748b";
+                ctx.font = '600 13px "Hind Siliguri", sans-serif';
+                ctx.fillText(title, x + 114, vy + 26);
+
+                ctx.fillStyle = theme.dark;
+                ctx.font = '700 17px "Hind Siliguri", sans-serif';
+                ctx.fillText(val, x + 114, vy + 52);
+            };
+            drawValidityBox(36,  "ইস্যু তারিখ (Issue Date)", data.issue);
+            drawValidityBox(276, "মেয়াদ উত্তীর্ণ (Valid Till)", data.valid);
+
+            // ৫. প্রতিষ্ঠানের যোগাযোগ কার্ড
+            const cbx = 36, cby = 626, cbw = 468, cbh = 172;
+            const contactGrad = ctx.createLinearGradient(cbx, cby, cbx + cbw, cby + cbh);
+            contactGrad.addColorStop(0, theme.dark);
+            contactGrad.addColorStop(1, theme.main);
+
+            drawRoundRect(ctx, cbx, cby, cbw, cbh, 14);
+            ctx.fillStyle = contactGrad;
+            ctx.fill();
+            ctx.strokeStyle = theme.accent;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#ffffff";
+            ctx.font = '700 22px "Tiro Bangla", "Hind Siliguri", sans-serif';
+            ctx.fillText("ইবনে তাইমিয়া স্কুল এন্ড কলেজ", 270, cby + 38);
+
+            // EIIN ব্যাজ
+            drawRoundRect(ctx, 178, cby + 48, 184, 24, 12);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.14)";
+            ctx.fill();
+            ctx.fillStyle = theme.accentLight;
+            ctx.font = '700 12px "Poppins", "Hind Siliguri", sans-serif';
+            ctx.fillText("EIIN: 105751  •  স্থাপিত: ১৯৭৯", 270, cby + 64);
+
+            ctx.fillStyle = "#f1f5f9";
+            ctx.font = '500 14.5px "Hind Siliguri", sans-serif';
+            ctx.fillText("১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা", 270, cby + 98);
+            ctx.fillText("ফোন: ০২৩৩৪৪০৫৭৪৪   |   www.itsc.edu.bd", 270, cby + 124);
+            ctx.fillText("ই-মেইল: ibntaimia1979@gmail.com", 270, cby + 150);
+
+            // ৬. বটম বার
+            drawBottomBar(ctx, theme, "শিক্ষা  •  শৃঙ্খলা  •  নৈতিকতা   |   IT Department");
+        }
+
+        function drawCardToCanvas(canvas, side) {
+            const ctx = canvas.getContext("2d");
+            const data = getFormData();
+            const theme = THEMES[currentTheme] || THEMES.green;
+
+            ctx.save();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 1080 x 1720 = 2x HD of 540 x 860 (CR80 Exact Ratio)
+            ctx.scale(canvas.width / 540, canvas.height / 860);
+
+            if (side === "front") {
+                drawFrontCard(ctx, data, theme);
+            } else {
+                drawBackCard(ctx, data, theme);
+            }
+            ctx.restore();
+        }
+
+        function renderPreview() {
+            const canvas = document.getElementById("cardCanvas");
+            drawCardToCanvas(canvas, currentSide);
+        }
+
+        // ১০০% নির্ভরযোগ্য তাৎক্ষণিক HD ডাউনলোড ফাংশন
+        function downloadCard(side) {
+            switchSide(side);
+
+            // এক্সপোর্টের জন্য আলাদা হাই-রেজোলিউশন ক্যানভাস (1080 x 1720 px, CR80 অনুপাত)
+            const exportCanvas = document.createElement("canvas");
+            exportCanvas.width = 1080;
+            exportCanvas.height = 1720;
+            drawCardToCanvas(exportCanvas, side);
+
+            const data = getFormData();
+            const safeName = data.name.replace(/[^\u0980-\u09FFa-zA-Z0-9]+/g, "_");
+            const fileName = `ID_${side === "front" ? "Front" : "Back"}_${safeName}.png`;
+
+            const readyBox = document.getElementById("downloadReadyBox");
 
             try {
-                const canvas = await html2canvas(targetCard, {
-                    scale: 4, // 2160 x 3440 পিক্সেল আল্ট্রা HD প্রিন্ট কোয়ালিটি
-                    useCORS: true,
-                    allowTaint: false,
-                    backgroundColor: '#ffffff',
-                    scrollX: 0,
-                    scrollY: 0
-                });
+                const dataUrl = exportCanvas.toDataURL("image/png", 1.0);
 
-                const safeName = (document.getElementById('inpName').value.trim() || 'Teacher').replace(/\s+/g, '_');
-                const link = document.createElement('a');
-                link.download = `ID_${side === 'front' ? 'Front' : 'Back'}_${safeName}.png`;
-                link.href = canvas.toDataURL('image/png', 1.0);
-                link.click();
-            } finally {
-                targetCard.style.transform = prevTransform;
-                if (wasHidden) {
-                    targetPane.style.display = '';
-                    targetPane.style.position = '';
-                    targetPane.style.left = '';
-                    targetPane.style.top = '';
-                    switchSide(currentActiveIsFront ? 'front' : 'back');
+                // Blob URL তৈরি করে অটো-ডাউনলোড ট্রিগার
+                const triggerDownload = (hrefUrl) => {
+                    const a = document.createElement("a");
+                    a.href = hrefUrl;
+                    a.download = fileName;
+                    a.style.display = "none";
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(() => {
+                        if (a.parentNode) document.body.removeChild(a);
+                    }, 300);
+                };
+
+                if (exportCanvas.toBlob) {
+                    exportCanvas.toBlob((blob) => {
+                        if (blob) {
+                            if (lastBlobUrl) URL.revokeObjectURL(lastBlobUrl);
+                            lastBlobUrl = URL.createObjectURL(blob);
+                            triggerDownload(lastBlobUrl);
+                            showReadyBox(lastBlobUrl, dataUrl, fileName, side);
+                        } else {
+                            triggerDownload(dataUrl);
+                            showReadyBox(dataUrl, dataUrl, fileName, side);
+                        }
+                    }, "image/png", 1.0);
+                } else {
+                    triggerDownload(dataUrl);
+                    showReadyBox(dataUrl, dataUrl, fileName, side);
                 }
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
+            } catch (err) {
+                readyBox.style.display = "block";
+                readyBox.innerHTML = `<p style="color:#b91c1c;">ডাউনলোডে সমস্যা হয়েছে: ${err.message}</p>`;
             }
         }
 
-        window.addEventListener('load', () => {
-            document.getElementById('cardPhoto').src = DEFAULT_PHOTO_SVG;
-            generateCard();
-            updatePreviewScale();
-        });
+        function showReadyBox(dlHref, previewSrc, fileName, side) {
+            const readyBox = document.getElementById("downloadReadyBox");
+            readyBox.style.display = "block";
+            readyBox.innerHTML = `
+                <p><i class="fa-solid fa-circle-check"></i> ${side === "front" ? "ফ্রন্ট" : "ব্যাক"} সাইড HD কার্ড তৈরি হয়েছে (1080 × 1720 px)!</p>
+                <a href="${dlHref}" download="${fileName}" class="manual-dl-link">
+                    <i class="fa-solid fa-floppy-disk"></i> এখানে ট্যাপ করে ডাউনলোড করুন
+                </a>
+                <img src="${previewSrc}" alt="ID Card Preview" class="saved-img-preview">
+                <p class="save-hint">মোবাইলে অটো-ডাউনলোড না হলে উপরের ছবিটির ওপর চেপে ধরে (Long Press) "Download image" দিন।</p>
+            `;
+            readyBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+
+        // শুরুতেই ফন্ট, লোগো ও স্বাক্ষর লোড করে কার্ড রেন্ডার করা
+        async function initApp() {
+            renderPreview();
+
+            try {
+                await document.fonts.ready;
+                renderPreview();
+            } catch (e) {}
+
+            const [loadedLogo, loadedSign] = await Promise.all([
+                loadCorsImage(LOGO_URLS),
+                loadCorsImage(SIGN_URLS)
+            ]);
+
+            if (loadedLogo) logoImg = loadedLogo;
+            if (loadedSign) signImg = cleanSignatureBackground(loadedSign);
+
+            renderPreview();
+        }
+
+        window.addEventListener("load", initApp);
     </script>
 </body>
 </html>
