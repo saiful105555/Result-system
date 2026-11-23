@@ -43,32 +43,30 @@
 
         /* EXACT ID CARD DIMENSIONS & STYLING */
         .id-card-wrapper {
-            width: 540px; 
-            height: 860px; 
+            width: 540px;
+            height: 860px;
             background: linear-gradient(135deg, #ffffff 0%, #f4f7f5 80%, #e8f0eb 100%);
-            position: relative; 
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
-            transform: scale(0.7); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            transform: scale(0.7);
             transform-origin: top center;
             border-radius: 16px;
             border: 1px solid #dcdcdc;
         }
 
-        /* Background Watermark */
-        .id-card-wrapper::before {
-            content: '';
+        /* Background Watermark Image (HD ডাউনলোডেও সঠিকভাবে আসবে) */
+        .card-watermark {
             position: absolute;
             top: 55%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 350px;
             height: 350px;
-            background-image: url('https://lh3.googleusercontent.com/d/1m5vaCV-l0bkI_P8i3Oq0XgvbgMUBKcR5');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.05; /* Faint watermark */
+            object-fit: contain;
+            opacity: 0.06;
             z-index: 1;
+            pointer-events: none;
         }
 
         /* Curved Header */
@@ -92,6 +90,7 @@
             background: #fff;
             padding: 4px;
             margin-bottom: 12px;
+            object-fit: contain;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border: 2px solid #c5a059;
         }
@@ -140,20 +139,20 @@
             position: relative;
             z-index: 2;
         }
-        .title-area h1 { 
-            font-size: 32px; 
-            color: #0a3d19; 
-            margin-bottom: 8px; 
-            font-weight: 700; 
+        .title-area h1 {
+            font-size: 32px;
+            color: #0a3d19;
+            margin-bottom: 8px;
+            font-weight: 700;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
         /* Modern Designation Badge */
-        .title-area h2 { 
+        .title-area h2 {
             display: inline-block;
-            font-size: 19px; 
-            color: #fff; 
-            font-weight: 600; 
+            font-size: 19px;
+            color: #fff;
+            font-weight: 600;
             background: linear-gradient(135deg, #c5a059 0%, #a47c32 100%);
             padding: 6px 25px;
             border-radius: 30px;
@@ -182,7 +181,7 @@
             z-index: 2;
             align-items: center;
         }
-        .details-grid i { color: #176a2f; font-size: 18px; text-align: center; } /* Icons Color */
+        .details-grid i { color: #176a2f; font-size: 18px; text-align: center; }
         .details-grid .label { color: #555; }
         .details-grid .colon { text-align: center; color: #777; }
         .details-grid .value { color: #111; font-weight: 700; }
@@ -207,13 +206,13 @@
             width: 260px;
         }
         .signature-area img {
-            width: 250px; 
-            height: 110px; 
+            width: 250px;
+            height: 110px;
             object-fit: contain;
-            margin: 0 auto -20px auto; /* নেগেটিভ মার্জিন */
+            margin: 0 auto -20px auto;
             display: block;
-            mix-blend-mode: multiply; 
-            filter: grayscale(100%) contrast(5) brightness(0.3); 
+            mix-blend-mode: multiply;
+            filter: grayscale(100%) contrast(5) brightness(0.3);
         }
         .signature-line {
             width: 100%;
@@ -240,7 +239,10 @@
         }
         .qr-area img { width: 100%; height: 100%; object-fit: contain; }
 
-        @media (max-width: 900px) { body { flex-direction: column; align-items: center; } .id-card-wrapper { transform: scale(0.6); } }
+        @media (max-width: 900px) {
+            body { flex-direction: column; align-items: center; }
+            .id-card-wrapper { transform: scale(0.6); }
+        }
     </style>
 </head>
 <body>
@@ -285,11 +287,22 @@
     <div class="preview-section">
         <div class="id-card-wrapper" id="idCard">
 
+            <!-- Watermark Logo -->
+            <img class="card-watermark"
+                 src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD"
+                 crossorigin="anonymous"
+                 onerror="handleLogoFallback(this)"
+                 alt="Watermark">
+
             <!-- Modern Header -->
             <div class="card-header">
-                <img class="header-logo" src="https://lh3.googleusercontent.com/d/1m5vaCV-l0bkI_P8i3Oq0XgvbgMUBKcR5" onerror="this.src='https://drive.google.com/uc?export=view&id=1m5vaCV-l0bkI_P8i3Oq0XgvbgMUBKcR5';" crossorigin="anonymous" alt="Logo">
+                <img class="header-logo"
+                     src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD"
+                     crossorigin="anonymous"
+                     onerror="handleLogoFallback(this)"
+                     alt="Logo">
                 <div class="school-name-bn">ইবনে তাইমিয়া স্কুল এন্ড কলেজ</div>
-                <div class="school-name-en">IBN TAIMIYA SCHOOL & COLLEGE - EIIN NO:105751</div>
+                <div class="school-name-en">IBN TAIMIYA SCHOOL &amp; COLLEGE - EIIN NO:105751</div>
             </div>
 
             <!-- Teacher Photo -->
@@ -324,7 +337,10 @@
             <div class="card-footer">
                 <!-- Signature Area -->
                 <div class="signature-area">
-                    <img src="https://lh3.googleusercontent.com/d/1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c" onerror="this.src='https://drive.google.com/uc?export=view&id=1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c';" crossorigin="anonymous" alt="Signature">
+                    <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c"
+                         onerror="this.onerror=null; this.removeAttribute('crossorigin'); this.src='https://drive.google.com/thumbnail?id=1ci3Kr42iV1rU-NjKFiUDfuFIR0KZK44c&sz=w1000';"
+                         crossorigin="anonymous"
+                         alt="Signature">
                     <div class="signature-line"></div>
                     <p>অধ্যক্ষ</p>
                 </div>
@@ -341,6 +357,26 @@
     </div>
 
     <script>
+        // লোগো যাতে কোনো অবস্থাতেই মিস না হয় সেজন্য ৩ ধাপের অটো ফলব্যাক
+        const LOGO_FALLBACKS = [
+            "https://wsrv.nl/?url=https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD%26sz=w1000",
+            "https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&sz=w1000",
+            "https://lh3.googleusercontent.com/d/1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD"
+        ];
+
+        function handleLogoFallback(imgEl) {
+            const step = parseInt(imgEl.dataset.fallbackStep || "0", 10);
+            if (step < LOGO_FALLBACKS.length) {
+                imgEl.dataset.fallbackStep = String(step + 1);
+                if (step >= 1) {
+                    imgEl.removeAttribute("crossorigin");
+                }
+                imgEl.src = LOGO_FALLBACKS[step];
+            } else {
+                imgEl.onerror = null;
+            }
+        }
+
         // Update data function
         function generateCard() {
             const name = document.getElementById('inpName').value;
@@ -362,7 +398,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('cardPhoto').src = e.target.result;
-                }
+                };
                 reader.readAsDataURL(photoInput.files[0]);
             }
 
@@ -377,27 +413,38 @@
         };
 
         // Download High-Quality HD Image (PNG)
-        function downloadImage() {
+        async function downloadImage() {
             const element = document.getElementById('idCard');
 
-            // Temporary scale reset for perfect high-quality capture
-            element.style.transform = 'scale(1)'; 
+            // সব ছবি পুরোপুরি লোড হওয়া নিশ্চিত করা
+            const images = Array.from(element.querySelectorAll('img'));
+            await Promise.all(images.map(img => {
+                if (img.complete && img.naturalHeight !== 0) return Promise.resolve();
+                return new Promise(res => {
+                    img.addEventListener('load', res, { once: true });
+                    img.addEventListener('error', res, { once: true });
+                });
+            }));
 
-            html2canvas(element, {
-                scale: 4, // 4x scale for super HD quality
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: '#ffffff'
-            }).then(canvas => {
-                // Create a download link for the image
+            // Temporary scale reset for perfect high-quality capture
+            element.style.transform = 'scale(1)';
+
+            try {
+                const canvas = await html2canvas(element, {
+                    scale: 4, // 4x scale for super HD quality
+                    useCORS: true,
+                    allowTaint: false,
+                    backgroundColor: '#ffffff'
+                });
+
                 const link = document.createElement('a');
                 link.download = 'Teacher_ID_Card.png';
                 link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
-
+            } finally {
                 // Revert scale back for web preview based on screen size
                 element.style.transform = window.innerWidth <= 900 ? 'scale(0.6)' : 'scale(0.7)';
-            });
+            }
         }
     </script>
 </body>
