@@ -298,7 +298,12 @@
     </div>
     <div>
       <label for="globalShift">শিফট (Shift)</label>
-      <input type="text" id="globalShift" value="Joba" oninput="saveDataToCache()">
+      <select id="globalShift" onchange="saveDataToCache()">
+        <option value="Joba" selected>Joba</option>
+        <option value="Beli">Beli</option>
+        <option value="Bokul">Bokul</option>
+        <option value="Shapla">Shapla</option>
+      </select>
     </div>
     <div>
       <label for="globalExamYear">পরীক্ষার সাল</label>
@@ -500,7 +505,7 @@
       const gData = JSON.parse(savedGlobal);
       setSelectValueSafely('globalClass', gData.cls, 'Eight');
       setSelectValueSafely('globalSection', gData.sec, 'A');
-      document.getElementById('globalShift').value = gData.shift || '';
+      setSelectValueSafely('globalShift', gData.shift, 'Joba');
       document.getElementById('globalExamYear').value = gData.year || '2026';
       document.getElementById('globalWorkingDays').value = gData.workingDays || '';
       document.getElementById('globalHighestAtt').value = gData.highestAtt || '';
@@ -834,7 +839,7 @@
 
           setSelectValueSafely('globalClass', backup.global.cls, 'Eight');
           setSelectValueSafely('globalSection', backup.global.sec, 'A');
-          document.getElementById('globalShift').value = backup.global.shift || '';
+          setSelectValueSafely('globalShift', backup.global.shift, 'Joba');
           document.getElementById('globalExamYear').value = backup.global.year || '2026';
           document.getElementById('globalWorkingDays').value = backup.global.workingDays || '';
           document.getElementById('globalHighestAtt').value = backup.global.highestAtt || '';
