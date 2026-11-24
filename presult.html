@@ -36,7 +36,10 @@
             margin: 0;
             padding: 0;
             font-family: 'Hind Siliguri', sans-serif;
-            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body, .portal-card, .form-control, .refresh-btn, .theme-toggle, .home-btn {
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         body {
@@ -65,7 +68,7 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #0d3b66; display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 9999;
-            color: white; transition: opacity 0.5s ease, visibility 0.5s ease;
+            color: white; transition: opacity 0.4s ease, visibility 0.4s ease;
         }
         .spinner {
             width: 60px; height: 60px; border: 5px solid rgba(255,255,255,0.3);
@@ -100,7 +103,7 @@
             justify-content: center; gap: 25px; margin-top: 35px; margin-bottom: 15px; padding: 0 10px;
         }
         .top-left-logo-container {
-            flex-shrink: 0; width: 135px; height: 135px; border-radius: 50%; padding: 5px;
+            flex-shrink: 0; width: 130px; height: 130px; border-radius: 50%; padding: 5px;
             background: linear-gradient(45deg, #ffb703, #e63946, #00b4d8, #ffffff);
             background-size: 300% 300%;
             animation: gradientBorder 3s ease infinite, strongPulseFloat 2.5s ease-in-out infinite alternate;
@@ -117,7 +120,7 @@
         }
         @keyframes strongPulseFloat {
             0% { box-shadow: 0 0 15px rgba(255, 183, 3, 0.6); transform: translateY(0px) scale(1); }
-            100% { box-shadow: 0 0 40px rgba(255, 183, 3, 1), 0 0 25px rgba(0, 180, 216, 0.8); transform: translateY(-8px) scale(1.08); }
+            100% { box-shadow: 0 0 36px rgba(255, 183, 3, 0.95), 0 0 22px rgba(0, 180, 216, 0.75); transform: translateY(-6px) scale(1.06); }
         }
 
         .header { text-align: left; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.2); flex-grow: 1; }
@@ -141,7 +144,7 @@
         .clock-bar div { display: flex; align-items: center; gap: 8px; }
         .clock-bar .date-box { color: #38bdf8; }
         .clock-bar .time-box {
-            color: #ffb703; font-family: monospace; font-size: 1.1rem; letter-spacing: 1px;
+            color: #ffb703; font-size: 1.05rem; letter-spacing: 0.5px;
             background: rgba(255, 183, 3, 0.1); padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(255, 183, 3, 0.3);
         }
 
@@ -171,14 +174,10 @@
         .form-control {
             padding: 12px 14px; border-radius: 12px; border: 2px solid var(--border-color);
             background: var(--nav-bg); color: var(--text-color); font-size: 1.02rem;
-            font-weight: 600; outline: none; transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-weight: 600; outline: none; width: 100%;
         }
         .form-control:focus {
             border-color: #0077b6; box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15);
-        }
-        .form-control.locked {
-            background: var(--input-bg); color: var(--sub-text);
-            cursor: not-allowed; border-style: dashed;
         }
         .search-actions-row {
             display: flex; gap: 12px; align-items: center;
@@ -189,28 +188,37 @@
             font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center;
             gap: 10px; box-shadow: 0 8px 20px rgba(0, 119, 182, 0.35); transition: transform 0.2s ease;
         }
-        .search-btn:hover { transform: translateY(-2px); }
+        .search-btn:hover:not(:disabled) { transform: translateY(-2px); }
+        .search-btn:disabled { opacity: 0.7; cursor: not-allowed; }
         .refresh-btn {
             background: var(--input-bg); color: var(--heading-color); border: 2px solid var(--border-color);
             padding: 15px 18px; border-radius: 14px; font-size: 1rem; font-weight: 700;
             cursor: pointer; display: flex; align-items: center; gap: 6px;
         }
         .refresh-btn:hover { border-color: #0077b6; color: #0077b6; }
-        .error-box {
-            display: none; background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444;
-            color: #ef4444; padding: 14px; border-radius: 12px; text-align: center;
-            font-weight: 600; margin-top: 15px;
+
+        .feedback-box {
+            display: none; padding: 14px; border-radius: 12px; text-align: center;
+            font-weight: 600; margin-top: 15px; line-height: 1.5;
         }
+        .feedback-box.err {
+            background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; color: #dc2626;
+        }
+        .feedback-box.info {
+            background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; color: #059669;
+        }
+        [data-theme="dark"] .feedback-box.err { color: #fca5a5; }
+        [data-theme="dark"] .feedback-box.info { color: #6ee7b7; }
 
         /* =========================================================
-           SMART 1-PAGE A4 MARKSHEET VIEW (সুন্দর ও গোছানো ১ পেইজ A4)
+           SMART 1-PAGE A4 MARKSHEET VIEW
            ========================================================= */
         #resultViewSection {
             display: none; width: 100%; flex-direction: column; align-items: center; margin-bottom: 30px;
         }
 
         .a4-action-toolbar {
-            width: 100%; max-width: 1050px; background: rgba(15, 23, 42, 0.9);
+            width: 100%; max-width: 1050px; background: rgba(15, 23, 42, 0.92);
             border: 1px solid rgba(255, 183, 3, 0.5); padding: 14px 22px; border-radius: 14px;
             margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center;
             flex-wrap: wrap; gap: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
@@ -228,15 +236,22 @@
         .btn-a4-action:hover { transform: translateY(-2px); }
 
         .a4-preview-outer {
-            width: 100%; display: flex; justify-content: center; overflow-x: auto; padding-bottom: 10px;
+            width: 100%; display: flex; justify-content: center; overflow: hidden; padding-bottom: 10px;
+        }
+        .a4-scale-wrapper {
+            position: relative;
+            width: 1050px;
+            height: 1485px;
+            flex-shrink: 0;
         }
 
         /* Exact Single-Page A4 Marksheet Container (1050px x 1485px) */
         .a4-marksheet-page {
-            position: relative; width: 1050px; min-width: 1050px; height: 1485px;
+            position: relative; width: 1050px; height: 1485px;
             background-color: #ffffff !important; color: #000000 !important;
             padding: 28px 34px; box-sizing: border-box; box-shadow: 0 20px 50px rgba(0,0,0,0.45);
             border-radius: 4px; overflow: hidden; z-index: 1;
+            transform-origin: top left;
             -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
         }
 
@@ -317,6 +332,7 @@
         }
         .pr-kpi-pill.highlight-pass { background: #ecfdf5 !important; border-color: #10b981; }
         .pr-kpi-pill.highlight-fail { background: #fef2f2 !important; border-color: #ef4444; }
+        .pr-kpi-pill.highlight-absent { background: #fffbeb !important; border-color: #f59e0b; }
 
         /* Marks Table */
         .pr-marks-table {
@@ -368,28 +384,37 @@
 
         .copyright-footer {
             width: 100%; max-width: 850px; text-align: center; padding: 15px 10px;
-            color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;
             border-top: 1px solid rgba(255, 255, 255, 0.2); margin-top: 10px;
         }
 
-        /* Print Media: Strictly 1 A4 Page */
+        /* Print Media: Strictly 1 A4 Page across Browsers */
         @media print {
             @page { size: A4 portrait; margin: 0mm; }
             html, body {
-                width: 1050px !important; height: 1485px !important; background: #ffffff !important;
+                width: 100% !important; height: auto !important; background: #ffffff !important;
                 padding: 0 !important; margin: 0 !important; overflow: hidden !important;
             }
-            .home-btn, .theme-toggle, .clock-bar, .portal-card, .copyright-footer, .a4-action-toolbar, .top-header-wrapper {
+            #preloader, .home-btn, .theme-toggle, .clock-bar, .portal-card, .copyright-footer, .a4-action-toolbar, .top-header-wrapper {
                 display: none !important;
             }
             #portalPageView, #resultViewSection, .a4-preview-outer {
-                display: block !important; width: 1050px !important; height: 1485px !important;
-                margin: 0 !important; padding: 0 !important; overflow: hidden !important;
+                display: block !important; width: 100% !important; min-height: 0 !important;
+                height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important;
+            }
+            .a4-scale-wrapper {
+                width: auto !important; height: auto !important; margin: 0 auto !important;
             }
             .a4-marksheet-page {
-                transform: none !important; margin: 0 !important; box-shadow: none !important;
-                border-radius: 0 !important; width: 1050px !important; height: 1485px !important;
-                page-break-after: avoid !important; page-break-inside: avoid !important;
+                transform: none !important;
+                zoom: 0.75;
+                margin: 0 auto !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                width: 1050px !important;
+                height: 1485px !important;
+                page-break-after: avoid !important;
+                page-break-inside: avoid !important;
             }
         }
 
@@ -417,14 +442,14 @@
         <h3>লোড হচ্ছে...</h3>
     </div>
 
-    <!-- প্রিলোড ওয়াটারমার্ক ও লোগো -->
+    <!-- প্রিলোড লোগো ও ওয়াটারমার্ক -->
     <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" crossorigin="anonymous" style="width:1px; height:1px; opacity:0; position:fixed; pointer-events:none;" alt="preload">
 
     <a href="index.html" class="home-btn">
         <i class="fa-solid fa-house"></i> মূল পেইজ
     </a>
 
-    <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="ডার্ক/লাইট মোড পরিবর্তন করুন">
+    <button type="button" class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="ডার্ক/লাইট মোড পরিবর্তন করুন">
         <i class="fa-solid fa-moon" id="themeIcon"></i>
     </button>
 
@@ -432,19 +457,24 @@
 
         <div class="top-header-wrapper">
             <div class="top-left-logo-container">
-                <img src="https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&sz=w1000" alt="School Logo" class="top-left-logo">
+                <img
+                    src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD"
+                    onerror="this.onerror=null; this.src='https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&sz=w1000';"
+                    alt="School Logo"
+                    class="top-left-logo"
+                >
             </div>
 
             <header class="header">
                 <h1>ইবনে তাইমিয়া স্কুল এন্ড কলেজ</h1>
                 <p class="address"><i class="fa-solid fa-location-dot"></i> ১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা</p>
-                <div class="subtitle"><i class="fa-solid fa-square-poll-vertical"></i> অনলাইন রেজাল্ট পোর্টাল (জবা শিফট)</div>
+                <div class="subtitle"><i class="fa-solid fa-square-poll-vertical"></i> অনলাইন রেজাল্ট পোর্টাল</div>
             </header>
         </div>
 
         <div class="clock-bar">
             <div class="date-box"><i class="fa-solid fa-calendar-days"></i> <span id="portalCurrentDate">তারিখ লোড হচ্ছে...</span></div>
-            <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="portalCurrentTime">00:00:00</span></div>
+            <div class="time-box"><i class="fa-solid fa-clock"></i> <span id="portalCurrentTime">০০:০০:০০</span></div>
         </div>
 
         <section class="portal-card">
@@ -454,7 +484,6 @@
 
             <form id="resultSearchForm" onsubmit="searchResult(event)">
                 <div class="search-form-grid">
-                    <!-- শ্রেণী ইনপুট -->
                     <div class="form-group">
                         <label for="classSelect"><i class="fa-solid fa-graduation-cap"></i> শ্রেণী নির্বাচন করুন *</label>
                         <select id="classSelect" class="form-control" required>
@@ -464,31 +493,31 @@
                         </select>
                     </div>
 
-                    <!-- শাখা ইনপুট -->
                     <div class="form-group">
                         <label for="sectionSelect"><i class="fa-solid fa-layer-group"></i> শাখা নির্বাচন করুন *</label>
                         <select id="sectionSelect" class="form-control" required>
                             <option value="A">A শাখা</option>
                             <option value="B" selected>B শাখা</option>
                             <option value="C">C শাখা</option>
+                            <option value="D">D শাখা</option>
+                            <option value="E">E শাখা</option>
+                            <option value="F">F শাখা</option>
                         </select>
                     </div>
 
-                    <!-- শিফট ইনপুট -->
                     <div class="form-group">
                         <label for="shiftSelect"><i class="fa-solid fa-sun"></i> শিফট নির্বাচন করুন *</label>
                         <select id="shiftSelect" class="form-control" required>
                             <option value="Joba" selected>Joba</option>
+                            <option value="Beli">Beli</option>
                             <option value="Bokul">Bokul</option>
                             <option value="Shapla">Shapla</option>
-                            <option value="Beli">Beli</option>
                         </select>
                     </div>
 
-                    <!-- রোল নম্বর ইনপুট -->
                     <div class="form-group">
                         <label for="rollInput"><i class="fa-solid fa-id-card-clip"></i> রোল নম্বর দিন *</label>
-                        <input type="text" id="rollInput" class="form-control" placeholder="যেমন: 1 বা ১" required>
+                        <input type="text" id="rollInput" class="form-control" placeholder="যেমন: 1 বা ১" autocomplete="off" required>
                     </div>
                 </div>
 
@@ -496,13 +525,13 @@
                     <button type="submit" class="search-btn" id="portalSearchBtn">
                         <i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন
                     </button>
-                    <button type="button" class="refresh-btn" onclick="clearSheetCache()" title="গুগল শিট থেকে নতুন ডাটা লোড করুন">
+                    <button type="button" class="refresh-btn" onclick="clearSheetCache()" title="অনলাইন থেকে সর্বশেষ ডাটা রিফ্রেশ করুন">
                         <i class="fa-solid fa-rotate"></i> রিফ্রেশ
                     </button>
                 </div>
             </form>
 
-            <div id="errorBox" class="error-box"></div>
+            <div id="feedbackBox" class="feedback-box"></div>
         </section>
 
         <!-- স্মার্ট ১ পেইজ A4 প্রোগ্রেস রিপোর্ট ভিউ -->
@@ -513,14 +542,16 @@
                     <span>অফিশিয়াল প্রোগ্রেস রিপোর্ট (১ পেইজ A4 ফরম্যাট)</span>
                 </div>
                 <div class="a4-toolbar-btns">
-                    <button class="btn-a4-action btn-a4-print" onclick="printStudentA4Marksheet()">
-                        <i class="fa-solid fa-print"></i> প্রিন্ট করুন (A4)
+                    <button type="button" class="btn-a4-action btn-a4-print" onclick="printStudentA4Marksheet()">
+                        <i class="fa-solid fa-print"></i> প্রিন্ট / PDF সেভ (A4)
                     </button>
                 </div>
             </div>
 
             <div class="a4-preview-outer" id="a4PreviewOuter">
-                <div id="a4MarksheetContainer"></div>
+                <div class="a4-scale-wrapper" id="a4ScaleWrapper">
+                    <div id="a4MarksheetContainer"></div>
+                </div>
             </div>
         </section>
 
@@ -531,10 +562,10 @@
     </div>
 
     <script>
-        // আপনার আগের Google Apps Script Web App URL (Sheet ID: 1on1OA5XNO5VGk8EB9wq2_1o-ikKGW1C9AuFYMByfUw8)
         const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycby9KSjyhSkoLNVwKWfp6aT2J06QPX08Fp-OQJqFC7Utm9jgmdC3IlDLgJN6FDi7b0v6hw/exec";
+        const LOGO_PRIMARY_URL = "https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD";
+        const LOGO_FALLBACK_URL = "https://drive.google.com/thumbnail?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD&sz=w1000";
 
-        // পোর্টালের ডিফল্ট তথ্য (শিট থেকে আলাদা global info না এলে এগুলো বসবে)
         const PORTAL_DEFAULTS = {
             shift: "Joba",
             year: "2026",
@@ -544,22 +575,95 @@
         const classDataCache = {};
 
         const portalSubjectsConfig = [
-            { id: 'b1', name: 'Bangla-I', max: 100, pass: 40 },
-            { id: 'b2', name: 'Bangla-II', max: 50, pass: 20 },
-            { id: 'e1', name: 'English-I', max: 100, pass: 40 },
-            { id: 'e2', name: 'English-II', max: 100, pass: 40 },
-            { id: 'math', name: 'Mathematics', max: 100, pass: 40 },
-            { id: 'rel', name: 'Religion Studies', max: 100, pass: 40 },
-            { id: 'arab', name: 'Arabic', max: 100, pass: 40 },
-            { id: 'bgs', name: 'Bangladesh & Global Studies', max: 100, pass: 40 },
-            { id: 'sci', name: 'Science', max: 100, pass: 40 },
-            { id: 'ict', name: 'Information & Communication Technology', max: 50, pass: 20 },
-            { id: 'agri', name: 'Agriculture Studies/Home Science', max: 50, pass: 20 },
-            { id: 'art', name: 'Art & Craft', max: 50, pass: 20 },
-            { id: 'spoken', name: 'Spoken English', max: 25, pass: 15 },
-            { id: 'moral', name: 'Moral Activities', max: 50, pass: 20 },
-            { id: 'drill', name: 'Drill', max: 25, pass: 15 }
+            { id: 'b1',     name: 'Bangla-I', max: 100, pass: 40, tuHalf: false },
+            { id: 'b2',     name: 'Bangla-II', max: 50, pass: 20, tuHalf: true },
+            { id: 'e1',     name: 'English-I', max: 100, pass: 40, tuHalf: false },
+            { id: 'e2',     name: 'English-II', max: 100, pass: 40, tuHalf: false },
+            { id: 'math',   name: 'Mathematics', max: 100, pass: 40, tuHalf: false },
+            { id: 'rel',    name: 'Religion Studies', max: 100, pass: 40, tuHalf: false },
+            { id: 'arab',   name: 'Arabic', max: 100, pass: 40, tuHalf: false },
+            { id: 'bgs',    name: 'Bangladesh & Global Studies', max: 100, pass: 40, tuHalf: false },
+            { id: 'sci',    name: 'Science', max: 100, pass: 40, tuHalf: false },
+            { id: 'ict',    name: 'Information & Communication Technology (ICT)', max: 50, pass: 20, tuHalf: true },
+            { id: 'agri',   name: 'Agriculture Studies / Home Science', max: 50, pass: 20, tuHalf: true },
+            { id: 'art',    name: 'Art & Craft', max: 50, pass: 20, tuHalf: false },
+            { id: 'spoken', name: 'Spoken English', max: 25, pass: 15, tuHalf: false },
+            { id: 'moral',  name: 'Moral Activities', max: 50, pass: 20, tuHalf: false },
+            { id: 'drill',  name: 'Drill', max: 25, pass: 15, tuHalf: false }
         ];
+
+        /* =======================================================
+           UTILITIES & THEME PERSISTENCE
+           ======================================================= */
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function toBnNum(val) {
+            return String(val ?? '').replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+        }
+
+        function toEnDigits(val) {
+            const banglaDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+            return String(val ?? '').trim().replace(/[০-৯]/g, d => banglaDigits[d]);
+        }
+
+        // বাংলা/ইংরেজি অঙ্ক ও লিডিং জিরো (যেমন 01 / ০১ -> 1) নরমালাইজ করে
+        function normalizeRoll(inputStr) {
+            const en = toEnDigits(inputStr);
+            if (/^\d+$/.test(en)) {
+                return String(parseInt(en, 10));
+            }
+            return en.toLowerCase();
+        }
+
+        function parseRollNumber(inputStr) {
+            const n = parseInt(toEnDigits(inputStr), 10);
+            return Number.isNaN(n) ? 999999 : n;
+        }
+
+        function applyTheme(theme) {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            html.setAttribute('data-theme', theme);
+            if (themeIcon) {
+                themeIcon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+            try { localStorage.setItem('itsc_portal_theme', next); } catch (e) {}
+        }
+
+        function showFeedback(htmlMsg, type = 'err') {
+            const box = document.getElementById('feedbackBox');
+            box.innerHTML = htmlMsg;
+            box.className = `feedback-box ${type}`;
+            box.style.display = 'block';
+        }
+
+        function hideFeedback() {
+            const box = document.getElementById('feedbackBox');
+            box.style.display = 'none';
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            try {
+                const savedTheme = localStorage.getItem('itsc_portal_theme');
+                if (savedTheme === 'dark' || savedTheme === 'light') {
+                    applyTheme(savedTheme);
+                }
+            } catch (e) {}
+        });
 
         window.addEventListener('load', function() {
             const preloader = document.getElementById('preloader');
@@ -569,32 +673,26 @@
         });
 
         window.addEventListener('resize', adjustA4MobileScale);
+        window.addEventListener('afterprint', adjustA4MobileScale);
 
+        /* =======================================================
+           MOBILE RESPONSIVE SCALE (NO FLEX CLIPPING)
+           ======================================================= */
         function adjustA4MobileScale() {
             const sheet = document.getElementById('a4MarksheetArea');
-            const outer = document.getElementById('a4PreviewOuter');
-            if (!sheet || !outer) return;
-            const availableWidth = window.innerWidth - 30;
+            const wrapper = document.getElementById('a4ScaleWrapper');
+            if (!sheet || !wrapper) return;
+
+            const availableWidth = Math.min(window.innerWidth - 30, 1050);
             if (availableWidth < 1050) {
                 const scale = availableWidth / 1050;
                 sheet.style.transform = `scale(${scale})`;
-                sheet.style.transformOrigin = 'top center';
-                outer.style.height = `${1485 * scale + 20}px`;
+                wrapper.style.width = `${Math.floor(1050 * scale)}px`;
+                wrapper.style.height = `${Math.ceil(1485 * scale)}px`;
             } else {
                 sheet.style.transform = 'none';
-                outer.style.height = 'auto';
-            }
-        }
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const themeIcon = document.getElementById('themeIcon');
-            if (html.getAttribute('data-theme') === 'light') {
-                html.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fa-solid fa-sun';
-            } else {
-                html.setAttribute('data-theme', 'light');
-                themeIcon.className = 'fa-solid fa-moon';
+                wrapper.style.width = '1050px';
+                wrapper.style.height = '1485px';
             }
         }
 
@@ -603,26 +701,36 @@
             const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
             document.getElementById('portalCurrentDate').innerText = now.toLocaleDateString('bn-BD', options);
 
-            let hours = now.getHours(), minutes = now.getMinutes(), seconds = now.getSeconds();
-            let ampm = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
-            hours = hours % 12 || 12;
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
+            hours = String(hours % 12 || 12).padStart(2, '0');
 
-            document.getElementById('portalCurrentTime').innerText = `${hours}:${minutes}:${seconds} ${ampm}`;
+            document.getElementById('portalCurrentTime').innerText = `${toBnNum(hours)}:${toBnNum(minutes)}:${toBnNum(seconds)} ${ampm}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
+        /* =======================================================
+           DATA FETCHING & CACHE REFRESH
+           ======================================================= */
         function clearSheetCache() {
             for (const key in classDataCache) {
                 delete classDataCache[key];
             }
-            document.getElementById('errorBox').style.display = 'none';
-            alert("ক্যাশ ক্লিয়ার হয়েছে! এখন সার্চ করলে গুগল শিট থেকে নতুন ডাটা লোড হবে।");
+            const viewSection = document.getElementById('resultViewSection');
+            const rollVal = document.getElementById('rollInput').value.trim();
+
+            if (viewSection.style.display === 'flex' && rollVal) {
+                // আগে খোলা মার্কশীট থাকলে সাথে সাথে নতুন ডেটা দিয়ে রি-লোড করে
+                searchResult(new Event('submit'));
+            } else {
+                viewSection.style.display = 'none';
+                showFeedback('<i class="fa-solid fa-circle-check"></i> ক্যাশ ক্লিয়ার হয়েছে! এখন সার্চ করলে সর্বশেষ আপডেটেড ফলাফল দেখাবে।', 'info');
+            }
         }
 
-        // আপনার আগের Code.gs (action=getAll) থেকে সরাসরি ডাটা লোড
         async function loadClassSectionFromGoogleSheet(cls, sec, shift) {
             const targetShift = shift || PORTAL_DEFAULTS.shift;
             const cacheKey = `${cls}_${sec}_${targetShift}_${PORTAL_DEFAULTS.year}`;
@@ -641,13 +749,13 @@
 
             const response = await fetch(`${GOOGLE_SHEET_API_URL}?${params.toString()}`);
             if (!response.ok) {
-                throw new Error("গুগল শিট সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।");
+                throw new Error("সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি। একটু পরে আবার চেষ্টা করুন।");
             }
 
             const data = await response.json();
 
             if (data.status && data.status !== 'ok' && data.status !== 'success') {
-                throw new Error(data.message || "গুগল শিট থেকে ফলাফল লোড করা যায়নি।");
+                throw new Error(data.message || "অনলাইন থেকে ফলাফল লোড করা যায়নি।");
             }
 
             const studentsList = Array.isArray(data) ? data : (data.students || data.results || []);
@@ -662,11 +770,9 @@
             return resultObj;
         }
 
-        function normalizeRoll(inputStr) {
-            const banglaDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
-            return String(inputStr || '').trim().replace(/[০-৯]/g, d => banglaDigits[d]);
-        }
-
+        /* =======================================================
+           UNIFIED GRADING & MERIT ENGINE (MATCHES MAIN GENERATOR)
+           ======================================================= */
         function getPortalGrading(percentage) {
             if (percentage >= 80) return { lg: 'A+', gp: 5.00 };
             if (percentage >= 70) return { lg: 'A',  gp: 4.00 };
@@ -685,15 +791,41 @@
             return 'F';
         }
 
-        function calculatePortalSubject(studentObj, cls, totalMarks) {
-            let etInput = parseFloat(studentObj[`${cls}et`]) || 0;
-            let tuInput = parseFloat(studentObj[`${cls}tu`]) || 0;
-            let et70 = Math.round(etInput * 0.70);
-            let tuVal = (cls === 'ict' || cls === 'agri' || cls === 'b2') ? Math.round(tuInput * 0.50) : tuInput;
+        function calculatePortalSubject(studentObj, sub) {
+            const rawEt = studentObj[`${sub.id}et`];
+            const rawTu = studentObj[`${sub.id}tu`];
+            const etStr = (rawEt !== undefined && rawEt !== null) ? String(rawEt).trim() : '';
+            const tuStr = (rawTu !== undefined && rawTu !== null) ? String(rawTu).trim() : '';
+
+            const hasEtInput = etStr !== '';
+            const hasTuInput = tuStr !== '';
+            const hasInput = hasEtInput || hasTuInput;
+
+            let etInput = hasEtInput ? parseFloat(toEnDigits(etStr)) : 0;
+            let tuInput = hasTuInput ? parseFloat(toEnDigits(tuStr)) : 0;
+            if (Number.isNaN(etInput) || etInput < 0) etInput = 0;
+            if (Number.isNaN(tuInput) || tuInput < 0) tuInput = 0;
+
+            const et70 = Math.round(Number((etInput * 0.70).toFixed(4)));
+            const tuVal = sub.tuHalf ? Math.round(Number((tuInput * 0.50).toFixed(4))) : tuInput;
+
             let tot = et70 + tuVal;
-            if (tot > totalMarks) tot = totalMarks;
-            const grading = getPortalGrading((tot / totalMarks) * 100);
-            return { et70, tu: tuVal, tot, lg: grading.lg, gp: grading.gp };
+            if (tot > sub.max) tot = sub.max;
+
+            const grading = (tot < sub.pass)
+                ? { lg: 'F', gp: 0.00 }
+                : getPortalGrading((tot / sub.max) * 100);
+
+            return {
+                hasEtInput,
+                hasTuInput,
+                hasInput,
+                et70,
+                tu: tuVal,
+                tot,
+                lg: grading.lg,
+                gp: grading.gp
+            };
         }
 
         function getOrdinalSuffix(n) {
@@ -702,15 +834,24 @@
         }
 
         function evaluateStudentStats(st) {
-            let subRes = {};
+            const subRes = {};
+            let anyMarkEntered = false;
+
             portalSubjectsConfig.forEach(sub => {
-                subRes[sub.id] = calculatePortalSubject(st, sub.id, sub.max);
+                subRes[sub.id] = calculatePortalSubject(st, sub);
+                if (subRes[sub.id].hasInput) anyMarkEntered = true;
             });
+
+            const isAbsent = !anyMarkEntered;
 
             const banglaTotal = subRes.b1.tot + subRes.b2.tot;
             const englishTotal = subRes.e1.tot + subRes.e2.tot;
-            const banglaRes = getPortalGrading((banglaTotal / 150) * 100);
-            const englishRes = getPortalGrading((englishTotal / 200) * 100);
+            const banglaRes = (banglaTotal < 60)
+                ? { lg: 'F', gp: 0.00 }
+                : getPortalGrading((banglaTotal / 150) * 100);
+            const englishRes = (englishTotal < 80)
+                ? { lg: 'F', gp: 0.00 }
+                : getPortalGrading((englishTotal / 200) * 100);
 
             const gpaSubjects = [
                 banglaRes, englishRes,
@@ -718,62 +859,92 @@
                 subRes.bgs, subRes.sci, subRes.ict, subRes.agri
             ];
 
-            let grandTotalMarks = banglaTotal + englishTotal;
-            ['math', 'rel', 'arab', 'bgs', 'sci', 'ict', 'agri', 'art', 'spoken', 'moral', 'drill'].forEach(id => {
-                grandTotalMarks += subRes[id].tot;
+            const failedCount = gpaSubjects.filter(sub => sub.gp === 0).length;
+
+            let grandTotalMarks = 0;
+            portalSubjectsConfig.forEach(sub => {
+                grandTotalMarks += subRes[sub.id].tot;
             });
 
             let totalGP = gpaSubjects.reduce((acc, sub) => acc + sub.gp, 0);
             let finalGPA = parseFloat((totalGP / gpaSubjects.length).toFixed(2));
             if (finalGPA > 5.00) finalGPA = 5.00;
-            if (gpaSubjects.some(sub => sub.gp === 0)) finalGPA = 0.00;
+            if (isAbsent || failedCount > 0) finalGPA = 0.00;
 
-            return { subRes, banglaTotal, banglaRes, englishTotal, englishRes, grandTotalMarks, finalGPA };
+            return {
+                subRes,
+                banglaTotal,
+                banglaRes,
+                englishTotal,
+                englishRes,
+                grandTotalMarks,
+                finalGPA,
+                failedCount,
+                isAbsent
+            };
         }
 
-        function calculateMeritPosition(allStudents, targetStudent) {
-            const statsList = allStudents.map(st => {
-                const ev = evaluateStudentStats(st);
-                return { st, gpa: ev.finalGPA, grandTotal: ev.grandTotalMarks, roll: parseInt(normalizeRoll(st.roll)) || 0 };
-            });
+        function calculateMeritPosition(allStudents, targetStudent, targetEval) {
+            // ফেইল বা অনুপস্থিত শিক্ষার্থীর জন্য কোনো মেধাক্রম দেখানো হবে না
+            if (targetEval.isAbsent || targetEval.failedCount > 0) {
+                return '-';
+            }
 
-            statsList.sort((a, b) => {
+            const passedStats = allStudents
+                .map(st => {
+                    const ev = (st === targetStudent) ? targetEval : evaluateStudentStats(st);
+                    return {
+                        st,
+                        ev,
+                        gpa: ev.finalGPA,
+                        grandTotal: ev.grandTotalMarks,
+                        roll: parseRollNumber(st.roll)
+                    };
+                })
+                .filter(item => !item.ev.isAbsent && item.ev.failedCount === 0);
+
+            passedStats.sort((a, b) => {
                 if (b.gpa !== a.gpa) return b.gpa - a.gpa;
                 if (b.grandTotal !== a.grandTotal) return b.grandTotal - a.grandTotal;
                 return a.roll - b.roll;
             });
 
-            const idx = statsList.findIndex(item => item.st === targetStudent);
+            const idx = passedStats.findIndex(item => item.st === targetStudent);
             return idx !== -1 ? getOrdinalSuffix(idx + 1) : '-';
         }
 
+        /* =======================================================
+           SEARCH & MARKSHEET RENDERING
+           ======================================================= */
         async function searchResult(event) {
             event.preventDefault();
 
             const selectedClass = document.getElementById('classSelect').value;
             const selectedSection = document.getElementById('sectionSelect').value;
             const selectedShift = document.getElementById('shiftSelect').value;
-            const rawRoll = document.getElementById('rollInput').value;
+            const rawRoll = document.getElementById('rollInput').value.trim();
             const searchRoll = normalizeRoll(rawRoll);
 
-            const classBanglaMap = { 'Six': '৬ষ্ঠ শ্রেণী', 'Seven': '৭ম শ্রেণী', 'Eight': '৮ম শ্রেণী' };
+            if (!searchRoll) {
+                showFeedback('<i class="fa-solid fa-triangle-exclamation"></i> অনুগ্রহ করে সঠিক রোল নম্বর দিন।', 'err');
+                return;
+            }
 
-            const errorBox = document.getElementById('errorBox');
+            const classBanglaMap = { 'Six': '৬ষ্ঠ শ্রেণী', 'Seven': '৭ম শ্রেণী', 'Eight': '৮ম শ্রেণী' };
             const viewSection = document.getElementById('resultViewSection');
             const searchBtn = document.getElementById('portalSearchBtn');
 
-            errorBox.style.display = 'none';
+            hideFeedback();
             viewSection.style.display = 'none';
 
-            searchBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> গুগল শিট থেকে ফলাফল খোঁজা হচ্ছে...`;
+            searchBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ফলাফল খোঁজা হচ্ছে...`;
             searchBtn.disabled = true;
 
             let loadedData = null;
             try {
                 loadedData = await loadClassSectionFromGoogleSheet(selectedClass, selectedSection, selectedShift);
             } catch (err) {
-                errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${err.message}`;
-                errorBox.style.display = 'block';
+                showFeedback(`<i class="fa-solid fa-triangle-exclamation"></i> ${escapeHtml(err.message)}`, 'err');
                 searchBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন`;
                 searchBtn.disabled = false;
                 return;
@@ -782,32 +953,39 @@
             searchBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> ফলাফল দেখুন`;
             searchBtn.disabled = false;
 
+            const safeClsBn = escapeHtml(classBanglaMap[selectedClass] || selectedClass);
+            const safeSec = escapeHtml(selectedSection);
+            const safeShift = escapeHtml(selectedShift);
+            const safeRoll = escapeHtml(rawRoll);
+
             if (!loadedData || !loadedData.students || loadedData.students.length === 0) {
-                errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> দুঃখিত! গুগল শিটে <b>${classBanglaMap[selectedClass]} (শাখা ${selectedSection})</b>-এর কোনো ফলাফল পাওয়া যায়নি।`;
-                errorBox.style.display = 'block';
+                showFeedback(
+                    `<i class="fa-solid fa-triangle-exclamation"></i> দুঃখিত! <b>${safeClsBn} (শাখা: ${safeSec}, শিফট: ${safeShift})</b>-এর কোনো ফলাফল এখনো প্রকাশিত হয়নি।`,
+                    'err'
+                );
                 return;
             }
 
             const resultsData = loadedData.students;
             const globalPortalInfo = loadedData.global || {};
-
             const student = resultsData.find(item => normalizeRoll(item.roll) === searchRoll);
 
             if (!student) {
-                errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> দুঃখিত! <b>${classBanglaMap[selectedClass]} (শাখা ${selectedSection})</b>-তে রোল নম্বর <b>${rawRoll}</b> এর কোনো ফলাফল পাওয়া যায়নি।`;
-                errorBox.style.display = 'block';
+                showFeedback(
+                    `<i class="fa-solid fa-triangle-exclamation"></i> দুঃখিত! <b>${safeClsBn} (শাখা: ${safeSec}, শিফট: ${safeShift})</b>-তে রোল নম্বর <b>${safeRoll}</b>-এর কোনো ফলাফল পাওয়া যায়নি।`,
+                    'err'
+                );
                 return;
             }
 
             const ev = evaluateStudentStats(student);
-            const meritPos = calculateMeritPosition(resultsData, student);
-            const overallGrade = getLetterGradeFromGPA(ev.finalGPA);
-            const isFail = ev.finalGPA === 0;
+            const meritPos = calculateMeritPosition(resultsData, student, ev);
+            const overallGrade = ev.isAbsent ? 'AB' : getLetterGradeFromGPA(ev.finalGPA);
+            const isFail = !ev.isAbsent && ev.failedCount > 0;
 
-            // Highest Attendance অটো হিসাব (যদি শিটে globalInfo না থাকে)
             const attList = resultsData
-                .map(s => parseInt(normalizeRoll(s.att), 10))
-                .filter(n => !isNaN(n) && n > 0);
+                .map(s => parseInt(toEnDigits(s.att), 10))
+                .filter(n => !Number.isNaN(n) && n > 0);
             const autoHighestAtt = attList.length > 0 ? Math.max(...attList) : '-';
 
             const clsName = globalPortalInfo.cls || selectedClass;
@@ -817,23 +995,53 @@
             const workingDays = globalPortalInfo.workingDays || PORTAL_DEFAULTS.workingDays;
             const highestAtt = globalPortalInfo.highestAtt || autoHighestAtt;
 
-            const renderSubjectRow = (id, name, max, pass) => `
-                <tr>
-                    <td class="pr-text-green">${name}</td>
-                    <td style="font-weight:bold;">${max}</td>
-                    <td style="font-weight:bold;">${pass}</td>
-                    <td class="pr-mark-val">${ev.subRes[id].et70 || ''}</td>
-                    <td class="pr-mark-val">${ev.subRes[id].tu || ''}</td>
-                    <td class="pr-mark-val">${ev.subRes[id].tot || ''}</td>
-                    <td class="pr-mark-val" style="color:${ev.subRes[id].lg === 'F' ? '#c00000' : '#1c3c78'} !important;">${ev.subRes[id].lg}</td>
-                    <td class="pr-mark-val">${ev.subRes[id].gp.toFixed(2)}</td>
-                </tr>
-            `;
+            const fmtEt = (r) => r.hasEtInput ? r.et70 : '';
+            const fmtTu = (r) => r.hasTuInput ? r.tu : '';
+            const fmtTot = (r) => r.hasInput ? r.tot : '';
+            const fmtLg = (r) => r.hasInput ? r.lg : (ev.isAbsent ? 'AB' : 'F');
+            const fmtGp = (r) => r.hasInput ? r.gp.toFixed(2) : (ev.isAbsent ? '-' : '0.00');
+            const gradeColor = (lg) => (lg === 'F' || lg === 'AB') ? '#c00000' : '#1c3c78';
+
+            const banglaHasInput = ev.subRes.b1.hasInput || ev.subRes.b2.hasInput;
+            const englishHasInput = ev.subRes.e1.hasInput || ev.subRes.e2.hasInput;
+
+            const renderSubjectRow = (id, label, max, pass) => {
+                const r = ev.subRes[id];
+                const lgText = fmtLg(r);
+                return `
+                    <tr>
+                        <td class="pr-text-green">${escapeHtml(label)}</td>
+                        <td style="font-weight:bold;">${max}</td>
+                        <td style="font-weight:bold;">${pass}</td>
+                        <td class="pr-mark-val">${fmtEt(r)}</td>
+                        <td class="pr-mark-val">${fmtTu(r)}</td>
+                        <td class="pr-mark-val">${fmtTot(r)}</td>
+                        <td class="pr-mark-val" style="color:${gradeColor(lgText)} !important;">${lgText}</td>
+                        <td class="pr-mark-val">${fmtGp(r)}</td>
+                    </tr>
+                `;
+            };
+
+            const b1Lg = fmtLg(ev.subRes.b1);
+            const banglaLg = banglaHasInput ? ev.banglaRes.lg : (ev.isAbsent ? 'AB' : 'F');
+            const englishLg = englishHasInput ? ev.englishRes.lg : (ev.isAbsent ? 'AB' : 'F');
+
+            const statusPillClass = ev.isAbsent ? 'highlight-absent' : (isFail ? 'highlight-fail' : 'highlight-pass');
+            const statusTextColor = ev.isAbsent ? '#b45309' : (isFail ? '#b91c1c' : '#047857');
+            const resultStatusLabel = ev.isAbsent
+                ? 'ABSENT (অনুপস্থিত)'
+                : (isFail ? 'FAILED (অকৃতকার্য)' : 'PASSED (কৃতকার্য)');
 
             const marksheetHTML = `
                 <div class="a4-marksheet-page" id="a4MarksheetArea">
                     <div class="a4-inner-border">
-                        <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" class="pr-watermark" alt="Watermark" crossorigin="anonymous">
+                        <img
+                            src="${LOGO_PRIMARY_URL}"
+                            onerror="this.onerror=null; this.src='${LOGO_FALLBACK_URL}';"
+                            class="pr-watermark"
+                            alt="Watermark"
+                            crossorigin="anonymous"
+                        >
 
                         <div class="pr-content-layer">
                             <!-- Header -->
@@ -841,7 +1049,13 @@
                                 <div class="pr-header-left">
                                     <div class="pr-progress-badge">Progress Report</div>
                                     <div class="pr-class-badge">(Six - Eight)</div>
-                                    <img src="https://wsrv.nl/?url=https://drive.google.com/uc?id=1ZmxR46CCr7Ge5UntTMM_TbTeMJfdiqTD" alt="Logo" class="pr-logo" crossorigin="anonymous">
+                                    <img
+                                        src="${LOGO_PRIMARY_URL}"
+                                        onerror="this.onerror=null; this.src='${LOGO_FALLBACK_URL}';"
+                                        alt="Logo"
+                                        class="pr-logo"
+                                        crossorigin="anonymous"
+                                    >
                                 </div>
 
                                 <div class="pr-header-center">
@@ -850,7 +1064,7 @@
                                     <div class="pr-school-name">IBNE TAIMIYA SCHOOL &amp; COLLEGE</div>
                                     <div class="pr-school-address">১নং ইপিজেড রোড, টমছমব্রীজ, কুমিল্লা | ফোন: ০২৩৩৪৪০৫৭৪৪</div>
                                     <div class="pr-school-contact">E-mail: ibntaimia1979@gmail.com | Website: www.itsc.edu.bd</div>
-                                    <div class="pr-exam-banner">বার্ষিক পরীক্ষা ফলাফল - ${examYear}</div>
+                                    <div class="pr-exam-banner">বার্ষিক পরীক্ষা ফলাফল - ${escapeHtml(examYear)}</div>
                                 </div>
 
                                 <div class="pr-header-right">
@@ -871,38 +1085,38 @@
                                 <div class="pr-info-grid-top">
                                     <div class="pr-field">
                                         <span class="pr-field-label">Student's Name (শিক্ষার্থীর নাম)</span>
-                                        <span class="pr-field-val">${student.name || '-'}</span>
+                                        <span class="pr-field-val">${escapeHtml(student.name || '-')}</span>
                                     </div>
                                     <div class="pr-field">
                                         <span class="pr-field-label">Father's Name (পিতার নাম)</span>
-                                        <span class="pr-field-val">${student.fname || '-'}</span>
+                                        <span class="pr-field-val">${escapeHtml(student.fname || '-')}</span>
                                     </div>
                                     <div class="pr-field">
                                         <span class="pr-field-label">Mother's Name (মাতার নাম)</span>
-                                        <span class="pr-field-val">${student.mname || '-'}</span>
+                                        <span class="pr-field-val">${escapeHtml(student.mname || '-')}</span>
                                     </div>
                                 </div>
 
                                 <div class="pr-info-grid-bottom">
                                     <div class="pr-kpi-pill">
-                                        <div class="pr-field-label">Class & Sec</div>
-                                        <div class="pr-field-val">${clsName} (${secName})</div>
+                                        <div class="pr-field-label">Class &amp; Sec</div>
+                                        <div class="pr-field-val">${escapeHtml(clsName)} (${escapeHtml(secName)})</div>
                                     </div>
                                     <div class="pr-kpi-pill">
                                         <div class="pr-field-label">Roll No</div>
-                                        <div class="pr-field-val" style="color:#b91c1c !important;">${student.roll || '-'}</div>
+                                        <div class="pr-field-val" style="color:#b91c1c !important;">${escapeHtml(student.roll || '-')}</div>
                                     </div>
                                     <div class="pr-kpi-pill">
                                         <div class="pr-field-label">Shift</div>
-                                        <div class="pr-field-val">${shiftName}</div>
+                                        <div class="pr-field-val">${escapeHtml(shiftName)}</div>
                                     </div>
                                     <div class="pr-kpi-pill">
                                         <div class="pr-field-label">Grand Total</div>
-                                        <div class="pr-field-val">${ev.grandTotalMarks}</div>
+                                        <div class="pr-field-val">${ev.isAbsent ? '-' : ev.grandTotalMarks}</div>
                                     </div>
-                                    <div class="pr-kpi-pill ${isFail ? 'highlight-fail' : 'highlight-pass'}">
-                                        <div class="pr-field-label">GPA & Grade</div>
-                                        <div class="pr-field-val" style="color:${isFail ? '#b91c1c' : '#047857'} !important;">${ev.finalGPA.toFixed(2)} (${overallGrade})</div>
+                                    <div class="pr-kpi-pill ${statusPillClass}">
+                                        <div class="pr-field-label">GPA &amp; Grade</div>
+                                        <div class="pr-field-val" style="color:${statusTextColor} !important;">${ev.isAbsent ? 'AB' : `${ev.finalGPA.toFixed(2)} (${overallGrade})`}</div>
                                     </div>
                                     <div class="pr-kpi-pill">
                                         <div class="pr-field-label">Merit Position</div>
@@ -937,57 +1151,33 @@
                                     <tr>
                                         <td class="pr-text-green">Bangla-I</td>
                                         <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
-                                        <td class="pr-mark-val">${ev.subRes.b1.et70 || ''}</td>
-                                        <td class="pr-mark-val">${ev.subRes.b1.tu || ''}</td>
-                                        <td class="pr-mark-val">${ev.subRes.b1.tot || ''}</td>
-                                        <td class="pr-mark-val" style="color:#b91c1c !important;">${ev.subRes.b1.lg}</td>
-                                        <td class="pr-mark-val">${ev.subRes.b1.gp.toFixed(2)}</td>
-                                        <td rowspan="17" class="pr-bg-blue" style="vertical-align: middle; text-align: center; font-size: 28px; font-weight: 900; color: #b91c1c !important;">${ev.finalGPA.toFixed(2)}</td>
+                                        <td class="pr-mark-val">${fmtEt(ev.subRes.b1)}</td>
+                                        <td class="pr-mark-val">${fmtTu(ev.subRes.b1)}</td>
+                                        <td class="pr-mark-val">${fmtTot(ev.subRes.b1)}</td>
+                                        <td class="pr-mark-val" style="color:${gradeColor(b1Lg)} !important;">${b1Lg}</td>
+                                        <td class="pr-mark-val">${fmtGp(ev.subRes.b1)}</td>
+                                        <td rowspan="17" class="pr-bg-blue" style="vertical-align: middle; text-align: center; font-size: 28px; font-weight: 900; color: ${statusTextColor} !important;">${ev.isAbsent ? 'AB' : ev.finalGPA.toFixed(2)}</td>
                                         <td rowspan="17" class="pr-bg-blue" style="vertical-align: middle; text-align: center; font-size: 25px; font-weight: 900; color: #1c3c78 !important;">${meritPos}</td>
                                     </tr>
-                                    <tr>
-                                        <td class="pr-text-green">Bangla-II</td>
-                                        <td style="font-weight:bold;">50</td><td style="font-weight:bold;">20</td>
-                                        <td class="pr-mark-val">${ev.subRes.b2.et70 || ''}</td>
-                                        <td class="pr-mark-val">${ev.subRes.b2.tu || ''}</td>
-                                        <td class="pr-mark-val">${ev.subRes.b2.tot || ''}</td>
-                                        <td class="pr-mark-val" style="color:#b91c1c !important;">${ev.subRes.b2.lg}</td>
-                                        <td class="pr-mark-val">${ev.subRes.b2.gp.toFixed(2)}</td>
-                                    </tr>
+                                    ${renderSubjectRow('b2', 'Bangla-II', 50, 20)}
                                     <tr>
                                         <td class="pr-text-blue">Bangla Total (I + II)</td>
                                         <td class="pr-bg-blue" style="font-weight:bold;">150</td><td class="pr-bg-blue" style="font-weight:bold;">60</td>
                                         <td class="pr-bg-blue">-</td><td class="pr-bg-blue">-</td>
-                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold;">${ev.banglaTotal}</td>
-                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold; color:#b91c1c !important;">${ev.banglaRes.lg}</td>
-                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold;">${ev.banglaRes.gp.toFixed(2)}</td>
+                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold;">${banglaHasInput ? ev.banglaTotal : ''}</td>
+                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold; color:${gradeColor(banglaLg)} !important;">${banglaLg}</td>
+                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold;">${banglaHasInput ? ev.banglaRes.gp.toFixed(2) : (ev.isAbsent ? '-' : '0.00')}</td>
                                     </tr>
 
-                                    <tr>
-                                        <td class="pr-text-green">English-I</td>
-                                        <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
-                                        <td class="pr-mark-val">${ev.subRes.e1.et70 || ''}</td>
-                                        <td class="pr-mark-val">${ev.subRes.e1.tu || ''}</td>
-                                        <td class="pr-mark-val">${ev.subRes.e1.tot || ''}</td>
-                                        <td class="pr-mark-val" style="color:#b91c1c !important;">${ev.subRes.e1.lg}</td>
-                                        <td class="pr-mark-val">${ev.subRes.e1.gp.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pr-text-green">English-II</td>
-                                        <td style="font-weight:bold;">100</td><td style="font-weight:bold;">40</td>
-                                        <td class="pr-mark-val">${ev.subRes.e2.et70 || ''}</td>
-                                        <td class="pr-mark-val">${ev.subRes.e2.tu || ''}</td>
-                                        <td class="pr-mark-val">${ev.subRes.e2.tot || ''}</td>
-                                        <td class="pr-mark-val" style="color:#b91c1c !important;">${ev.subRes.e2.lg}</td>
-                                        <td class="pr-mark-val">${ev.subRes.e2.gp.toFixed(2)}</td>
-                                    </tr>
+                                    ${renderSubjectRow('e1', 'English-I', 100, 40)}
+                                    ${renderSubjectRow('e2', 'English-II', 100, 40)}
                                     <tr>
                                         <td class="pr-text-blue">English Total (I + II)</td>
                                         <td class="pr-bg-blue" style="font-weight:bold;">200</td><td class="pr-bg-blue" style="font-weight:bold;">80</td>
                                         <td class="pr-bg-blue">-</td><td class="pr-bg-blue">-</td>
-                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold;">${ev.englishTotal}</td>
-                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold; color:#b91c1c !important;">${ev.englishRes.lg}</td>
-                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold;">${ev.englishRes.gp.toFixed(2)}</td>
+                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold;">${englishHasInput ? ev.englishTotal : ''}</td>
+                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold; color:${gradeColor(englishLg)} !important;">${englishLg}</td>
+                                        <td class="pr-bg-blue" style="font-size:15.5px; font-weight:bold;">${englishHasInput ? ev.englishRes.gp.toFixed(2) : (ev.isAbsent ? '-' : '0.00')}</td>
                                     </tr>
 
                                     ${renderSubjectRow('math', 'Mathematics', 100, 40)}
@@ -1005,9 +1195,9 @@
                                     <tr>
                                         <td class="pr-text-red" style="font-size: 16.5px; text-align: left; padding-left: 10px;">GRAND TOTAL</td>
                                         <td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td><td class="pr-bg-grey"></td>
-                                        <td class="pr-bg-grey" style="font-weight:900; font-size:17px;">${ev.grandTotalMarks}</td>
-                                        <td class="pr-bg-grey" colspan="4" style="font-weight:700; font-size:14px; color:${isFail ? '#c00000' : '#006633'} !important;">
-                                            Result Status: ${isFail ? 'FAILED (অকৃতকার্য)' : 'PASSED (কৃতকার্য)'}
+                                        <td class="pr-bg-grey" style="font-weight:900; font-size:17px;">${ev.isAbsent ? '-' : ev.grandTotalMarks}</td>
+                                        <td class="pr-bg-grey" colspan="4" style="font-weight:700; font-size:14px; color:${statusTextColor} !important;">
+                                            Result Status: ${resultStatusLabel}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1025,9 +1215,9 @@
                                         </tr>
                                         <tr>
                                             <td class="pr-bg-yellow">Annual</td>
-                                            <td>${workingDays}</td>
-                                            <td>${student.att || '-'}</td>
-                                            <td>${highestAtt}</td>
+                                            <td>${escapeHtml(workingDays)}</td>
+                                            <td>${escapeHtml(student.att || '-')}</td>
+                                            <td>${escapeHtml(highestAtt)}</td>
                                         </tr>
                                     </table>
 
@@ -1057,7 +1247,6 @@
         async function printStudentA4Marksheet() {
             const area = document.getElementById('a4MarksheetArea');
             if (!area) return;
-            area.style.transform = 'none';
 
             const images = Array.from(area.querySelectorAll('img'));
             await Promise.all(images.map(img => {
@@ -1067,8 +1256,7 @@
 
             setTimeout(() => {
                 window.print();
-                adjustA4MobileScale();
-            }, 150);
+            }, 120);
         }
     </script>
 
