@@ -474,10 +474,15 @@
                         </select>
                     </div>
 
-                    <!-- শিফট (ফিক্সড: জবা) -->
+                    <!-- শিফট ইনপুট -->
                     <div class="form-group">
-                        <label><i class="fa-solid fa-sun"></i> শিফট (নির্ধারিত)</label>
-                        <input type="text" id="shiftInput" class="form-control locked" value="জবা (Joba)" readonly>
+                        <label for="shiftSelect"><i class="fa-solid fa-sun"></i> শিফট নির্বাচন করুন *</label>
+                        <select id="shiftSelect" class="form-control" required>
+                            <option value="Joba" selected>Joba</option>
+                            <option value="Bokul">Bokul</option>
+                            <option value="Shapla">Shapla</option>
+                            <option value="Beli">Beli</option>
+                        </select>
                     </div>
 
                     <!-- রোল নম্বর ইনপুট -->
@@ -618,8 +623,9 @@
         }
 
         // আপনার আগের Code.gs (action=getAll) থেকে সরাসরি ডাটা লোড
-        async function loadClassSectionFromGoogleSheet(cls, sec) {
-            const cacheKey = `${cls}_${sec}_${PORTAL_DEFAULTS.shift}_${PORTAL_DEFAULTS.year}`;
+        async function loadClassSectionFromGoogleSheet(cls, sec, shift) {
+            const targetShift = shift || PORTAL_DEFAULTS.shift;
+            const cacheKey = `${cls}_${sec}_${targetShift}_${PORTAL_DEFAULTS.year}`;
             if (classDataCache[cacheKey]) {
                 return classDataCache[cacheKey];
             }
@@ -628,7 +634,7 @@
                 action: 'getAll',
                 cls: cls,
                 sec: sec,
-                shift: PORTAL_DEFAULTS.shift,
+                shift: targetShift,
                 year: PORTAL_DEFAULTS.year,
                 t: Date.now().toString()
             });
@@ -746,6 +752,7 @@
 
             const selectedClass = document.getElementById('classSelect').value;
             const selectedSection = document.getElementById('sectionSelect').value;
+            const selectedShift = document.getElementById('shiftSelect').value;
             const rawRoll = document.getElementById('rollInput').value;
             const searchRoll = normalizeRoll(rawRoll);
 
@@ -763,7 +770,7 @@
 
             let loadedData = null;
             try {
-                loadedData = await loadClassSectionFromGoogleSheet(selectedClass, selectedSection);
+                loadedData = await loadClassSectionFromGoogleSheet(selectedClass, selectedSection, selectedShift);
             } catch (err) {
                 errorBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${err.message}`;
                 errorBox.style.display = 'block';
@@ -805,7 +812,7 @@
 
             const clsName = globalPortalInfo.cls || selectedClass;
             const secName = globalPortalInfo.sec || selectedSection;
-            const shiftName = globalPortalInfo.shift || PORTAL_DEFAULTS.shift;
+            const shiftName = globalPortalInfo.shift || selectedShift;
             const examYear = globalPortalInfo.year || PORTAL_DEFAULTS.year;
             const workingDays = globalPortalInfo.workingDays || PORTAL_DEFAULTS.workingDays;
             const highestAtt = globalPortalInfo.highestAtt || autoHighestAtt;
