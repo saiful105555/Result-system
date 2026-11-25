@@ -147,6 +147,7 @@
         }
         .live-stats span.val { color: #004a80; font-family: 'Roboto', sans-serif; }
         .live-stats span.absent-val { color: #c9302c; font-family: 'Roboto', sans-serif; }
+        .live-stats span.fail-val { color: #b51d1a; font-family: 'Roboto', sans-serif; }
 
         .input-table-wrapper {
             max-height: 440px;
@@ -473,10 +474,14 @@
             font-size: 10.5px;
             letter-spacing: 0.3px;
         }
+        .fail-cell {
+            color: #c9302c;
+            font-weight: 900;
+        }
 
         .sheet-footer {
             margin-top: 9px;
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 700;
             color: #000;
             page-break-inside: avoid;
@@ -484,13 +489,13 @@
         }
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
             margin-bottom: 6px;
         }
         .summary-box {
             border: 1.5px solid #004a80;
-            padding: 4px 9px;
+            padding: 4px 7px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -498,13 +503,17 @@
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
+        .summary-box.fail-summary {
+            background-color: #fff5f5;
+        }
         .summary-box .num-val {
             font-family: 'Roboto', sans-serif;
             font-size: 13.5px;
             font-weight: 900;
             color: #00355c;
         }
-        .summary-box .num-absent {
+        .summary-box .num-absent,
+        .summary-box .num-fail {
             font-family: 'Roboto', sans-serif;
             font-size: 13.5px;
             font-weight: 900;
@@ -634,6 +643,7 @@
             <div>মোট শিক্ষার্থী: <span class="val" id="live_total">0</span></div>
             <div>ডাটা এন্ট্রি হয়েছে: <span class="val" id="live_entered">0</span></div>
             <div>অনুপস্থিত: <span class="absent-val" id="live_absent">0</span></div>
+            <div>মোট ফেইল (&lt;40): <span class="fail-val" id="live_fail">0</span></div>
         </div>
 
         <div class="input-table-wrapper">
@@ -715,12 +725,16 @@
                     <span class="num-val" id="out_sum_total">0</span>
                 </div>
                 <div class="summary-box">
-                    <span>মোট ডাটা এন্ট্রি (Present):</span>
+                    <span>উপস্থিত (Present):</span>
                     <span class="num-val" id="out_sum_entered">0</span>
                 </div>
                 <div class="summary-box">
                     <span>অনুপস্থিত (Absent):</span>
                     <span class="num-absent" id="out_sum_absent">0</span>
+                </div>
+                <div class="summary-box fail-summary">
+                    <span>মোট ফেইল (Fail):</span>
+                    <span class="num-fail" id="out_sum_fail">0</span>
                 </div>
             </div>
 
@@ -1044,6 +1058,7 @@
             const cfg = getSubjectConfig();
             let entered = 0;
             let absent = 0;
+            let failCount = 0;
 
             for (let i = 1; i <= count; i++) {
                 const mcqStr = (marksStore[`mcq_${i}`] || '').trim();
@@ -1051,8 +1066,12 @@
                 const pracStr = cfg.isPrac ? (marksStore[`prac_${i}`] || '').trim() : '';
                 const tuStr = (marksStore[`tu_${i}`] || '').trim();
 
-                if (mcqStr !== '' || etStr !== '' || pracStr !== '' || tuStr !== '') {
+                const res = calculateRowScores(mcqStr, etStr, pracStr, tuStr, cfg);
+                if (res.hasData) {
                     entered++;
+                    if (res.gTotal < 40) {
+                        failCount++;
+                    }
                 } else {
                     absent++;
                 }
@@ -1061,6 +1080,7 @@
             document.getElementById('live_total').innerText = count;
             document.getElementById('live_entered').innerText = entered;
             document.getElementById('live_absent').innerText = absent;
+            document.getElementById('live_fail').innerText = failCount;
         }
 
         function renderInputRows() {
@@ -1220,6 +1240,7 @@
             const rightRows = [];
 
             let enteredCount = 0;
+            let failCount = 0;
             const absentRolls = [];
 
             for (let i = 1; i <= total; i++) {
@@ -1235,7 +1256,12 @@
                 if (res.hasData) {
                     enteredCount++;
                     total70Display = `${res.total70}`;
-                    gTotalDisplay = `${res.gTotal}`;
+                    if (res.gTotal < 40) {
+                        failCount++;
+                        gTotalDisplay = `<span class="fail-cell">${res.gTotal}</span>`;
+                    } else {
+                        gTotalDisplay = `${res.gTotal}`;
+                    }
                 } else {
                     absentRolls.push(i);
                     total70Display = '';
@@ -1268,6 +1294,7 @@
             document.getElementById('out_sum_total').innerText = total;
             document.getElementById('out_sum_entered').innerText = enteredCount;
             document.getElementById('out_sum_absent').innerText = absentRolls.length;
+            document.getElementById('out_sum_fail').innerText = failCount;
             document.getElementById('out_absent_rolls').innerText =
                 absentRolls.length > 0 ? absentRolls.join(', ') : 'কেউ অনুপস্থিত নেই (None)';
 
