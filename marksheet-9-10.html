@@ -8,8 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@500;600;700&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
-    <!-- High Quality PDF Engine (html2pdf.js) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -276,8 +274,6 @@
             align-items: center;
             gap: 6px;
         }
-        .btn-pdf { background-color: #c9302c; }
-        .btn-pdf:hover { background-color: #a92420; }
         .btn-print { background-color: #146c43; }
         .btn-print:hover { background-color: #0f5132; }
         .btn-edit { background-color: #5c6670; }
@@ -658,7 +654,6 @@
     <!-- ACTION BUTTONS AREA -->
     <div class="action-buttons" id="actionButtons" style="display: none;">
         <button class="btn-action btn-print" onclick="window.print()">🖨 Print A4</button>
-        <button class="btn-action btn-pdf" onclick="downloadHighQualityPDF()">⬇ Download A4 PDF</button>
         <button class="btn-action btn-edit" onclick="backToForm()">✏ Edit Marks</button>
     </div>
 
@@ -1286,23 +1281,6 @@
             document.getElementById('inputForm').style.display = 'block';
             document.getElementById('outputSheet').style.display = 'none';
             document.getElementById('actionButtons').style.display = 'none';
-        }
-
-        function downloadHighQualityPDF() {
-            const element = document.getElementById('outputSheet');
-            const subject = (document.getElementById('in_subject').value || 'MarksSheet').trim();
-            const className = (document.getElementById('in_class').value || '').trim();
-
-            const opt = {
-                margin:       0,
-                filename:     `Marks_Sheet_Class_${className}_${subject}.pdf`,
-                image:        { type: 'jpeg', quality: 0.99 },
-                html2canvas:  { scale: 3, useCORS: true, allowTaint: true, logging: false, scrollY: 0 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
-            };
-
-            html2pdf().set(opt).from(element).save();
         }
     </script>
 </body>
